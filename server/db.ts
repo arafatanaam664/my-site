@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { calendarEvents, contentItems, contentRevisions, InsertUser, notificationPreferences, sources, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,23 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+export async function getAdminOverview() {
+  const db = await getDb();
+  if (!db) return { content: 0, sources: 0, events: 0, optedInNotifications: 0 };
+  const [[content], [source], [event], [notification]] = await Promise.all([
+    db.select({ value: count() }).from(contentItems),
+    db.select({ value: count() }).from(sources),
+    db.select({ value: count() }).from(calendarEvents),
+    db.select({ value: count() }).from(notificationPreferences).where(eq(notificationPreferences.consented, true)),
+  ]);
+  return { content: content?.value ?? 0, sources: source?.value ?? 0, events: event?.value ?? 0, optedInNotifications: notification?.value ?? 0 };
+}
+
+export async function createContentDraft(input: { title: string; slug: string; type: "guide" | "article" | "landing" | "faq"; excerpt?: string; authorId: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is unavailable");
+  const created = await db.insert(contentItems).values({ title: input.title, slug: input.slug, type: input.type, excerpt: input.excerpt ?? null, h1: input.title, authorId: input.authorId, status: "draft", indexable: false });
+  const contentId = Number(created[0].insertId);
+  await db.insert(contentRevisions).values({ contentId, version: 1, status: "draft", changeSummary: "إنشاء مسودة أولية", createdBy: input.authorId });
+  return { id: contentId };
+}

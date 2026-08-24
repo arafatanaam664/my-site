@@ -20,6 +20,7 @@ export function prefetchForPath(rawUrl: string): HeadMeta {
   let path = rawUrl.split("?")[0];
   try { path = decodeURI(path); } catch { /* use raw path */ }
   const clean = path.replace(/\/+$/, "") || "/";
+  if (clean === "/admin" || clean.startsWith("/admin/")) return { title: SITE, description: DEFAULT_DESCRIPTION, noindex: true };
   if (clean === "/search") return { title: "البحث في Alshafra", description: "ابحث في الأدوات والأدلة والمقالات المنشورة في Alshafra.", canonicalPath: clean, noindex: true };
   const tool = clean.match(/^\/tools\/([^/]+)$/);
   if (tool) {
