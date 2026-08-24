@@ -1,0 +1,7 @@
+[2026-08-24T18:02:08.587Z] 18:02:08 Configuration file removed. Restarting...
+[2026-08-24T18:02:08.614Z] [astro] Unable to load your Astro config
+[2026-08-24T18:02:08.616Z] 18:02:08 [ERROR] [config] Cannot find module 'astro/config' imported from '/home/ubuntu/alshafra-platform/astro.config.mjs'
+[2026-08-24T18:02:08.616Z] Stack trace:
+[2026-08-24T18:02:08.616Z] at /home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@7.3.6_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:34060:34
+[2026-08-24T18:02:08.616Z] [...] See full stack trace in the browser, or rerun with --verbose.
+[2026-08-24T18:02:08.617Z] 18:02:08 [ERROR] Continuing with previous valid configuration
