@@ -103,3 +103,25 @@ a:hover { opacity: .82; }
   .search-section form { flex-direction: column; gap: 5px; }
   .search-section button { height: 43px; }
 }
+
+.admin-shell { max-width: 1180px; margin: 0 auto; padding: clamp(3rem, 7vw, 6rem) clamp(1.1rem, 5vw, 3rem); }
+.admin-heading { max-width: 650px; margin-bottom: 2rem; }
+.admin-heading h1 { font-size: clamp(2.4rem, 5vw, 4.5rem); letter-spacing: -.06em; margin: 0; }
+.admin-heading > p:last-child { color: var(--muted); }
+.admin-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: clamp(1.2rem, 3vw, 2rem); }
+.admin-card h2, .admin-card h3 { margin-top: 0; }
+.admin-card form, .admin-card { display: grid; gap: .7rem; }
+.admin-card label { font-size: .8rem; font-weight: 700; }
+.admin-card input, .admin-card textarea, .admin-card select { width: 100%; border: 1px solid #b8cac4; border-radius: 8px; padding: .7rem; font: inherit; font-size: .85rem; background: #fff; }
+.admin-card textarea { min-height: 88px; resize: vertical; }
+.admin-card button, .subtle-button { min-height: 42px; border: 0; border-radius: 8px; background: var(--teal); color: #fff; font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; padding: .5rem 1rem; }
+.form-status { min-height: 1.5rem; margin: .2rem 0 0; color: var(--muted); font-size: .8rem; }
+.admin-toolbar { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 1rem; }
+.admin-toolbar h2 { margin: 0; font-size: 1.55rem; }
+.subtle-button { background: #e8f7f1; color: var(--teal-dark); }
+.admin-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(320px, 1.2fr); gap: 1rem; }
+.content-list { list-style: none; padding: 0; margin: 0; display: grid; gap: .7rem; }
+.content-list li { border-bottom: 1px solid var(--line); padding-bottom: .7rem; display: grid; gap: .15rem; font-size: .85rem; }
+.content-list li:last-child { border-bottom: 0; }
+.content-list span, .content-list small { color: var(--muted); font-size: .72rem; }
+@media (max-width: 760px) { .admin-grid { grid-template-columns: 1fr; } .admin-toolbar { align-items: flex-start; flex-direction: column; } }

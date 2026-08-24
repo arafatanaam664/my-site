@@ -1,8 +1,14 @@
 import { defineConfig } from "astro/config";
+import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
-  output: "static",
+  adapter: cloudflare({ imageService: "passthrough", prerenderEnvironment: "node" }),
+  output: "server",
   site: "https://alshafra.com",
   trailingSlash: "never",
   prefetch: true,
+  vite: {
+    ssr: { noExternal: ["@astrojs/cloudflare"] },
+    optimizeDeps: { exclude: ["@astrojs/cloudflare"] },
+  },
 });

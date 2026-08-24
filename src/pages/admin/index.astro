@@ -1,0 +1,90 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="إدارة Alshafra" description="لوحة إدارة المحتوى لمنصة Alshafra." canonical="https://alshafra.com/admin">
+  <section class="admin-shell">
+    <div class="admin-heading"><p class="eyebrow">مساحة المحرر</p><h1>إدارة المحتوى</h1><p>أنشئ المسودات وراجع حالتها قبل النشر. لا تُعرض أي مادة للعامة إلا بعد اعتمادها ونشرها.</p></div>
+
+    <section class="admin-card" id="auth-card">
+      <h2>الدخول إلى مساحة التحرير</h2>
+      <p>أدخل بريدك المعتمد. سنرسل رابط دخول آمن بدل كلمة مرور.</p>
+      <form id="magic-link-form"><label for="editor-email">البريد الإلكتروني</label><input id="editor-email" type="email" autocomplete="email" required placeholder="name@example.com" /><button type="submit">إرسال رابط الدخول</button></form>
+      <p class="form-status" id="auth-status" aria-live="polite"></p>
+    </section>
+
+    <section class="admin-panel" id="dashboard" hidden>
+      <div class="admin-toolbar"><div><span class="eyebrow">المحتوى</span><h2>المسودات والمواد المنشورة</h2></div><button type="button" id="refresh-content" class="subtle-button">تحديث القائمة</button></div>
+      <div class="admin-grid">
+        <form id="new-draft-form" class="admin-card"><h3>مسودة جديدة</h3><label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
+        <div class="admin-card"><h3>آخر المواد</h3><ul id="content-list" class="content-list"><li>يجري تحميل المحتوى…</li></ul></div>
+      </div>
+    </section>
+  </section>
+</BaseLayout>
+
+<script>
+  import { createClient } from "@supabase/supabase-js";
+  const authCard = document.querySelector<HTMLElement>("#auth-card")!;
+  const dashboard = document.querySelector<HTMLElement>("#dashboard")!;
+  const authStatus = document.querySelector<HTMLElement>("#auth-status")!;
+  const contentList = document.querySelector<HTMLUListElement>("#content-list")!;
+  const draftStatus = document.querySelector<HTMLElement>("#draft-status")!;
+  let supabase: ReturnType<typeof createClient> | null = null;
+
+  async function authHeaders() {
+    if (!supabase) return null;
+    const { data } = await supabase.auth.getSession();
+    return data.session ? { Authorization: `Bearer ${data.session.access_token}`, "content-type": "application/json" } : null;
+  }
+
+  async function loadContent() {
+    const headers = await authHeaders();
+    if (!headers) return;
+    const response = await fetch("/api/admin/content", { headers });
+    const result = await response.json();
+    if (!response.ok) { contentList.innerHTML = `<li>${result.error ?? "تعذر تحميل المحتوى"}</li>`; return; }
+    contentList.innerHTML = result.data.length ? result.data.map((item: { title: string; slug: string; status: string; kind: string }) => `<li><span>${item.kind} · ${item.status}</span><strong>${item.title}</strong><small>/${item.slug}</small></li>`).join("") : "<li>لا توجد مواد بعد. أنشئ أول مسودة من النموذج.</li>";
+  }
+
+  async function establishSession() {
+    if (!supabase) return;
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) return;
+    authCard.hidden = true;
+    dashboard.hidden = false;
+    await loadContent();
+  }
+
+  document.querySelector<HTMLFormElement>("#magic-link-form")!.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const email = document.querySelector<HTMLInputElement>("#editor-email")!.value;
+    authStatus.textContent = "يجري إرسال الرابط…";
+    if (!supabase) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; }
+    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}/admin` } });
+    authStatus.textContent = error ? "تعذر إرسال رابط الدخول. تحقق من إعدادات Auth والبريد." : "أُرسل رابط الدخول إلى بريدك. افتحه ثم عد إلى هذه الصفحة.";
+  });
+
+  document.querySelector<HTMLFormElement>("#new-draft-form")!.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const headers = await authHeaders();
+    if (!headers) return;
+    draftStatus.textContent = "يجري حفظ المسودة…";
+    const payload = { kind: document.querySelector<HTMLSelectElement>("#draft-kind")!.value, title: document.querySelector<HTMLInputElement>("#draft-title")!.value, slug: document.querySelector<HTMLInputElement>("#draft-slug")!.value, excerpt: document.querySelector<HTMLTextAreaElement>("#draft-excerpt")!.value };
+    const response = await fetch("/api/admin/content", { method: "POST", headers, body: JSON.stringify(payload) });
+    const result = await response.json();
+    draftStatus.textContent = response.ok ? "تم إنشاء المسودة وسجل المراجعة الأولي." : result.error ?? "تعذر إنشاء المسودة.";
+    if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadContent(); }
+  });
+
+  document.querySelector<HTMLButtonElement>("#refresh-content")!.addEventListener("click", loadContent);
+  void (async () => {
+    const response = await fetch("/api/public/config");
+    if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; }
+    const config = await response.json();
+    supabase = createClient(config.url, config.publishableKey);
+    await establishSession();
+  })();
+</script>

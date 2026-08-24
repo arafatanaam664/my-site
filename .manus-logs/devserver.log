@@ -5,3 +5,494 @@
 [2026-08-24T18:02:08.616Z] at /home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@7.3.6_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:34060:34
 [2026-08-24T18:02:08.616Z] [...] See full stack trace in the browser, or rerun with --verbose.
 [2026-08-24T18:02:08.617Z] 18:02:08 [ERROR] Continuing with previous valid configuration
+[2026-08-24T18:02:15.329Z] 18:02:15 [ERROR] Cannot find module 'astro/compiler-runtime' imported from '/home/ubuntu/alshafra-platform/src/pages/index.astro'
+[2026-08-24T18:02:15.330Z] Stack trace:
+[2026-08-24T18:02:15.330Z] at fetchModule (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@7.3.6_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:34060:34)
+[2026-08-24T18:02:15.330Z] at fetchModule (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@7.3.6_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:34870:17)
+[2026-08-24T18:02:15.330Z] at EventEmitter.listenerForInvokeHandler (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@7.3.6_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:25968:19)
+[2026-08-24T18:02:15.330Z] at Object.send (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@7.3.6_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:15125:39)
+[2026-08-24T18:02:15.330Z] at Object.invoke (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@7.3.6_yaml@2.9.0/node_modules/vite/dist/node/module-runner.js:584:31)
+[2026-08-24T18:02:15.361Z] 18:02:15 [404] /@vite/client 12ms
+[2026-08-24T18:53:02.345Z] [ELIFECYCLE] Command failed.
+[2026-08-24T18:53:02.347Z] [WARN]  Local package.json exists, but node_modules missing, did you mean to install?
+[2026-08-24T18:53:02.352Z] Dev server exited with code -1
+[2026-08-24T18:53:03.430Z] Starting dev server with command: pnpm run dev
+[2026-08-24T18:53:04.631Z] ✓ Lockfile passes supply-chain policies (verified 54m ago)
+[2026-08-24T18:53:04.634Z] Lockfile is up to date, resolution step is skipped
+[2026-08-24T18:53:04.696Z] Progress: resolved 1, reused 0, downloaded 0, added 0
+[2026-08-24T18:53:04.744Z] Packages: +402
+[2026-08-24T18:53:04.744Z] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+[2026-08-24T18:53:04.992Z] Packages are hard linked from the content-addressable store to the virtual store.
+[2026-08-24T18:53:04.992Z] Content-addressable store is at: /home/ubuntu/.local/share/pnpm/store/v11
+[2026-08-24T18:53:04.992Z] Virtual store is at:             node_modules/.pnpm
+[2026-08-24T18:53:05.168Z] Progress: resolved 402, reused 402, downloaded 0, added 402, done
+[2026-08-24T18:53:05.350Z] .../sharp@0.34.5/node_modules/sharp install$ node install/check.js || npm run build
+[2026-08-24T18:53:05.359Z] .../esbuild@0.28.2/node_modules/esbuild postinstall$ node install.js
+[2026-08-24T18:53:05.360Z] .../node_modules/workerd postinstall$ node install.js
+[2026-08-24T18:53:05.361Z] .../esbuild@0.27.7/node_modules/esbuild postinstall$ node install.js
+[2026-08-24T18:53:05.362Z] .../esbuild@0.28.1/node_modules/esbuild postinstall$ node install.js
+[2026-08-24T18:53:05.429Z] .../esbuild@0.28.2/node_modules/esbuild postinstall: Done
+[2026-08-24T18:53:05.462Z] .../esbuild@0.27.7/node_modules/esbuild postinstall: Done
+[2026-08-24T18:53:05.474Z] .../esbuild@0.28.1/node_modules/esbuild postinstall: Done
+[2026-08-24T18:53:05.513Z] .../esbuild@0.25.12/node_modules/esbuild postinstall$ node install.js
+[2026-08-24T18:53:05.517Z] .../sharp@0.34.5/node_modules/sharp install: Done
+[2026-08-24T18:53:05.530Z] .../node_modules/workerd postinstall$ node install.js
+[2026-08-24T18:53:05.535Z] .../node_modules/workerd postinstall: Done
+[2026-08-24T18:53:05.541Z] .../esbuild@0.27.0/node_modules/esbuild postinstall$ node install.js
+[2026-08-24T18:53:05.595Z] .../esbuild@0.25.12/node_modules/esbuild postinstall: Done
+[2026-08-24T18:53:05.627Z] .../esbuild@0.27.0/node_modules/esbuild postinstall: Done
+[2026-08-24T18:53:05.700Z] .../node_modules/workerd postinstall: Done
+[2026-08-24T18:53:06.442Z] dependencies:
+[2026-08-24T18:53:06.442Z] + @astrojs/check 0.9.10
+[2026-08-24T18:53:06.442Z] + @astrojs/cloudflare 12.6.13
+[2026-08-24T18:53:06.442Z] + astro 6.4.8
+[2026-08-24T18:53:06.442Z] devDependencies:
+[2026-08-24T18:53:06.442Z] + @types/node 26.2.0
+[2026-08-24T18:53:06.442Z] + typescript 5.9.3
+[2026-08-24T18:53:06.442Z] + vitest 4.1.11
+[2026-08-24T18:53:06.442Z] + wrangler 4.125.0
+[2026-08-24T18:53:06.496Z] Done in 2.4s using pnpm v11.20.0
+[2026-08-24T18:53:06.518Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T18:53:07.725Z] [vite] connected.
+[2026-08-24T18:53:08.883Z] 18:53:08 [types] Generated 0ms
+[2026-08-24T18:53:08.892Z] [vite] connected.
+[2026-08-24T18:53:08.899Z] 18:53:08 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T18:53:08.918Z] astro  v6.4.8 ready in 1453 ms
+[2026-08-24T18:53:08.918Z] ┃ Local    http://localhost:3000/
+[2026-08-24T18:53:08.918Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-24T18:53:08.918Z] 18:53:08 watching for file changes...
+[2026-08-24T18:53:09.538Z] update  ▶ New version of Astro available: 7.2.6
+[2026-08-24T18:53:09.538Z] Run pnpm dlx @astrojs/upgrade to update
+[2026-08-24T22:16:33.446Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:16:34.011Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T22:16:36.655Z] [vite] connected.
+[2026-08-24T22:16:37.794Z] 22:16:37 [types] Generated 0ms
+[2026-08-24T22:16:37.801Z] [vite] connected.
+[2026-08-24T22:16:37.808Z] 22:16:37 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:16:37.818Z] astro  v6.4.8 ready in 1549 ms
+[2026-08-24T22:16:37.819Z] ┃ Local    http://localhost:3000/
+[2026-08-24T22:16:37.819Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-24T22:16:37.819Z] 22:16:37 watching for file changes...
+[2026-08-24T22:17:03.727Z] 22:17:03 Configuration file updated. Restarting...
+[2026-08-24T22:17:03.760Z] [vite] connected.
+[2026-08-24T22:17:04.744Z] [vite] connected.
+[2026-08-24T22:17:04.747Z] 22:17:04 [vite] Re-optimizing dependencies because lockfile has changed
+[2026-08-24T22:17:04.753Z] 22:17:04 [vite] server restarted.
+[2026-08-24T22:17:08.817Z] [ELIFECYCLE] Command failed.
+[2026-08-24T22:17:08.824Z] Dev server exited with code -1
+[2026-08-24T22:17:09.890Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:17:10.422Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T22:17:11.652Z] [vite] connected.
+[2026-08-24T22:17:12.749Z] 22:17:12 [types] Generated 0ms
+[2026-08-24T22:17:12.757Z] [vite] connected.
+[2026-08-24T22:17:12.763Z] 22:17:12 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:17:12.776Z] astro  v6.4.8 ready in 1361 ms
+[2026-08-24T22:17:12.776Z] ┃ Local    http://localhost:3000/
+[2026-08-24T22:17:12.776Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-24T22:17:12.776Z] 22:17:12 watching for file changes...
+[2026-08-24T22:17:36.678Z] 22:17:36 Configuration file updated. Restarting...
+[2026-08-24T22:17:36.826Z] [vite] connected.
+[2026-08-24T22:17:38.188Z] [vite] connected.
+[2026-08-24T22:17:38.191Z] 22:17:38 [vite] Re-optimizing dependencies because lockfile has changed
+[2026-08-24T22:17:38.197Z] 22:17:38 [vite] server restarted.
+[2026-08-24T22:17:44.930Z] 22:17:44 Configuration file updated. Restarting...
+[2026-08-24T22:17:47.473Z] (node:23950) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:17:47.473Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:17:47.483Z] 22:17:47 [@astrojs/cloudflare] Enabling image processing with Cloudflare Images for production with the "IMAGES" Images binding.
+[2026-08-24T22:17:47.483Z] 22:17:47 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:17:47.844Z] 22:17:47 [ERROR] [UnhandledRejection] Astro detected an unhandled rejection. Here's the stack trace:
+[2026-08-24T22:17:47.844Z] Error: Error during dependency optimization:
+[2026-08-24T22:17:47.844Z] Build failed with 5 errors:
+[2026-08-24T22:17:47.844Z] [MISSING_EXPORT] "beginContentEntryCollection" is not exported by "node_modules/.pnpm/astro@6.4.8_@types+node@26.2.0_lightningcss@1.33.0_rollup@4.62.5_supports-color@10.2.2_yaml@2.9.0/node_modules/astro/dist/core/app/entrypoints/index.js".
+[2026-08-24T22:17:47.844Z] ╭─[ node_modules/.pnpm/@astrojs+cloudflare@14.2.4_@types+node@26.2.0_astro@6.4.8_@types+node@26.2.0_lightningc_6546f8be3ba9a513faf466c197fee81a/node_modules/@astrojs/cloudflare/dist/utils/prerender.js:2:3 ]
+[2026-08-24T22:17:47.844Z] │
+[2026-08-24T22:17:47.844Z] 2 │   beginContentEntryCollection,
+[2026-08-24T22:17:47.844Z] │   ─────────────┬─────────────
+[2026-08-24T22:17:47.844Z] │                ╰─────────────── Missing export
+[2026-08-24T22:17:47.844Z] ───╯
+[2026-08-24T22:17:47.844Z] [MISSING_EXPORT] "beginImageCollection" is not exported by "node_modules/.pnpm/astro@6.4.8_@types+node@26.2.0_lightningcss@1.33.0_rollup@4.62.5_supports-color@10.2.2_yaml@2.9.0/node_modules/astro/dist/core/app/entrypoints/index.js".
+[2026-08-24T22:17:47.844Z] ╭─[ node_modules/.pnpm/@astrojs+cloudflare@14.2.4_@types+node@26.2.0_astro@6.4.8_@types+node@26.2.0_lightningc_6546f8be3ba9a513faf466c197fee81a/node_modules/@astrojs/cloudflare/dist/utils/prerender.js:3:3 ]
+[2026-08-24T22:17:47.844Z] │
+[2026-08-24T22:17:47.844Z] 3 │   beginImageCollection,
+[2026-08-24T22:17:47.844Z] │   ──────────┬─────────
+[2026-08-24T22:17:47.844Z] │             ╰─────────── Missing export
+[2026-08-24T22:17:47.844Z] ───╯
+[2026-08-24T22:17:47.844Z] [MISSING_EXPORT] "endContentEntryCollection" is not exported by "node_modules/.pnpm/astro@6.4.8_@types+node@26.2.0_lightningcss@1.33.0_rollup@4.62.5_supports-color@10.2.2_yaml@2.9.0/node_modules/astro/dist/core/app/entrypoints/index.js".
+[2026-08-24T22:17:47.844Z] ╭─[ node_modules/.pnpm/@astrojs+cloudflare@14.2.4_@types+node@26.2.0_astro@6.4.8_@types+node@26.2.0_lightningc_6546f8be3ba9a513faf466c197fee81a/node_modules/@astrojs/cloudflare/dist/utils/prerender.js:4:3 ]
+[2026-08-24T22:17:47.844Z] │
+[2026-08-24T22:17:47.844Z] 4 │   endContentEntryCollection,
+[2026-08-24T22:17:47.844Z] │   ────────────┬────────────
+[2026-08-24T22:17:47.844Z] │               ╰────────────── Missing export
+[2026-08-24T22:17:47.844Z] ───╯
+[2026-08-24T22:17:47.844Z] [MISSING_EXPORT] "endImageCollection" is not exported by "node_modules/.pnpm/astro@6.4.8_@types+node@26.2.0_lightningcss@1.33.0_rollup@4.62.5_supports-color@10.2.2_yaml@2.9.0/node_modules/astro/dist/core/app/entrypoints/index.js".
+[2026-08-24T22:17:47.845Z] ╭─[ node_modules/.pnpm/@astrojs+cloudflare@14.2.4_@types+node@26.2.0_astro@6.4.8_@types+node@26.2.0_lightningc_6546f8be3ba9a513faf466c197fee81a/node_modules/@astrojs/cloudflare/dist/utils/prerender.js:5:3 ]
+[2026-08-24T22:17:47.845Z] │
+[2026-08-24T22:17:47.845Z] 5 │   endImageCollection
+[2026-08-24T22:17:47.845Z] │   ─────────┬────────
+[2026-08-24T22:17:47.845Z] │            ╰────────── Missing export
+[2026-08-24T22:17:47.845Z] ───╯
+[2026-08-24T22:17:47.845Z] [MISSING_EXPORT] "recordStaticImage" is not exported by "node_modules/.pnpm/astro@6.4.8_@types+node@26.2.0_lightningcss@1.33.0_rollup@4.62.5_supports-color@10.2.2_yaml@2.9.0/node_modules/astro/dist/core/app/entrypoints/index.js".
+[2026-08-24T22:17:47.845Z] ╭─[ node_modules/.pnpm/@astrojs+cloudflare@14.2.4_@types+node@26.2.0_astro@6.4.8_@types+node@26.2.0_lightningc_6546f8be3ba9a513faf466c197fee81a/node_modules/@astrojs/cloudflare/dist/utils/static-image-collection.js:2:10 ]
+[2026-08-24T22:17:47.845Z] │
+[2026-08-24T22:17:47.845Z] 2 │ import { recordStaticImage } from "astro/app";
+[2026-08-24T22:17:47.845Z] │          ────────┬────────
+[2026-08-24T22:17:47.845Z] │                  ╰────────── Missing export
+[2026-08-24T22:17:47.845Z] ───╯
+[2026-08-24T22:17:47.845Z] at aggregateBindingErrorsIntoJsError (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/rolldown@1.2.5/node_modules/rolldown/dist/shared/error-NcRuXAVN.mjs:48:18)
+[2026-08-24T22:17:47.845Z] at unwrapBindingResult (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/rolldown@1.2.5/node_modules/rolldown/dist/shared/error-NcRuXAVN.mjs:18:128)
+[2026-08-24T22:17:47.845Z] at #build (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/rolldown@1.2.5/node_modules/rolldown/dist/shared/rolldown-vcii7mEa.mjs:132:34)
+[2026-08-24T22:17:47.845Z] at async Object.build (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:32407:11)
+[2026-08-24T22:17:47.845Z] Hint:
+[2026-08-24T22:17:47.845Z] Make sure your promises all have an `await` or a `.catch()` handler.
+[2026-08-24T22:17:47.845Z] Error reference:
+[2026-08-24T22:17:47.845Z] https://docs.astro.build/en/reference/errors/unhandled-rejection/
+[2026-08-24T22:17:47.845Z] Stack trace:
+[2026-08-24T22:17:47.845Z] at aggregateBindingErrorsIntoJsError (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/rolldown@1.2.5/node_modules/rolldown/dist/shared/error-NcRuXAVN.mjs:48:18)
+[2026-08-24T22:17:47.845Z] at #build (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/rolldown@1.2.5/node_modules/rolldown/dist/shared/rolldown-vcii7mEa.mjs:132:34)
+[2026-08-24T22:17:47.845Z] at process.handleUnhandledRejection (/home/ubuntu/alshafra-platform/node_modules/.pnpm/astro@6.4.8_@types+node@26.2.0_rollup@4.62.5_supports-color@10.2.2_yaml@2.9.0/node_modules/astro/dist/vite-plugin-astro-server/plugin.js:24:37)
+[2026-08-24T22:17:47.845Z] at #processEmit (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/rolldown@1.2.5/node_modules/rolldown/dist/shared/watch-olxWZPOn.mjs:200:20)
+[2026-08-24T22:17:47.845Z] at #processEmit (/home/ubuntu/alshafra-platform/node_modules/.pnpm/wrangler@4.125.0/node_modules/wrangler/wrangler-dist/cli.js:61335:21)
+[2026-08-24T22:17:47.845Z] at emitUnhandledRejection (node:internal/process/promises:252:13)
+[2026-08-24T22:17:47.845Z] at processPromiseRejections (node:internal/process/promises:475:17)
+[2026-08-24T22:17:49.376Z] [vite] connected.
+[2026-08-24T22:41:04.772Z] [ELIFECYCLE] Command failed.
+[2026-08-24T22:41:04.808Z] Dev server exited with code -1
+[2026-08-24T22:41:05.851Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:41:06.446Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T22:41:10.393Z] (node:25560) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:41:10.393Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:41:10.429Z] 22:41:10 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:41:10.558Z] 22:41:10 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:41:10.681Z] 22:41:10 [vite] connected.
+[2026-08-24T22:41:12.733Z] 22:41:12 [vite] connected.
+[2026-08-24T22:41:13.108Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/@astrojs_cloudflare_entrypoints_server.js?v=e78b27e9" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:41:13.108Z] Stack trace:
+[2026-08-24T22:41:13.108Z] at runInRunnerObject (workers/runner-worker/index.js:107:3)
+[2026-08-24T22:41:13.108Z] at null.<anonymous> (workers/runner-worker/index.js:356:37)
+[2026-08-24T22:41:13.236Z] [ELIFECYCLE] Command failed with exit code 1.
+[2026-08-24T22:41:13.258Z] Dev server exited with code 1
+[2026-08-24T22:42:11.389Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:42:11.965Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T22:42:14.901Z] (node:25785) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:42:14.901Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:42:14.936Z] 22:42:14 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:42:15.057Z] 22:42:15 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:42:15.161Z] 22:42:15 [vite] connected.
+[2026-08-24T22:42:17.107Z] 22:42:17 [vite] connected.
+[2026-08-24T22:42:17.444Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/@astrojs_cloudflare_entrypoints_server.js?v=360ab975" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:42:17.444Z] Stack trace:
+[2026-08-24T22:42:17.444Z] at runInRunnerObject (workers/runner-worker/index.js:107:3)
+[2026-08-24T22:42:17.444Z] at null.<anonymous> (workers/runner-worker/index.js:356:37)
+[2026-08-24T22:42:17.560Z] [ELIFECYCLE] Command failed with exit code 1.
+[2026-08-24T22:42:17.578Z] Dev server exited with code 1
+[2026-08-24T22:43:28.458Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:43:29.025Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T22:43:31.708Z] (node:26108) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:43:31.709Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:43:31.744Z] 22:43:31 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:43:31.871Z] 22:43:31 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:43:31.988Z] 22:43:31 [vite] connected.
+[2026-08-24T22:43:33.851Z] 22:43:33 [vite] connected.
+[2026-08-24T22:43:34.234Z] 22:43:34 [vite] dependency optimized: astro/assets/services/noop
+[2026-08-24T22:43:34.234Z] 22:43:34 [vite] optimized dependencies changed. reloading
+[2026-08-24T22:43:34.242Z] 22:43:34 [vite] [vite] program reload
+[2026-08-24T22:43:34.382Z] 22:43:34 [vite] [vite] An error happened during full reload
+[2026-08-24T22:43:34.382Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/entrypoints-BdGvNgFh.js?v=f025e3e5" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:43:34.382Z] Error: The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/entrypoints-BdGvNgFh.js?v=f025e3e5" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:43:34.382Z] at throwFileNotFoundInOptimizedDep (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:5433:30)
+[2026-08-24T22:43:34.382Z] at LoadPluginContext.load (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:5416:6)
+[2026-08-24T22:43:34.382Z] at async EnvironmentPluginContainer.load (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:30890:19)
+[2026-08-24T22:43:34.382Z] at async loadAndTransform (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:20624:21)
+[2026-08-24T22:43:34.382Z] at async fetchModule (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:34343:15)
+[2026-08-24T22:43:34.382Z] at async Object.handleInvoke (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:26886:21)
+[2026-08-24T22:43:34.382Z] at async __VITE_INVOKE_MODULE__ (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/@cloudflare+vite-plugin@1.53.1_vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0__wrangler@4.125.0/node_modules/@cloudflare/vite-plugin/dist/index.mjs:127622:22)
+[2026-08-24T22:43:34.382Z] at async #handleLoopbackCustomFetchService (/home/ubuntu/alshafra-platform/node_modules/.pnpm/miniflare@5.20260820.0-alpha/node_modules/miniflare/dist/src/index.js:111715:22)
+[2026-08-24T22:43:34.382Z] at async #handleLoopback (/home/ubuntu/alshafra-platform/node_modules/.pnpm/miniflare@5.20260820.0-alpha/node_modules/miniflare/dist/src/index.js:112048:20)
+[2026-08-24T22:43:34.626Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/astro_runtime_server_escape__js.js?v=f025e3e5" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:43:34.626Z] Stack trace:
+[2026-08-24T22:43:34.626Z] at runInRunnerObject (workers/runner-worker/index.js:107:3)
+[2026-08-24T22:43:34.626Z] at null.<anonymous> (workers/runner-worker/index.js:356:37)
+[2026-08-24T22:43:34.733Z] [ELIFECYCLE] Command failed with exit code 1.
+[2026-08-24T22:43:34.753Z] Dev server exited with code 1
+[2026-08-24T22:43:35.834Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:43:36.363Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T22:43:38.935Z] (node:26242) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:43:38.936Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:43:38.968Z] 22:43:38 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:43:39.084Z] 22:43:39 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:43:39.166Z] 22:43:39 [vite] connected.
+[2026-08-24T22:43:40.918Z] 22:43:40 [vite] connected.
+[2026-08-24T22:43:41.294Z] 22:43:41 [vite] dependency optimized: astro/assets/services/noop
+[2026-08-24T22:43:41.294Z] 22:43:41 [vite] optimized dependencies changed. reloading
+[2026-08-24T22:43:41.312Z] 22:43:41 [vite] [vite] program reload
+[2026-08-24T22:43:42.302Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/server-DHC-V4RV.js?v=d0b8855f" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:43:42.303Z] Stack trace:
+[2026-08-24T22:43:42.303Z] at runInRunnerObject (workers/runner-worker/index.js:107:3)
+[2026-08-24T22:43:42.303Z] at null.<anonymous> (workers/runner-worker/index.js:356:37)
+[2026-08-24T22:43:42.416Z] [ELIFECYCLE] Command failed with exit code 1.
+[2026-08-24T22:43:42.434Z] Dev server exited with code 1
+[2026-08-24T22:43:57.933Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:43:58.517Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T22:44:01.394Z] (node:26343) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:44:01.394Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:44:01.430Z] 22:44:01 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:44:01.624Z] 22:44:01 [vite] connected.
+[2026-08-24T22:44:03.411Z] 22:44:03 [vite] connected.
+[2026-08-24T22:44:03.831Z] 22:44:03 [vite] dependency optimized: astro/assets/services/noop
+[2026-08-24T22:44:03.832Z] 22:44:03 [vite] optimized dependencies changed. reloading
+[2026-08-24T22:44:03.835Z] 22:44:03 [vite] [vite] program reload
+[2026-08-24T22:44:04.162Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/constants-IhFrZw95.js?v=5294eaca" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:44:04.162Z] Stack trace:
+[2026-08-24T22:44:04.162Z] at runInRunnerObject (workers/runner-worker/index.js:107:3)
+[2026-08-24T22:44:04.162Z] at null.<anonymous> (workers/runner-worker/index.js:356:37)
+[2026-08-24T22:44:04.225Z] [ELIFECYCLE] Command failed with exit code 1.
+[2026-08-24T22:44:04.244Z] Dev server exited with code 1
+[2026-08-24T22:44:58.867Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:44:59.399Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T22:45:02.240Z] (node:26523) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:45:02.240Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:45:02.276Z] 22:45:02 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:45:02.488Z] 22:45:02 [vite] connected.
+[2026-08-24T22:45:04.333Z] 22:45:04 [vite] connected.
+[2026-08-24T22:45:04.720Z] 22:45:04 [vite] dependency optimized: astro/assets/services/noop
+[2026-08-24T22:45:04.720Z] 22:45:04 [vite] optimized dependencies changed. reloading
+[2026-08-24T22:45:04.722Z] 22:45:04 [vite] [vite] program reload
+[2026-08-24T22:45:04.804Z] 22:45:04 [vite] [vite] An error happened during full reload
+[2026-08-24T22:45:04.804Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/@astrojs_cloudflare_entrypoints_server.js?v=5d9a1efe" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:45:04.804Z] Error: The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/@astrojs_cloudflare_entrypoints_server.js?v=5d9a1efe" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:45:04.804Z] at throwFileNotFoundInOptimizedDep (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:5433:30)
+[2026-08-24T22:45:04.804Z] at LoadPluginContext.load (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:5416:6)
+[2026-08-24T22:45:04.804Z] at async EnvironmentPluginContainer.load (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:30890:19)
+[2026-08-24T22:45:04.804Z] at async loadAndTransform (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:20624:21)
+[2026-08-24T22:45:04.804Z] at async fetchModule (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:34343:15)
+[2026-08-24T22:45:04.804Z] at async Object.handleInvoke (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:26886:21)
+[2026-08-24T22:45:04.804Z] at async __VITE_INVOKE_MODULE__ (file:///home/ubuntu/alshafra-platform/node_modules/.pnpm/@cloudflare+vite-plugin@1.53.1_vite@8.2.2_@types+node@26.2.0_esbuild@0.28.2_yaml@2.9.0__wrangler@4.125.0/node_modules/@cloudflare/vite-plugin/dist/index.mjs:127622:22)
+[2026-08-24T22:45:04.804Z] at async #handleLoopbackCustomFetchService (/home/ubuntu/alshafra-platform/node_modules/.pnpm/miniflare@5.20260820.0-alpha/node_modules/miniflare/dist/src/index.js:111715:22)
+[2026-08-24T22:45:04.804Z] at async #handleLoopback (/home/ubuntu/alshafra-platform/node_modules/.pnpm/miniflare@5.20260820.0-alpha/node_modules/miniflare/dist/src/index.js:112048:20)
+[2026-08-24T22:45:05.066Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/astro_runtime_server_hydration__js.js?v=d4236887" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:45:05.066Z] Stack trace:
+[2026-08-24T22:45:05.067Z] at runInRunnerObject (workers/runner-worker/index.js:107:3)
+[2026-08-24T22:45:05.067Z] at null.<anonymous> (workers/runner-worker/index.js:356:37)
+[2026-08-24T22:45:05.191Z] [ELIFECYCLE] Command failed with exit code 1.
+[2026-08-24T22:45:05.210Z] Dev server exited with code 1
+[2026-08-24T22:45:06.076Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:45:06.606Z] $ astro dev --host 0.0.0.0 --port 3000
+[2026-08-24T22:45:09.154Z] (node:26660) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:45:09.154Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:45:09.186Z] 22:45:09 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:45:09.341Z] 22:45:09 [vite] connected.
+[2026-08-24T22:45:11.040Z] 22:45:11 [vite] connected.
+[2026-08-24T22:45:11.423Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/@astrojs_cloudflare_entrypoints_server.js?v=5d9a1efe" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:45:11.424Z] Stack trace:
+[2026-08-24T22:45:11.424Z] at runInRunnerObject (workers/runner-worker/index.js:107:3)
+[2026-08-24T22:45:11.424Z] at null.<anonymous> (workers/runner-worker/index.js:356:37)
+[2026-08-24T22:45:11.537Z] [ELIFECYCLE] Command failed with exit code 1.
+[2026-08-24T22:45:11.557Z] Dev server exited with code 1
+[2026-08-24T22:45:28.276Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:45:28.858Z] $ astro dev --host 0.0.0.0 --port 3000 --force
+[2026-08-24T22:45:31.633Z] (node:26745) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:45:31.633Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:45:31.668Z] 22:45:31 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:45:31.786Z] 22:45:31 [vite] connected.
+[2026-08-24T22:45:33.516Z] 22:45:33 [vite] connected.
+[2026-08-24T22:45:33.774Z] The file does not exist at "/home/ubuntu/alshafra-platform/node_modules/.vite/deps_ssr/@astrojs_cloudflare_entrypoints_server.js?v=5d9a1efe" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.
+[2026-08-24T22:45:33.774Z] Stack trace:
+[2026-08-24T22:45:33.774Z] at runInRunnerObject (workers/runner-worker/index.js:107:3)
+[2026-08-24T22:45:33.774Z] at null.<anonymous> (workers/runner-worker/index.js:356:37)
+[2026-08-24T22:45:33.896Z] [ELIFECYCLE] Command failed with exit code 1.
+[2026-08-24T22:45:33.915Z] Dev server exited with code 1
+[2026-08-24T22:46:08.400Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:46:08.978Z] $ astro build && astro preview --host 0.0.0.0 --port 3000
+[2026-08-24T22:46:11.942Z] (node:26880) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:46:11.942Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:46:11.977Z] 22:46:11 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:46:12.104Z] 22:46:12 [types] Generated 54ms
+[2026-08-24T22:46:12.105Z] 22:46:12 [build] output: "server"
+[2026-08-24T22:46:12.105Z] 22:46:12 [build] mode: "server"
+[2026-08-24T22:46:12.105Z] 22:46:12 [build] directory: /home/ubuntu/alshafra-platform/dist/
+[2026-08-24T22:46:12.105Z] 22:46:12 [build] adapter: @astrojs/cloudflare
+[2026-08-24T22:46:12.105Z] 22:46:12 [build] Collecting build info...
+[2026-08-24T22:46:12.105Z] 22:46:12 [build] ✓ Completed in 129ms.
+[2026-08-24T22:46:12.109Z] 22:46:12 [build] Building server entrypoints...
+[2026-08-24T22:46:12.356Z] 22:46:12 [vite] ✓ built in 201ms
+[2026-08-24T22:46:12.829Z] 22:46:12 [vite] ✓ built in 470ms
+[2026-08-24T22:46:12.991Z] 22:46:12 [vite] ✓ built in 155ms
+[2026-08-24T22:46:13.003Z] 22:46:13 [build] Rearranging server assets...
+[2026-08-24T22:46:13.005Z] 22:46:13 [build] ✓ Completed in 895ms.
+[2026-08-24T22:46:13.006Z] 22:46:13 [@astrojs/cloudflare] Injected immutable Cache-Control for /_astro/* into _headers.
+[2026-08-24T22:46:13.007Z] 22:46:13 [build] Server built in 1.03s
+[2026-08-24T22:46:13.007Z] 22:46:13 [build] Complete!
+[2026-08-24T22:46:15.548Z] (node:26991) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:46:15.548Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:46:15.587Z] 22:46:15 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:46:15.724Z] 22:46:15 [@astrojs/cloudflare]
+[2026-08-24T22:46:15.724Z] astro  v14.2.4 ready in 64 ms
+[2026-08-24T22:46:15.724Z] ┃ Local    http://localhost:3000/
+[2026-08-24T22:46:15.724Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-24T22:46:15.742Z] ✨ Parsed 1 valid header rule.
+[2026-08-24T22:46:16.313Z] GET / 200 OK (19ms)
+[2026-08-24T22:46:16.339Z] GET /_astro/BaseLayout.D11qRupZ.css 200 OK (5ms)
+[2026-08-24T22:46:16.340Z] GET /_astro/page.DDsIKVU2.js 200 OK (5ms)
+[2026-08-24T22:46:16.649Z] GET /favicon.ico 404 Not Found (6ms)
+[2026-08-24T22:46:27.752Z] 22:46:27 [ERROR] Error: Missing Supabase public configuration
+[2026-08-24T22:46:27.752Z] at publicSupabaseConfig (file:///home/ubuntu/alshafra-platform/dist/server/chunks/runtime_dpRJd086.mjs:20:70)
+[2026-08-24T22:46:27.752Z] at file:///home/ubuntu/alshafra-platform/dist/server/chunks/index_C0S_g1ye.mjs:33:17
+[2026-08-24T22:46:27.752Z] at index (file:///home/ubuntu/alshafra-platform/dist/server/chunks/compiler_D8ApliaT.mjs:18:10)
+[2026-08-24T22:46:27.752Z] at callComponentAsTemplateResultOrResponse (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5783:30)
+[2026-08-24T22:46:27.752Z] at renderToAsyncIterable (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5803:31)
+[2026-08-24T22:46:27.752Z] at renderPage (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:6243:39)
+[2026-08-24T22:46:27.752Z] at handlePages (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_CIplr5Vs.mjs:3210:22)
+[2026-08-24T22:46:27.752Z] at async callMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_CIplr5Vs.mjs:4465:9)
+[2026-08-24T22:46:27.752Z] at async handleMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_CIplr5Vs.mjs:4596:18)
+[2026-08-24T22:46:27.752Z] at async render (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_CIplr5Vs.mjs:6080:15)
+[2026-08-24T22:46:27.759Z] GET /admin 500 Internal Server Error (10ms)
+[2026-08-24T22:46:35.272Z] 22:46:35 [ERROR] Error: Missing Supabase public configuration
+[2026-08-24T22:46:35.272Z] at publicSupabaseConfig (file:///home/ubuntu/alshafra-platform/dist/server/chunks/runtime_dpRJd086.mjs:20:70)
+[2026-08-24T22:46:35.272Z] at file:///home/ubuntu/alshafra-platform/dist/server/chunks/index_C0S_g1ye.mjs:33:17
+[2026-08-24T22:46:35.272Z] at index (file:///home/ubuntu/alshafra-platform/dist/server/chunks/compiler_D8ApliaT.mjs:18:10)
+[2026-08-24T22:46:35.272Z] at callComponentAsTemplateResultOrResponse (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5783:30)
+[2026-08-24T22:46:35.272Z] at renderToAsyncIterable (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5803:31)
+[2026-08-24T22:46:35.272Z] at renderPage (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:6243:39)
+[2026-08-24T22:46:35.272Z] at handlePages (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_CIplr5Vs.mjs:3210:22)
+[2026-08-24T22:46:35.272Z] at async callMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_CIplr5Vs.mjs:4465:9)
+[2026-08-24T22:46:35.272Z] at async handleMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_CIplr5Vs.mjs:4596:18)
+[2026-08-24T22:46:35.272Z] at async render (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_CIplr5Vs.mjs:6080:15)
+[2026-08-24T22:46:35.284Z] GET /admin 500 Internal Server Error (8ms)
+[2026-08-24T22:47:12.363Z] [ELIFECYCLE] Command failed.
+[2026-08-24T22:47:12.370Z] Dev server exited with code -1
+[2026-08-24T22:47:13.447Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:47:14.006Z] $ astro build && astro preview --host 0.0.0.0 --port 3000
+[2026-08-24T22:47:16.744Z] (node:27220) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:47:16.744Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:47:16.777Z] 22:47:16 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:47:16.898Z] 22:47:16 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:47:16.899Z] 22:47:16 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:47:16.994Z] 22:47:16 [types] Generated 146ms
+[2026-08-24T22:47:16.994Z] 22:47:16 [build] output: "server"
+[2026-08-24T22:47:16.994Z] 22:47:16 [build] mode: "server"
+[2026-08-24T22:47:16.994Z] 22:47:16 [build] directory: /home/ubuntu/alshafra-platform/dist/
+[2026-08-24T22:47:16.994Z] 22:47:16 [build] adapter: @astrojs/cloudflare
+[2026-08-24T22:47:16.995Z] 22:47:16 [build] Collecting build info...
+[2026-08-24T22:47:16.995Z] 22:47:16 [build] ✓ Completed in 219ms.
+[2026-08-24T22:47:16.998Z] 22:47:16 [build] Building server entrypoints...
+[2026-08-24T22:47:17.206Z] 22:47:17 [vite] ✓ built in 165ms
+[2026-08-24T22:47:17.652Z] 22:47:17 [vite] ✓ built in 443ms
+[2026-08-24T22:47:17.807Z] 22:47:17 [vite] ✓ built in 148ms
+[2026-08-24T22:47:17.817Z] 22:47:17 [build] Rearranging server assets...
+[2026-08-24T22:47:17.818Z] 22:47:17 [build] ✓ Completed in 820ms.
+[2026-08-24T22:47:17.820Z] 22:47:17 [@astrojs/cloudflare] Injected immutable Cache-Control for /_astro/* into _headers.
+[2026-08-24T22:47:17.820Z] 22:47:17 [build] Server built in 1.04s
+[2026-08-24T22:47:17.820Z] 22:47:17 [build] Complete!
+[2026-08-24T22:47:20.286Z] (node:27324) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:47:20.286Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:47:20.332Z] 22:47:20 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:47:20.468Z] 22:47:20 [@astrojs/cloudflare]
+[2026-08-24T22:47:20.468Z] astro  v14.2.4 ready in 64 ms
+[2026-08-24T22:47:20.468Z] ┃ Local    http://localhost:3000/
+[2026-08-24T22:47:20.468Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-24T22:47:20.489Z] ✨ Parsed 1 valid header rule.
+[2026-08-24T22:47:24.054Z] 22:47:24 [ERROR] Error: Missing Supabase public configuration
+[2026-08-24T22:47:24.054Z] at publicSupabaseConfig (file:///home/ubuntu/alshafra-platform/dist/server/chunks/runtime_BqvGFrz2.mjs:26:70)
+[2026-08-24T22:47:24.054Z] at file:///home/ubuntu/alshafra-platform/dist/server/chunks/index_Ca-5A_0U.mjs:33:17
+[2026-08-24T22:47:24.054Z] at index (file:///home/ubuntu/alshafra-platform/dist/server/chunks/compiler_D8ApliaT.mjs:18:10)
+[2026-08-24T22:47:24.054Z] at callComponentAsTemplateResultOrResponse (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5783:30)
+[2026-08-24T22:47:24.054Z] at renderToAsyncIterable (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5803:31)
+[2026-08-24T22:47:24.054Z] at renderPage (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:6243:39)
+[2026-08-24T22:47:24.054Z] at handlePages (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_-T36P-Gf.mjs:3210:22)
+[2026-08-24T22:47:24.054Z] at async callMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_-T36P-Gf.mjs:4465:9)
+[2026-08-24T22:47:24.054Z] at async handleMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_-T36P-Gf.mjs:4596:18)
+[2026-08-24T22:47:24.054Z] at async render (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_-T36P-Gf.mjs:6080:15)
+[2026-08-24T22:47:24.079Z] GET /admin 500 Internal Server Error (20ms)
+[2026-08-24T22:47:31.300Z] 22:47:31 [ERROR] Error: Missing Supabase public configuration
+[2026-08-24T22:47:31.300Z] at publicSupabaseConfig (file:///home/ubuntu/alshafra-platform/dist/server/chunks/runtime_BqvGFrz2.mjs:26:70)
+[2026-08-24T22:47:31.300Z] at file:///home/ubuntu/alshafra-platform/dist/server/chunks/index_Ca-5A_0U.mjs:33:17
+[2026-08-24T22:47:31.300Z] at index (file:///home/ubuntu/alshafra-platform/dist/server/chunks/compiler_D8ApliaT.mjs:18:10)
+[2026-08-24T22:47:31.300Z] at callComponentAsTemplateResultOrResponse (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5783:30)
+[2026-08-24T22:47:31.300Z] at renderToAsyncIterable (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5803:31)
+[2026-08-24T22:47:31.300Z] at renderPage (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:6243:39)
+[2026-08-24T22:47:31.300Z] at handlePages (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_-T36P-Gf.mjs:3210:22)
+[2026-08-24T22:47:31.300Z] at async callMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_-T36P-Gf.mjs:4465:9)
+[2026-08-24T22:47:31.300Z] at async handleMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_-T36P-Gf.mjs:4596:18)
+[2026-08-24T22:47:31.300Z] at async render (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_-T36P-Gf.mjs:6080:15)
+[2026-08-24T22:47:31.306Z] GET /admin 500 Internal Server Error (7ms)
+[2026-08-24T22:48:05.296Z] [ELIFECYCLE] Command failed.
+[2026-08-24T22:48:05.302Z] Dev server exited with code -1
+[2026-08-24T22:48:06.379Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:48:06.933Z] $ astro build && astro preview --host 0.0.0.0 --port 3000
+[2026-08-24T22:48:09.617Z] (node:27533) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:48:09.617Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:48:09.650Z] 22:48:09 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:48:09.774Z] 22:48:09 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:48:09.775Z] 22:48:09 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:48:09.866Z] 22:48:09 [types] Generated 141ms
+[2026-08-24T22:48:09.866Z] 22:48:09 [build] output: "server"
+[2026-08-24T22:48:09.866Z] 22:48:09 [build] mode: "server"
+[2026-08-24T22:48:09.866Z] 22:48:09 [build] directory: /home/ubuntu/alshafra-platform/dist/
+[2026-08-24T22:48:09.866Z] 22:48:09 [build] adapter: @astrojs/cloudflare
+[2026-08-24T22:48:09.866Z] 22:48:09 [build] Collecting build info...
+[2026-08-24T22:48:09.867Z] 22:48:09 [build] ✓ Completed in 218ms.
+[2026-08-24T22:48:09.870Z] 22:48:09 [build] Building server entrypoints...
+[2026-08-24T22:48:10.090Z] 22:48:10 [vite] ✓ built in 174ms
+[2026-08-24T22:48:10.535Z] 22:48:10 [vite] ✓ built in 442ms
+[2026-08-24T22:48:10.689Z] 22:48:10 [vite] ✓ built in 148ms
+[2026-08-24T22:48:10.700Z] 22:48:10 [build] Rearranging server assets...
+[2026-08-24T22:48:10.702Z] 22:48:10 [build] ✓ Completed in 832ms.
+[2026-08-24T22:48:10.703Z] 22:48:10 [@astrojs/cloudflare] Injected immutable Cache-Control for /_astro/* into _headers.
+[2026-08-24T22:48:10.704Z] 22:48:10 [build] Server built in 1.06s
+[2026-08-24T22:48:10.704Z] 22:48:10 [build] Complete!
+[2026-08-24T22:48:13.384Z] (node:27637) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:48:13.385Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:48:13.413Z] 22:48:13 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:48:13.552Z] 22:48:13 [@astrojs/cloudflare]
+[2026-08-24T22:48:13.552Z] astro  v14.2.4 ready in 72 ms
+[2026-08-24T22:48:13.552Z] ┃ Local    http://localhost:3000/
+[2026-08-24T22:48:13.552Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-24T22:48:13.575Z] ✨ Parsed 1 valid header rule.
+[2026-08-24T22:48:19.331Z] 22:48:19 [ERROR] Error: Missing Supabase public configuration
+[2026-08-24T22:48:19.331Z] at publicSupabaseConfig (file:///home/ubuntu/alshafra-platform/dist/server/chunks/runtime_CphzoM6_.mjs:28:70)
+[2026-08-24T22:48:19.331Z] at file:///home/ubuntu/alshafra-platform/dist/server/chunks/index_GvatMeQo.mjs:33:17
+[2026-08-24T22:48:19.331Z] at index (file:///home/ubuntu/alshafra-platform/dist/server/chunks/compiler_D8ApliaT.mjs:18:10)
+[2026-08-24T22:48:19.331Z] at callComponentAsTemplateResultOrResponse (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5783:30)
+[2026-08-24T22:48:19.331Z] at renderToAsyncIterable (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:5803:31)
+[2026-08-24T22:48:19.331Z] at renderPage (file:///home/ubuntu/alshafra-platform/dist/server/chunks/server_CvY74TIX.mjs:6243:39)
+[2026-08-24T22:48:19.331Z] at handlePages (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_DlS6oz3i.mjs:3210:22)
+[2026-08-24T22:48:19.331Z] at async callMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_DlS6oz3i.mjs:4465:9)
+[2026-08-24T22:48:19.331Z] at async handleMiddleware (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_DlS6oz3i.mjs:4596:18)
+[2026-08-24T22:48:19.331Z] at async render (file:///home/ubuntu/alshafra-platform/dist/server/chunks/entrypoints_DlS6oz3i.mjs:6080:15)
+[2026-08-24T22:48:19.356Z] GET /admin 500 Internal Server Error (22ms)
+[2026-08-24T22:49:21.813Z] [ELIFECYCLE] Command failed.
+[2026-08-24T22:49:21.818Z] Dev server exited with code -1
+[2026-08-24T22:49:22.888Z] Starting dev server with command: pnpm run dev
+[2026-08-24T22:49:23.462Z] $ astro build && astro preview --host 0.0.0.0 --port 3000
+[2026-08-24T22:49:26.254Z] (node:27847) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:49:26.254Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:49:26.287Z] 22:49:26 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:49:26.408Z] 22:49:26 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:49:26.409Z] 22:49:26 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-24T22:49:26.509Z] 22:49:26 [types] Generated 147ms
+[2026-08-24T22:49:26.509Z] 22:49:26 [build] output: "server"
+[2026-08-24T22:49:26.509Z] 22:49:26 [build] mode: "server"
+[2026-08-24T22:49:26.509Z] 22:49:26 [build] directory: /home/ubuntu/alshafra-platform/dist/
+[2026-08-24T22:49:26.509Z] 22:49:26 [build] adapter: @astrojs/cloudflare
+[2026-08-24T22:49:26.510Z] 22:49:26 [build] Collecting build info...
+[2026-08-24T22:49:26.510Z] 22:49:26 [build] ✓ Completed in 224ms.
+[2026-08-24T22:49:26.513Z] 22:49:26 [build] Building server entrypoints...
+[2026-08-24T22:49:26.740Z] 22:49:26 [vite] ✓ built in 182ms
+[2026-08-24T22:49:27.155Z] 22:49:27 [vite] ✓ built in 412ms
+[2026-08-24T22:49:27.315Z] 22:49:27 [vite] ✓ built in 153ms
+[2026-08-24T22:49:27.326Z] 22:49:27 [build] Rearranging server assets...
+[2026-08-24T22:49:27.328Z] 22:49:27 [build] ✓ Completed in 815ms.
+[2026-08-24T22:49:27.329Z] 22:49:27 [@astrojs/cloudflare] Injected immutable Cache-Control for /_astro/* into _headers.
+[2026-08-24T22:49:27.330Z] 22:49:27 [build] Server built in 1.04s
+[2026-08-24T22:49:27.330Z] 22:49:27 [build] Complete!
+[2026-08-24T22:49:29.834Z] (node:27952) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-24T22:49:29.834Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-24T22:49:29.862Z] 22:49:29 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-24T22:49:29.988Z] 22:49:29 [@astrojs/cloudflare]
+[2026-08-24T22:49:29.988Z] astro  v14.2.4 ready in 65 ms
+[2026-08-24T22:49:29.988Z] ┃ Local    http://localhost:3000/
+[2026-08-24T22:49:29.988Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-24T22:49:30.012Z] ✨ Parsed 1 valid header rule.
+[2026-08-24T22:49:33.161Z] GET /admin 200 OK (22ms)
+[2026-08-24T22:49:33.190Z] GET /_astro/index.astro_astro_type_script_index_0_lang.om5fnvqB.js 200 OK (4ms)
+[2026-08-24T22:49:33.291Z] GET /api/public/config 503 Service Unavailable (4ms)

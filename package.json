@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "astro dev --host 0.0.0.0 --port 3000",
+    "dev": "astro build && astro preview --host 0.0.0.0 --port 3000",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/cloudflare": "^12.0.0",
-    "astro": "^6.0.0"
+    "@astrojs/cloudflare": "^14.2.4",
+    "@aws-sdk/client-s3": "^3.1116.0",
+    "@supabase/supabase-js": "^2.112.3",
+    "astro": "^7.2.5"
   },
   "devDependencies": {
     "@types/node": "^26.2.0",
