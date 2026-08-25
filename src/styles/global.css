@@ -128,4 +128,35 @@ a:hover { opacity: .82; }
 .content-list li { border-bottom: 1px solid var(--line); padding-bottom: .7rem; display: grid; gap: .15rem; font-size: .85rem; }
 .content-list li:last-child { border-bottom: 0; }
 .content-list span, .content-list small { color: var(--muted); font-size: .72rem; }
-@media (max-width: 760px) { .admin-grid { grid-template-columns: 1fr; } .admin-toolbar { align-items: flex-start; flex-direction: column; } }
+.list-action { justify-self: start; border: 0; color: var(--teal); background: transparent; padding: .2rem 0; font: inherit; font-size: .75rem; font-weight: 800; cursor: pointer; }
+.admin-editor { margin-top: 1rem; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: clamp(1.2rem, 3vw, 2rem); }
+.status-pill { margin: 0; padding: .35rem .65rem; border-radius: 999px; background: #e8f7f1; color: var(--teal-dark); font-size: .75rem; font-weight: 800; }
+.editor-form { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(250px, .55fr); gap: 1rem; }
+.editor-main, .editor-side { display: grid; align-content: start; gap: .7rem; }
+.editor-side { padding: 1rem; background: #f7fbf9; border: 1px solid #d5e5df; border-radius: 12px; }
+.editor-side h3 { margin: 0; font-size: 1rem; }
+.editor-form label { font-size: .8rem; font-weight: 700; }
+.editor-form input, .editor-form textarea { width: 100%; border: 1px solid #b8cac4; border-radius: 8px; padding: .7rem; font: inherit; font-size: .85rem; background: #fff; }
+.editor-form textarea { min-height: 88px; resize: vertical; }
+.editor-form .content-textarea { min-height: 440px; line-height: 1.9; }
+.editor-side button { min-height: 42px; border: 0; border-radius: 8px; background: var(--teal); color: #fff; font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; padding: .5rem 1rem; }
+.inline-media-button { justify-self: start; min-height: 38px; border: 1px solid #a5c9be; border-radius: 8px; color: var(--teal-dark); background: #fff; font: inherit; font-size: .78rem; font-weight: 800; cursor: pointer; padding: .45rem .75rem; }
+.workflow-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.workflow-actions > p:first-child { margin: 0; font-size: .82rem; font-weight: 800; }
+.workflow-actions .form-status { margin: 0; }
+.source-manager { margin-top: 1rem; padding: 1.25rem; border: 1px solid var(--line); border-radius: 12px; background: #fcfdfb; }
+.source-manager h3 { margin: 0; font-size: 1.05rem; }
+.source-list { display: grid; gap: .75rem; }
+.source-row { display: grid; grid-template-columns: 1.15fr 1.35fr .7fr 1fr .8fr 1fr minmax(115px, .85fr) auto; gap: .55rem; align-items: end; padding: .8rem; border: 1px solid #d9e5e0; border-radius: 10px; background: #fff; }
+.source-row label { display: grid; gap: .3rem; font-size: .7rem; font-weight: 700; }
+.source-row input, .source-row select { min-width: 0; width: 100%; border: 1px solid #b8cac4; border-radius: 7px; padding: .55rem; background: #fff; font: inherit; font-size: .76rem; }
+.remove-source, .source-save { min-height: 38px; border: 0; border-radius: 8px; font: inherit; font-size: .76rem; font-weight: 800; cursor: pointer; padding: .45rem .7rem; }
+.remove-source { color: #9a3025; background: #fff2ef; }
+.source-save { margin-top: .8rem; color: #fff; background: var(--teal); }
+.source-accessed { color: var(--muted); font-size: .68rem; line-height: 1.55; }
+.revision-history { margin-top: 1rem; padding: 1.25rem; border-top: 1px solid var(--line); }
+.revision-history h3 { margin: 0; font-size: 1.05rem; }
+.history-list { display: grid; gap: .65rem; margin: .9rem 0 0; padding: 0; list-style: none; }
+.history-list li { display: flex; justify-content: space-between; align-items: start; gap: 1rem; padding-bottom: .65rem; border-bottom: 1px solid #e5ece8; font-size: .8rem; }
+.history-list small { color: var(--muted); font-family: "DM Sans", sans-serif; font-size: .7rem; white-space: nowrap; }
+@media (max-width: 760px) { .admin-grid, .editor-form, .source-row { grid-template-columns: 1fr; } .admin-toolbar { align-items: flex-start; flex-direction: column; } .editor-form .content-textarea { min-height: 300px; } }

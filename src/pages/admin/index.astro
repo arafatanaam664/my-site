@@ -6,7 +6,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 <BaseLayout title="إدارة Alshafra" description="لوحة إدارة المحتوى لمنصة Alshafra." canonical="https://alshafra.com/admin">
   <section class="admin-shell">
-    <div class="admin-heading"><p class="eyebrow">مساحة المحرر</p><h1>إدارة المحتوى</h1><p>أنشئ المسودات وراجع حالتها قبل النشر. لا تُعرض أي مادة للعامة إلا بعد اعتمادها ونشرها.</p></div>
+    <div class="admin-heading"><p class="eyebrow">مساحة المحرر</p><h1>إدارة المحتوى</h1><p>أنشئ المواد، راجعها، وانشرها عبر تسلسل واضح. لا تُعرض أي مادة للعامة إلا بعد اعتمادها ونشرها.</p></div>
 
     <section class="admin-card" id="auth-card">
       <h2>الدخول إلى مساحة التحرير</h2>
@@ -21,18 +21,48 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <form id="new-draft-form" class="admin-card"><h3>مسودة جديدة</h3><label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><fieldset class="media-fieldset"><legend>الصورة الرئيسية (اختياري)</legend><label for="primary-image">ملف الصورة</label><input id="primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="primary-image-alt">وصف بديل للصورة</label><input id="primary-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><p class="field-note">JPEG أو PNG أو WebP أو AVIF، حتى 10MB. لا تُستخدم الصورة إلا بعد ربطها بالمادة.</p></fieldset><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
         <div class="admin-card"><h3>آخر المواد</h3><ul id="content-list" class="content-list"><li>يجري تحميل المحتوى…</li></ul></div>
       </div>
+
+      <section class="admin-editor" id="editor-panel" hidden>
+        <div class="admin-toolbar"><div><span class="eyebrow">تحرير</span><h2 id="editor-heading">المسودة</h2></div><p class="status-pill" id="workflow-status">مسودة</p></div>
+        <form id="edit-draft-form" class="editor-form">
+          <div class="editor-main"><label for="edit-title">العنوان</label><input id="edit-title" minlength="15" maxlength="160" required /><label for="edit-excerpt">الوصف المختصر</label><textarea id="edit-excerpt" maxlength="320"></textarea><label for="edit-body">نص المادة</label><textarea id="edit-body" class="content-textarea" maxlength="100000" placeholder="اكتب المحتوى بصيغة Markdown. استخدم زر الصورة لإدراجها في موضع المؤشر."></textarea><fieldset class="media-fieldset"><legend>صورة داخل النص</legend><label for="inline-image">ملف الصورة</label><input id="inline-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="inline-image-alt">وصف بديل للصورة</label><input id="inline-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><button type="button" class="inline-media-button" id="insert-inline-image">رفع وإدراج عند موضع المؤشر</button><p class="field-note" id="inline-image-status" aria-live="polite">احفظ المسودة بعد الإدراج لتربط الصورة بالمادة.</p></fieldset><fieldset class="media-fieldset"><legend>استبدال الصورة الرئيسية</legend><label for="edit-primary-image">ملف الصورة</label><input id="edit-primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="edit-primary-image-alt">وصف بديل للصورة الجديدة</label><input id="edit-primary-image-alt" minlength="5" maxlength="180" placeholder="اكتب هذا الوصف فقط عند اختيار ملف جديد" /></fieldset></div>
+          <aside class="editor-side"><h3>إعدادات الظهور</h3><label for="edit-seo-title">عنوان نتائج البحث</label><input id="edit-seo-title" maxlength="60" /><label for="edit-seo-description">وصف نتائج البحث</label><textarea id="edit-seo-description" maxlength="160"></textarea><label for="edit-canonical">الرابط القانوني</label><input id="edit-canonical" type="url" placeholder="https://alshafra.com/..." /><label for="edit-note">ملاحظة المراجعة</label><textarea id="edit-note" maxlength="500" placeholder="تلخيص ما تغير في هذه النسخة"></textarea><button type="submit">حفظ المسودة وسجل المراجعة</button><p class="form-status" id="edit-status" aria-live="polite"></p></aside>
+        </form>
+        <div class="workflow-actions" id="workflow-actions" hidden><p>انتقال الحالة:</p><button type="button" class="subtle-button" id="workflow-next"></button><p class="form-status" id="workflow-message" aria-live="polite"></p></div>
+        <section class="source-manager"><div class="admin-toolbar"><div><span class="eyebrow">التوثيق</span><h3>مصادر المادة</h3></div><button type="button" class="subtle-button" id="add-source">إضافة مصدر</button></div><div id="source-list" class="source-list"></div><button type="button" id="save-sources" class="source-save">حفظ المصادر</button><p class="form-status" id="source-status" aria-live="polite"></p></section>
+        <section class="revision-history"><div><span class="eyebrow">التدقيق</span><h3>سجل المراجعات</h3></div><ol id="history-list" class="history-list"><li>افتح مادة لعرض سجلها.</li></ol></section>
+      </section>
     </section>
   </section>
 </BaseLayout>
 
 <script>
   import { createClient } from "@supabase/supabase-js";
+  type ContentSummary = { id: string; title: string; slug: string; status: string; kind: string };
+  type ContentDraft = { id: string; title: string; slug: string; status: string; excerpt: string | null; body_markdown: string | null; seo_title: string | null; seo_description: string | null; canonical_url: string | null; primary_media_id: string | null };
+  type SourceDraft = { title: string; url: string; kind: "official" | "primary" | "secondary"; publisher: string; publishedAt: string; note: string; accessedAt?: string };
   const authCard = document.querySelector<HTMLElement>("#auth-card")!;
   const dashboard = document.querySelector<HTMLElement>("#dashboard")!;
   const authStatus = document.querySelector<HTMLElement>("#auth-status")!;
   const contentList = document.querySelector<HTMLUListElement>("#content-list")!;
   const draftStatus = document.querySelector<HTMLElement>("#draft-status")!;
+  const editorPanel = document.querySelector<HTMLElement>("#editor-panel")!;
+  const editorHeading = document.querySelector<HTMLElement>("#editor-heading")!;
+  const editStatus = document.querySelector<HTMLElement>("#edit-status")!;
+  const workflowStatus = document.querySelector<HTMLElement>("#workflow-status")!;
+  const workflowActions = document.querySelector<HTMLElement>("#workflow-actions")!;
+  const workflowNext = document.querySelector<HTMLButtonElement>("#workflow-next")!;
+  const workflowMessage = document.querySelector<HTMLElement>("#workflow-message")!;
+  const inlineImageStatus = document.querySelector<HTMLElement>("#inline-image-status")!;
+  const sourceList = document.querySelector<HTMLElement>("#source-list")!;
+  const sourceStatus = document.querySelector<HTMLElement>("#source-status")!;
+  const historyList = document.querySelector<HTMLOListElement>("#history-list")!;
   let supabase: ReturnType<typeof createClient> | null = null;
+  let currentDraft: ContentDraft | null = null;
+
+  const field = <T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(selector: string) => document.querySelector<T>(selector)!;
+  const statusLabels: Record<string, string> = { draft: "مسودة", in_review: "قيد المراجعة", approved: "معتمدة", published: "منشورة", archived: "مؤرشفة" };
+  const nextStatus: Record<string, { status: string; label: string } | undefined> = { draft: { status: "in_review", label: "إرسال للمراجعة" }, in_review: { status: "approved", label: "اعتماد المادة" }, approved: { status: "published", label: "نشر المادة" }, published: { status: "archived", label: "أرشفة المادة" } };
 
   async function authHeaders() {
     if (!supabase) return null;
@@ -40,71 +70,171 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     return data.session ? { Authorization: `Bearer ${data.session.access_token}`, "content-type": "application/json" } : null;
   }
 
-  async function loadContent() {
-    const headers = await authHeaders();
-    if (!headers) return;
-    const response = await fetch("/api/admin/content", { headers });
-    const result = await response.json();
-    if (!response.ok) { contentList.innerHTML = `<li>${result.error ?? "تعذر تحميل المحتوى"}</li>`; return; }
-    contentList.innerHTML = result.data.length ? result.data.map((item: { title: string; slug: string; status: string; kind: string }) => `<li><span>${item.kind} · ${item.status}</span><strong>${item.title}</strong><small>/${item.slug}</small></li>`).join("") : "<li>لا توجد مواد بعد. أنشئ أول مسودة من النموذج.</li>";
+  function renderContentList(items: ContentSummary[]) {
+    contentList.replaceChildren();
+    if (!items.length) { const empty = document.createElement("li"); empty.textContent = "لا توجد مواد بعد. أنشئ أول مسودة من النموذج."; contentList.append(empty); return; }
+    for (const item of items) {
+      const li = document.createElement("li");
+      const meta = document.createElement("span"); meta.textContent = `${item.kind} · ${statusLabels[item.status] ?? item.status}`;
+      const title = document.createElement("strong"); title.textContent = item.title;
+      const slug = document.createElement("small"); slug.textContent = `/${item.slug}`;
+      const button = document.createElement("button"); button.type = "button"; button.className = "list-action"; button.textContent = "فتح للتحرير"; button.addEventListener("click", () => void openDraft(item.id));
+      li.append(meta, title, slug, button); contentList.append(li);
+    }
   }
 
-  async function uploadPrimaryImage(headers: Record<string, string>) {
-    const fileInput = document.querySelector<HTMLInputElement>("#primary-image")!;
-    const altInput = document.querySelector<HTMLInputElement>("#primary-image-alt")!;
-    const file = fileInput.files?.[0];
-    if (!file) return null;
+  async function loadContent() {
+    const headers = await authHeaders(); if (!headers) return;
+    const response = await fetch("/api/admin/content", { headers }); const result = await response.json();
+    if (!response.ok) { contentList.replaceChildren(); const li = document.createElement("li"); li.textContent = result.error ?? "تعذر تحميل المحتوى"; contentList.append(li); return; }
+    renderContentList(result.data as ContentSummary[]);
+  }
+
+  async function uploadImage(fileInput: HTMLInputElement, altInput: HTMLInputElement, headers: Record<string, string>) {
+    const file = fileInput.files?.[0]; if (!file) return null;
     if (!altInput.value.trim()) throw new Error("أدخل وصفًا بديلًا دقيقًا للصورة.");
-    const formData = new FormData();
-    formData.set("file", file);
-    formData.set("altText", altInput.value);
-    const response = await fetch("/api/admin/media", { method: "POST", headers: { Authorization: headers.Authorization }, body: formData });
-    const result = await response.json();
+    const formData = new FormData(); formData.set("file", file); formData.set("altText", altInput.value);
+    const response = await fetch("/api/admin/media", { method: "POST", headers: { Authorization: headers.Authorization }, body: formData }); const result = await response.json();
     if (!response.ok || !result.data?.id) throw new Error(result.error ?? "تعذر رفع الصورة.");
     return result.data.id as string;
   }
 
+  function sourceInput(labelText: string, type: string, value = "") {
+    const label = document.createElement("label"); label.textContent = labelText;
+    const input = document.createElement("input"); input.type = type; input.value = value; label.append(input); return { label, input };
+  }
+
+  function addSourceRow(source: Partial<SourceDraft> = {}) {
+    const row = document.createElement("div"); row.className = "source-row";
+    const title = sourceInput("عنوان المصدر", "text", source.title ?? "");
+    const url = sourceInput("رابط HTTPS", "url", source.url ?? "");
+    const publisher = sourceInput("الناشر", "text", source.publisher ?? "");
+    const publishedAt = sourceInput("تاريخ النشر", "date", source.publishedAt ?? "");
+    const kindLabel = document.createElement("label"); kindLabel.textContent = "نوع المصدر";
+    const kind = document.createElement("select"); for (const [value, label] of [["official", "رسمي"], ["primary", "أولي"], ["secondary", "ثانوي"]] as const) { const option = document.createElement("option"); option.value = value; option.textContent = label; if ((source.kind ?? "official") === value) option.selected = true; kind.append(option); } kindLabel.append(kind);
+    const noteLabel = document.createElement("label"); noteLabel.textContent = "ملاحظة"; const note = document.createElement("input"); note.type = "text"; note.maxLength = 500; note.value = source.note ?? ""; noteLabel.append(note);
+    const accessed = document.createElement("small"); accessed.className = "source-accessed"; accessed.textContent = source.accessedAt ? `آخر وصول: ${new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short" }).format(new Date(source.accessedAt))}` : "لم يُسجل وقت وصول بعد";
+    const remove = document.createElement("button"); remove.type = "button"; remove.className = "remove-source"; remove.textContent = "حذف"; remove.addEventListener("click", () => row.remove());
+    row.append(title.label, url.label, kindLabel, publisher.label, publishedAt.label, noteLabel, accessed, remove);
+    sourceList.append(row);
+  }
+
+  function readSourceRows(): SourceDraft[] {
+    return [...sourceList.querySelectorAll<HTMLElement>(".source-row")].map((row) => {
+      const inputs = row.querySelectorAll<HTMLInputElement>("input"); const kind = row.querySelector<HTMLSelectElement>("select")!;
+      return { title: inputs[0].value, url: inputs[1].value, kind: kind.value as SourceDraft["kind"], publisher: inputs[2].value, publishedAt: inputs[3].value, note: inputs[4].value };
+    });
+  }
+
+  async function loadSources() {
+    const headers = await authHeaders(); if (!headers || !currentDraft) return;
+    const response = await fetch(`/api/admin/content/${currentDraft.id}/sources`, { headers }); const result = await response.json();
+    sourceList.replaceChildren();
+    if (!response.ok) { sourceStatus.textContent = result.error ?? "تعذر تحميل المصادر."; return; }
+    for (const entry of result.data as Array<{ note: string | null; sources: { title: string; url: string; kind: SourceDraft["kind"]; publisher: string | null; published_at: string | null; accessed_at: string } }>) addSourceRow({ title: entry.sources.title, url: entry.sources.url, kind: entry.sources.kind, publisher: entry.sources.publisher ?? "", publishedAt: entry.sources.published_at ?? "", note: entry.note ?? "", accessedAt: entry.sources.accessed_at });
+    sourceStatus.textContent = "";
+  }
+
+  function historyItem(text: string, timestamp: string) {
+    const item = document.createElement("li"); const summary = document.createElement("strong"); summary.textContent = text;
+    const date = document.createElement("small"); date.textContent = new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short" }).format(new Date(timestamp)); item.append(summary, date); return item;
+  }
+
+  async function loadHistory() {
+    const headers = await authHeaders(); if (!headers || !currentDraft) return;
+    const response = await fetch(`/api/admin/content/${currentDraft.id}/history`, { headers }); const result = await response.json(); historyList.replaceChildren();
+    if (!response.ok) { const item = document.createElement("li"); item.textContent = result.error ?? "تعذر تحميل سجل المراجعة."; historyList.append(item); return; }
+    const entries: Array<{ label: string; createdAt: string }> = [];
+    for (const revision of result.data.revisions as Array<{ status: string; note: string | null; created_at: string }>) entries.push({ label: revision.note || `حفظ نسخة بحالة ${statusLabels[revision.status] ?? revision.status}`, createdAt: revision.created_at });
+    for (const event of result.data.events as Array<{ from_status: string | null; to_status: string; note: string | null; created_at: string }>) entries.push({ label: event.note || `انتقال من ${event.from_status ? statusLabels[event.from_status] ?? event.from_status : "بداية"} إلى ${statusLabels[event.to_status] ?? event.to_status}`, createdAt: event.created_at });
+    entries.sort((a, b) => b.createdAt.localeCompare(a.createdAt)); if (!entries.length) { const item = document.createElement("li"); item.textContent = "لا توجد مراجعات مسجلة بعد."; historyList.append(item); return; }
+    for (const entry of entries) historyList.append(historyItem(entry.label, entry.createdAt));
+  }
+
+  function renderWorkflow() {
+    if (!currentDraft) return;
+    workflowStatus.textContent = statusLabels[currentDraft.status] ?? currentDraft.status;
+    const next = nextStatus[currentDraft.status]; workflowActions.hidden = !next;
+    if (next) workflowNext.textContent = next.label;
+  }
+
+  async function openDraft(id: string) {
+    const headers = await authHeaders(); if (!headers) return;
+    const response = await fetch(`/api/admin/content/${id}`, { headers }); const result = await response.json();
+    if (!response.ok) { editStatus.textContent = result.error ?? "تعذر تحميل المسودة."; return; }
+    currentDraft = result.data as ContentDraft; editorHeading.textContent = currentDraft.title;
+    field<HTMLInputElement>("#edit-title").value = currentDraft.title;
+    field<HTMLTextAreaElement>("#edit-excerpt").value = currentDraft.excerpt ?? "";
+    field<HTMLTextAreaElement>("#edit-body").value = currentDraft.body_markdown ?? "";
+    field<HTMLInputElement>("#edit-seo-title").value = currentDraft.seo_title ?? "";
+    field<HTMLTextAreaElement>("#edit-seo-description").value = currentDraft.seo_description ?? "";
+    field<HTMLInputElement>("#edit-canonical").value = currentDraft.canonical_url ?? "";
+    field<HTMLTextAreaElement>("#edit-note").value = "";
+    field<HTMLInputElement>("#edit-primary-image").value = ""; field<HTMLInputElement>("#edit-primary-image-alt").value = "";
+    editStatus.textContent = ""; workflowMessage.textContent = ""; editorPanel.hidden = false; renderWorkflow(); await Promise.all([loadSources(), loadHistory()]); editorPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   async function establishSession() {
-    if (!supabase) return;
-    const { data } = await supabase.auth.getSession();
-    if (!data.session) return;
-    authCard.hidden = true;
-    dashboard.hidden = false;
-    await loadContent();
+    if (!supabase) return; const { data } = await supabase.auth.getSession(); if (!data.session) return;
+    authCard.hidden = true; dashboard.hidden = false; await loadContent();
   }
 
   document.querySelector<HTMLFormElement>("#magic-link-form")!.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const email = document.querySelector<HTMLInputElement>("#editor-email")!.value;
-    authStatus.textContent = "يجري إرسال الرابط…";
+    event.preventDefault(); const email = field<HTMLInputElement>("#editor-email").value; authStatus.textContent = "يجري إرسال الرابط…";
     if (!supabase) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; }
-    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}/admin` } });
-    authStatus.textContent = error ? "تعذر إرسال رابط الدخول. تحقق من إعدادات Auth والبريد." : "أُرسل رابط الدخول إلى بريدك. افتحه ثم عد إلى هذه الصفحة.";
+    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}/admin` } }); authStatus.textContent = error ? "تعذر إرسال رابط الدخول. تحقق من إعدادات Auth والبريد." : "أُرسل رابط الدخول إلى بريدك. افتحه ثم عد إلى هذه الصفحة.";
   });
 
   document.querySelector<HTMLFormElement>("#new-draft-form")!.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const headers = await authHeaders();
-    if (!headers) return;
-    draftStatus.textContent = "يجري حفظ المسودة…";
+    event.preventDefault(); const headers = await authHeaders(); if (!headers) return; draftStatus.textContent = "يجري حفظ المسودة…";
     try {
-      const primaryMediaId = await uploadPrimaryImage(headers);
-      const payload = { kind: document.querySelector<HTMLSelectElement>("#draft-kind")!.value, title: document.querySelector<HTMLInputElement>("#draft-title")!.value, slug: document.querySelector<HTMLInputElement>("#draft-slug")!.value, excerpt: document.querySelector<HTMLTextAreaElement>("#draft-excerpt")!.value, primaryMediaId };
-      const response = await fetch("/api/admin/content", { method: "POST", headers, body: JSON.stringify(payload) });
-      const result = await response.json();
+      const primaryMediaId = await uploadImage(field<HTMLInputElement>("#primary-image"), field<HTMLInputElement>("#primary-image-alt"), headers);
+      const payload = { kind: field<HTMLSelectElement>("#draft-kind").value, title: field<HTMLInputElement>("#draft-title").value, slug: field<HTMLInputElement>("#draft-slug").value, excerpt: field<HTMLTextAreaElement>("#draft-excerpt").value, primaryMediaId };
+      const response = await fetch("/api/admin/content", { method: "POST", headers, body: JSON.stringify(payload) }); const result = await response.json();
       draftStatus.textContent = response.ok ? "تم إنشاء المسودة وسجل المراجعة الأولي." : result.error ?? "تعذر إنشاء المسودة.";
-      if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadContent(); }
-    } catch (error) {
-      draftStatus.textContent = error instanceof Error ? error.message : "تعذر حفظ المسودة.";
-    }
+      if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadContent(); await openDraft(result.data.id); }
+    } catch (error) { draftStatus.textContent = error instanceof Error ? error.message : "تعذر حفظ المسودة."; }
   });
 
-  document.querySelector<HTMLButtonElement>("#refresh-content")!.addEventListener("click", loadContent);
-  void (async () => {
-    const response = await fetch("/api/public/config");
-    if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; }
-    const config = await response.json();
-    supabase = createClient(config.url, config.publishableKey);
-    await establishSession();
-  })();
+  document.querySelector<HTMLFormElement>("#edit-draft-form")!.addEventListener("submit", async (event) => {
+    event.preventDefault(); const headers = await authHeaders(); if (!headers || !currentDraft) return; editStatus.textContent = "يجري حفظ التعديلات…";
+    try {
+      const replacement = await uploadImage(field<HTMLInputElement>("#edit-primary-image"), field<HTMLInputElement>("#edit-primary-image-alt"), headers);
+      const payload = { title: field<HTMLInputElement>("#edit-title").value, excerpt: field<HTMLTextAreaElement>("#edit-excerpt").value, bodyMarkdown: field<HTMLTextAreaElement>("#edit-body").value, seoTitle: field<HTMLInputElement>("#edit-seo-title").value, seoDescription: field<HTMLTextAreaElement>("#edit-seo-description").value, canonicalUrl: field<HTMLInputElement>("#edit-canonical").value, primaryMediaId: replacement ?? currentDraft.primary_media_id, note: field<HTMLTextAreaElement>("#edit-note").value };
+      const response = await fetch(`/api/admin/content/${currentDraft.id}`, { method: "PATCH", headers, body: JSON.stringify(payload) }); const result = await response.json();
+      if (!response.ok) { editStatus.textContent = result.error ?? "تعذر حفظ التعديلات."; return; }
+      const savedDraft = { ...currentDraft, ...result.data }; currentDraft = savedDraft; editorHeading.textContent = savedDraft.title; editStatus.textContent = "تم حفظ المسودة وسجل المراجعة."; await Promise.all([loadContent(), loadHistory()]);
+    } catch (error) { editStatus.textContent = error instanceof Error ? error.message : "تعذر حفظ التعديلات."; }
+  });
+
+  document.querySelector<HTMLButtonElement>("#insert-inline-image")!.addEventListener("click", async () => {
+    const headers = await authHeaders(); if (!headers || !currentDraft) return;
+    inlineImageStatus.textContent = "يجري رفع الصورة…";
+    try {
+      const mediaId = await uploadImage(field<HTMLInputElement>("#inline-image"), field<HTMLInputElement>("#inline-image-alt"), headers);
+      if (!mediaId) { inlineImageStatus.textContent = "اختر ملف الصورة أولاً."; return; }
+      const body = field<HTMLTextAreaElement>("#edit-body"); const token = `\n\n{{media:${mediaId}}}\n\n`;
+      body.setRangeText(token, body.selectionStart, body.selectionEnd, "end"); body.focus();
+      field<HTMLInputElement>("#inline-image").value = ""; field<HTMLInputElement>("#inline-image-alt").value = "";
+      inlineImageStatus.textContent = "أُدرجت الصورة. احفظ المسودة لتثبيت ربطها بالمادة.";
+    } catch (error) { inlineImageStatus.textContent = error instanceof Error ? error.message : "تعذر رفع الصورة."; }
+  });
+
+  document.querySelector<HTMLButtonElement>("#add-source")!.addEventListener("click", () => addSourceRow());
+  document.querySelector<HTMLButtonElement>("#save-sources")!.addEventListener("click", async () => {
+    const headers = await authHeaders(); if (!headers || !currentDraft) return;
+    sourceStatus.textContent = "يجري حفظ المصادر…";
+    const response = await fetch(`/api/admin/content/${currentDraft.id}/sources`, { method: "PUT", headers, body: JSON.stringify({ sources: readSourceRows() }) }); const result = await response.json();
+    sourceStatus.textContent = response.ok ? "تم حفظ مصادر المادة." : result.error ?? "تعذر حفظ المصادر.";
+  });
+
+  workflowNext.addEventListener("click", async () => {
+    const headers = await authHeaders(); const next = currentDraft ? nextStatus[currentDraft.status] : undefined; if (!headers || !currentDraft || !next) return;
+    workflowMessage.textContent = "يجري تحديث الحالة…"; const response = await fetch(`/api/admin/content/${currentDraft.id}/transition`, { method: "POST", headers, body: JSON.stringify({ status: next.status, note: field<HTMLTextAreaElement>("#edit-note").value }) }); const result = await response.json();
+    workflowMessage.textContent = response.ok ? "تم تحديث الحالة وحفظ سجلها." : result.error ?? "تعذر تحديث الحالة.";
+    if (response.ok) { currentDraft = { ...currentDraft, ...result.data }; renderWorkflow(); await Promise.all([loadContent(), loadHistory()]); }
+  });
+
+  document.querySelector<HTMLButtonElement>("#refresh-content")!.addEventListener("click", () => void loadContent());
+  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } const config = await response.json(); supabase = createClient(config.url, config.publishableKey); await establishSession(); })();
 </script>

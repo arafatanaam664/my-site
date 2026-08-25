@@ -561,3 +561,50 @@
 [2026-08-24T23:07:11.815Z] ┃ Local    http://localhost:3000/
 [2026-08-24T23:07:11.815Z] ┃ Network  http://169.254.0.21:3000/
 [2026-08-24T23:07:11.837Z] ✨ Parsed 1 valid header rule.
+[2026-08-25T15:10:48.153Z] GET / 200 OK (65ms)
+[2026-08-25T15:10:48.172Z] GET /_astro/BaseLayout.D11qRupZ.css 500 Internal Server Error (7ms)
+[2026-08-25T15:10:48.177Z] GET /_astro/page.DDsIKVU2.js 500 Internal Server Error (2ms)
+[2026-08-25T15:11:06.550Z] GET / 200 OK (12ms)
+[2026-08-25T15:11:06.573Z] GET /_astro/BaseLayout.D11qRupZ.css 500 Internal Server Error (2ms)
+[2026-08-25T15:11:06.575Z] GET /_astro/page.DDsIKVU2.js 500 Internal Server Error (2ms)
+[2026-08-25T15:11:23.161Z] GET /_astro/BaseLayout.D11qRupZ.css 500 Internal Server Error (7ms)
+[2026-08-25T15:11:35.099Z] [ELIFECYCLE] Command failed.
+[2026-08-25T15:11:35.126Z] Dev server exited with code -1
+[2026-08-25T15:11:36.198Z] Starting dev server with command: pnpm run dev
+[2026-08-25T15:11:36.792Z] $ astro build && astro preview --host 0.0.0.0 --port 3000
+[2026-08-25T15:11:41.210Z] (node:34644) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-25T15:11:41.210Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-25T15:11:41.249Z] 15:11:41 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-25T15:11:41.388Z] 15:11:41 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-25T15:11:41.389Z] 15:11:41 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-25T15:11:41.506Z] 15:11:41 [types] Generated 176ms
+[2026-08-25T15:11:41.506Z] 15:11:41 [build] output: "server"
+[2026-08-25T15:11:41.506Z] 15:11:41 [build] mode: "server"
+[2026-08-25T15:11:41.506Z] 15:11:41 [build] directory: /home/ubuntu/alshafra-platform/dist/
+[2026-08-25T15:11:41.506Z] 15:11:41 [build] adapter: @astrojs/cloudflare
+[2026-08-25T15:11:41.507Z] 15:11:41 [build] Collecting build info...
+[2026-08-25T15:11:41.507Z] 15:11:41 [build] ✓ Completed in 260ms.
+[2026-08-25T15:11:41.511Z] 15:11:41 [build] Building server entrypoints...
+[2026-08-25T15:11:41.821Z] 15:11:41 [vite] ✓ built in 258ms
+[2026-08-25T15:11:42.423Z] 15:11:42 [vite] ✓ built in 600ms
+[2026-08-25T15:11:42.603Z] 15:11:42 [vite] ✓ built in 175ms
+[2026-08-25T15:11:42.615Z] 15:11:42 [build] Rearranging server assets...
+[2026-08-25T15:11:42.617Z] 15:11:42 [build] ✓ Completed in 1.11s.
+[2026-08-25T15:11:42.619Z] 15:11:42 [@astrojs/cloudflare] Injected immutable Cache-Control for /_astro/* into _headers.
+[2026-08-25T15:11:42.620Z] 15:11:42 [build] Server built in 1.37s
+[2026-08-25T15:11:42.620Z] 15:11:42 [build] Complete!
+[2026-08-25T15:11:45.560Z] (node:34748) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-25T15:11:45.560Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-25T15:11:45.590Z] 15:11:45 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-25T15:11:45.733Z] 15:11:45 [@astrojs/cloudflare]
+[2026-08-25T15:11:45.733Z] astro  v14.2.4 ready in 76 ms
+[2026-08-25T15:11:45.733Z] ┃ Local    http://localhost:3000/
+[2026-08-25T15:11:45.733Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-25T15:11:45.769Z] ✨ Parsed 1 valid header rule.
+[2026-08-25T15:11:56.097Z] GET / 200 OK (26ms)
+[2026-08-25T15:12:02.383Z] GET /admin 200 OK (5ms)
+[2026-08-25T15:12:02.390Z] GET / 200 OK (4ms)
+[2026-08-25T15:12:02.416Z] GET /_astro/BaseLayout.tgk_bOzI.css 200 OK (4ms)
+[2026-08-25T15:12:02.420Z] GET /_astro/page.DDsIKVU2.js 200 OK (2ms)
+[2026-08-25T15:12:02.423Z] GET /_astro/index.astro_astro_type_script_index_0_lang.D9k59O6p.js 200 OK (2ms)
+[2026-08-25T15:12:02.460Z] GET /api/public/config 503 Service Unavailable (6ms)

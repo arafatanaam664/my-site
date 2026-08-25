@@ -42,4 +42,13 @@ describe("اتصال Supabase", () => {
 
     expect(response.status, `لم يمكن الوصول إلى جدول media_variants، حالة HTTP ${response.status}`).toBeLessThan(400);
   });
+
+  it("يتحقق من وجود سجل تدقيق انتقالات المحتوى دون إنشاء حدث", async () => {
+    const response = await fetch(`${supabaseUrl}/rest/v1/content_workflow_events?select=id,to_status&limit=1`, {
+      headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` },
+      signal: AbortSignal.timeout(10_000),
+    });
+
+    expect(response.status, `لم يمكن الوصول إلى جدول content_workflow_events، حالة HTTP ${response.status}`).toBeLessThan(400);
+  });
 });
