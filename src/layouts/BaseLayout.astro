@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import PushSubscriptionControl from "../components/PushSubscriptionControl.astro";
 
 interface Props {
   title: string;
@@ -37,10 +38,24 @@ const safeJsonLd = jsonLd ? JSON.stringify(jsonLd).replace(/</g, "\\u003c") : nu
   <body>
     <header class="site-header">
       <a class="brand" href="/" aria-label="العودة إلى الرئيسية"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a>
-      <nav aria-label="التنقل الرئيسي"><a href="/#solutions">الحلول</a><a href="/#tools">الأدوات</a><a href="/#guides">الأدلة</a><a href="/calendar/umm-al-qura">التقويم والمواعيد</a></nav>
+      <nav aria-label="التنقل الرئيسي"><a href="/#solutions">الحلول</a><a href="/tools/date-difference">الأدوات</a><a href="/#guides">الأدلة</a><a href="/calendar/umm-al-qura">التقويم والمواعيد</a></nav>
       <a class="header-search" href="/search">ابحث في Alshafra <span aria-hidden="true">⌕</span></a>
     </header>
     <main><slot /></main>
-    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a><p>معلومات وأدوات عملية تساعدك على الوصول إلى خطوة واضحة.</p></div><div class="footer-links"><a href="/#solutions">الحلول</a><a href="/#tools">الأدوات</a><a href="/#guides">الأدلة</a><a href="/calendar/umm-al-qura">التقويم والمواعيد</a></div><div class="footer-links footer-trust"><a href="/legal/about">من نحن</a><a href="/legal/privacy">الخصوصية</a><a href="/legal/terms">الشروط</a><a href="/legal/contact">اتصل بنا</a></div></footer>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a><p>معلومات وأدوات عملية تساعدك على الوصول إلى خطوة واضحة.</p></div><div class="footer-links"><a href="/#solutions">الحلول</a><a href="/tools/date-difference">الأدوات</a><a href="/#guides">الأدلة</a><a href="/calendar/umm-al-qura">التقويم والمواعيد</a></div><div class="footer-links footer-trust"><a href="/legal/about">من نحن</a><a href="/legal/privacy">الخصوصية</a><a href="/legal/terms">الشروط</a><a href="/legal/contact">اتصل بنا</a></div></footer>
+    <PushSubscriptionControl />
+    <section class="consent-card" id="analytics-consent" hidden aria-label="خيارات قياس الزيارة"><p>نستخدم قياسًا مجهّلًا واختياريًا لفهم قراءة المحتوى وتحسينه. لا نرسل عنوان IP أو اسمك أو بصمة جهازك.</p><div><button type="button" id="analytics-allow">السماح بالقياس</button><button type="button" id="analytics-decline">عدم السماح</button><a href="/legal/privacy">سياسة الخصوصية</a></div></section>
+    <script is:inline>
+      (() => {
+        const consentKey = "alshafra_analytics_consent_v1"; const card = document.querySelector("#analytics-consent"); const article = document.querySelector("[data-analytics-content-id]"); let sent = new Set(); let started = Date.now();
+        const consent = () => localStorage.getItem(consentKey); const sessionKey = "alshafra_analytics_session_v1";
+        const session = () => { let id = sessionStorage.getItem(sessionKey); if (!id) { id = crypto.randomUUID(); sessionStorage.setItem(sessionKey, id); } return id; };
+        let chain = Promise.resolve(); const send = (eventType, durationSeconds = null) => { if (consent() !== "granted" || sent.has(eventType)) return; sent.add(eventType); const payload = JSON.stringify({ path: location.pathname, eventType, contentId: article?.getAttribute("data-analytics-content-id") || null, durationSeconds, sessionId: session() }); chain = chain.then(() => fetch("/api/analytics/event", { method: "POST", body: payload, headers: { "content-type": "text/plain;charset=UTF-8" }, keepalive: true }).catch(() => {})); };
+        const grant = () => { localStorage.setItem(consentKey, "granted"); card.hidden = true; send("page_view"); }; const decline = () => { localStorage.setItem(consentKey, "denied"); card.hidden = true; };
+        if (!consent()) card.hidden = false; else if (consent() === "granted") send("page_view");
+        document.querySelector("#analytics-allow")?.addEventListener("click", grant); document.querySelector("#analytics-decline")?.addEventListener("click", decline);
+        if (article) { const depth = () => { const max = document.documentElement.scrollHeight - innerHeight; const percent = max > 0 ? (scrollY / max) * 100 : 100; if (percent >= 25) send("read_25"); if (percent >= 50) send("read_50"); if (percent >= 75) send("read_75"); if (percent >= 90) send("read_complete", Math.min(7200, Math.round((Date.now() - started) / 1000))); }; addEventListener("scroll", depth, { passive: true }); addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") depth(); }); }
+      })();
+    </script>
   </body>
 </html>

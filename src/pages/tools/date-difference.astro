@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="حاسبة فرق الأيام بين تاريخين" description="احسب فرق الأيام بين تاريخين ميلاديين بسرعة، مع نتيجة واضحة من دون إرسال التاريخ الذي تدخله إلى الخادم." canonical="https://alshafra.com/tools/date-difference">
+  <section class="tool-page"><nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>الأدوات</span></nav><header><p class="eyebrow">أداة عملية</p><h1>حاسبة فرق الأيام بين تاريخين</h1><p>أدخل تاريخي البداية والنهاية لمعرفة الفرق بالأيام. يجري الحساب داخل متصفحك، ولا نرسل تاريخي الإدخال إلى الخادم.</p></header><form class="date-difference-form" id="date-difference-form"><label for="start-date">تاريخ البداية<input id="start-date" type="date" required /></label><label for="end-date">تاريخ النهاية<input id="end-date" type="date" required /></label><button type="submit">احسب الفرق</button></form><section class="tool-result" id="date-difference-result" aria-live="polite" hidden><span>النتيجة</span><strong id="date-difference-days"></strong><p id="date-difference-copy"></p></section><p class="tool-note">الأداة تحسب الفرق العددي بين التاريخين الميلاديين. للمواعيد الرسمية أو الحساسة، راجع الجهة المختصة.</p></section>
+</BaseLayout>
+
+<script>
+  import { dateDifferenceDays } from "../../lib/date-difference";
+  const form = document.querySelector<HTMLFormElement>("#date-difference-form")!;
+  const result = document.querySelector<HTMLElement>("#date-difference-result")!;
+  const days = document.querySelector<HTMLElement>("#date-difference-days")!;
+  const copy = document.querySelector<HTMLElement>("#date-difference-copy")!;
+  function trackUse() { if (localStorage.getItem("alshafra_analytics_consent_v1") !== "granted") return; const key = "alshafra_analytics_session_v1"; let sessionId = sessionStorage.getItem(key); if (!sessionId) { sessionId = crypto.randomUUID(); sessionStorage.setItem(key, sessionId); } const send = () => fetch("/api/analytics/event", { method: "POST", headers: { "content-type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ path: location.pathname, eventType: "tool_use", contentId: null, durationSeconds: null, sessionId }), keepalive: true }).catch(() => {}); const pageWasTracked = sessionStorage.getItem("alshafra_tool_page_view") === location.pathname; if (pageWasTracked) void send(); else { sessionStorage.setItem("alshafra_tool_page_view", location.pathname); fetch("/api/analytics/event", { method: "POST", headers: { "content-type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ path: location.pathname, eventType: "page_view", contentId: null, durationSeconds: null, sessionId }), keepalive: true }).then(send).catch(() => {}); } }
+  form.addEventListener("submit", (event) => { event.preventDefault(); const start = (document.querySelector<HTMLInputElement>("#start-date")!).value; const end = (document.querySelector<HTMLInputElement>("#end-date")!).value; const difference = dateDifferenceDays(start, end); if (difference === null) { copy.textContent = "تحقق من تاريخي البداية والنهاية ثم حاول مجددًا."; result.hidden = false; return; } days.textContent = `${new Intl.NumberFormat("ar-SA").format(difference)} يومًا`; copy.textContent = `الفرق بين ${start} و${end} هو ${new Intl.NumberFormat("ar-SA").format(difference)} يومًا.`; result.hidden = false; trackUse(); });
+</script>

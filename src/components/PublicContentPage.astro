@@ -29,7 +29,7 @@ const jsonLd = {
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} image={image} pageType={content.kind === "tool" ? "website" : "article"} jsonLd={jsonLd}>
-  <article class="public-article">
+  <article class="public-article" data-analytics-content-id={content.id}>
     <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href={`/${section}`}>{section === "articles" ? "المقالات" : section === "guides" ? "الأدلة" : "الأدوات"}</a><span aria-hidden="true">/</span><span>{content.title}</span></nav>
     <header class="article-header"><p class="eyebrow">{section === "articles" ? "مقال" : section === "guides" ? "دليل عملي" : "أداة"}</p><h1>{content.title}</h1>{content.excerpt && <p class="article-excerpt">{content.excerpt}</p>}<div class="article-dates"><span>نُشر في {publishedDate}</span><span>آخر تحديث {updatedDate}</span></div></header>
     {primaryMedia && <figure class="article-hero"><img src={`/media/${primaryMedia.id}?preset=hero`} alt={primaryMedia.alt_text} width={primaryMedia.width} height={primaryMedia.height} fetchpriority="high" /><figcaption>{primaryMedia.alt_text}</figcaption></figure>}

@@ -9,6 +9,9 @@ type RequiredRuntimeSecrets = {
   R2_SECRET_ACCESS_KEY: string;
   R2_BUCKET_NAME: string;
   R2_PUBLIC_BASE_URL?: string;
+  VAPID_PUBLIC_KEY?: string;
+  VAPID_PRIVATE_KEY?: string;
+  VAPID_SUBJECT?: string;
 };
 
 function environmentValues(): Partial<RequiredRuntimeSecrets> {

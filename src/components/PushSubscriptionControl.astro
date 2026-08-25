@@ -1,0 +1,26 @@
+<section class="push-control" id="push-control" aria-label="إشعارات المتصفح"><div><p class="eyebrow">إشعارات اختيارية</p><h2>تابع المواد الجديدة</h2><p>فعّل إشعارات المتصفح فقط إذا أردت تنبيهًا عند نشر مادة جديدة. يمكنك إلغاء الاشتراك في أي وقت.</p></div><div class="push-actions"><button type="button" id="push-toggle" disabled>التحقق من الإتاحة</button><p id="push-status" aria-live="polite">لن نطلب إذن الإشعارات قبل ضغطك على الزر.</p></div></section>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>("#push-toggle")!;
+  const status = document.querySelector<HTMLElement>("#push-status")!;
+  let publicKey = "";
+  const supportsPush = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+  const toUint8 = (key: string) => { const padded = `${key}${"=".repeat((4 - (key.length % 4)) % 4)}`.replace(/-/g, "+").replace(/_/g, "/"); const raw = atob(padded); return Uint8Array.from(raw, (char) => char.charCodeAt(0)); };
+  const api = async (method: "POST" | "DELETE", subscription: PushSubscription) => fetch("/api/notifications/web-push/subscription", { method, headers: { "content-type": "application/json" }, body: JSON.stringify({ subscription: subscription.toJSON() }) });
+  async function refresh() {
+    if (!supportsPush) { status.textContent = "متصفحك لا يدعم إشعارات الويب في هذه البيئة."; return; }
+    const response = await fetch("/api/public/push-config", { cache: "no-store" }); const config = await response.json();
+    if (!config.enabled || !config.publicKey) { status.textContent = "الإشعارات قيد التجهيز الآمن ولم تُفعّل بعد."; return; }
+    publicKey = config.publicKey; const registration = await navigator.serviceWorker.register("/push-sw.js"); const subscription = await registration.pushManager.getSubscription(); button.disabled = false;
+    if (subscription) { button.textContent = "إلغاء إشعارات المتصفح"; status.textContent = "إشعارات المحتوى مفعّلة لهذا المتصفح."; } else { button.textContent = "تفعيل إشعارات المحتوى"; status.textContent = "لن نطلب إذن النظام إلا بعد ضغطك على زر التفعيل."; }
+  }
+  button.addEventListener("click", async () => {
+    try {
+      if (!publicKey) return; const registration = await navigator.serviceWorker.ready; const existing = await registration.pushManager.getSubscription();
+      if (existing) { button.disabled = true; const response = await api("DELETE", existing); await existing.unsubscribe(); button.disabled = false; button.textContent = "تفعيل إشعارات المحتوى"; status.textContent = response.ok ? "تم إلغاء الاشتراك." : "أُلغي اشتراك المتصفح؛ قد تحتاج الخدمة إلى تنظيف الاشتراك لاحقًا."; return; }
+      const permission = await Notification.requestPermission(); if (permission !== "granted") { status.textContent = "لم تمنح إذن الإشعارات. يمكنك التفعيل لاحقًا من هذا الزر."; return; }
+      button.disabled = true; status.textContent = "يجري حفظ الاشتراك…"; const subscription = await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: toUint8(publicKey) }); const response = await api("POST", subscription); if (!response.ok) { await subscription.unsubscribe(); throw new Error("تعذر حفظ الاشتراك"); } button.disabled = false; button.textContent = "إلغاء إشعارات المتصفح"; status.textContent = "تم تفعيل إشعارات المحتوى لهذا المتصفح.";
+    } catch { button.disabled = false; status.textContent = "تعذر تفعيل الإشعارات الآن. حاول لاحقًا."; }
+  });
+  void refresh();
+</script>

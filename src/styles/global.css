@@ -176,6 +176,18 @@ a:hover { opacity: .82; }
 .form-status { min-height: 1.5rem; margin: .2rem 0 0; color: var(--muted); font-size: .8rem; }
 .admin-toolbar { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 1rem; }
 .admin-toolbar h2 { margin: 0; font-size: 1.55rem; }
+.analytics-panel { margin: 1rem 0; padding: 1.2rem; border: 1px solid var(--line); border-radius: 14px; background: #f9fcfa; }
+.analytics-panel .admin-toolbar p { max-width: 520px; margin: .45rem 0 0; color: var(--muted); font-size: .76rem; line-height: 1.7; }
+.analytics-range { display: grid; gap: .35rem; color: var(--muted); font-size: .72rem; font-weight: 700; }
+.analytics-range select { border: 1px solid #b8cac4; border-radius: 8px; padding: .55rem; background: #fff; font: inherit; color: var(--ink); }
+.analytics-totals { display: grid; grid-template-columns: repeat(5, 1fr); gap: .7rem; }
+.analytics-totals > div { display: grid; gap: .25rem; padding: .8rem; border: 1px solid #d9e7e1; border-radius: 9px; background: #fff; }
+.analytics-totals span { color: var(--muted); font-size: .68rem; }
+.analytics-totals strong { font-family: "DM Sans", sans-serif; font-size: 1.2rem; }
+.analytics-table-wrap { overflow-x: auto; margin-top: 1rem; border: 1px solid #d9e7e1; border-radius: 9px; background: #fff; }
+.analytics-table-wrap table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: .75rem; }
+.analytics-table-wrap th, .analytics-table-wrap td { padding: .75rem; border-bottom: 1px solid #ebf1ee; text-align: right; }
+.analytics-table-wrap th { color: var(--teal-dark); background: #f2f9f5; font-size: .68rem; }
 .subtle-button { background: #e8f7f1; color: var(--teal-dark); }
 .admin-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(320px, 1.2fr); gap: 1rem; }
 .content-list { list-style: none; padding: 0; margin: 0; display: grid; gap: .7rem; }
@@ -259,6 +271,36 @@ a:hover { opacity: .82; }
 .legal-page section p { max-width: 760px; color: #334846; line-height: 2; }
 .contact-email { display: inline-flex; margin-top: 1rem; padding: .8rem 1rem; border: 1px solid #a8cabe; border-radius: 9px; background: #f5fbf8; font-family: "DM Sans", sans-serif; }
 .contact-email a { color: var(--teal-dark); text-decoration: none; font-weight: 800; }
+.consent-card { position: fixed; z-index: 30; right: 1rem; bottom: 1rem; width: min(420px, calc(100vw - 2rem)); padding: 1rem; border: 1px solid #9fc3b7; border-radius: 12px; background: #fff; box-shadow: 0 14px 34px rgba(12, 45, 42, .16); }
+.consent-card p { margin: 0 0 .75rem; color: #334846; font-size: .78rem; line-height: 1.7; }
+.consent-card div { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.consent-card button { min-height: 36px; border: 0; border-radius: 7px; padding: .4rem .7rem; background: var(--teal); color: #fff; font: inherit; font-size: .75rem; font-weight: 800; cursor: pointer; }
+.consent-card #analytics-decline { border: 1px solid #b9cbc5; background: #fff; color: var(--ink); }
+.consent-card a { color: var(--teal-dark); font-size: .72rem; }
+.push-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1.5rem; align-items: center; max-width: 1180px; margin: 0 auto 2rem; padding: 1.25rem clamp(1.1rem, 3vw, 2rem); border: 1px solid #c7ddd4; border-radius: 14px; background: #f3faf7; }
+.push-control h2 { margin: .15rem 0; font-size: 1.2rem; }
+.push-control p { margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.7; }
+.push-actions { display: grid; justify-items: end; gap: .45rem; }
+.push-actions button { min-height: 40px; border: 0; border-radius: 8px; padding: .5rem .85rem; background: var(--teal); color: #fff; font: inherit; font-size: .78rem; font-weight: 800; cursor: pointer; }
+.push-actions button:disabled { cursor: not-allowed; opacity: .65; }
+.push-actions p { max-width: 300px; text-align: left; font-size: .7rem; }
+.tool-page { max-width: 900px; margin: 0 auto; padding: clamp(2.5rem, 7vw, 6rem) clamp(1.1rem, 5vw, 3rem) clamp(4rem, 8vw, 7rem); }
+.tool-page header { max-width: 720px; margin: 2rem 0; }
+.tool-page header h1 { margin: 0; font-size: clamp(2.4rem, 5vw, 4.8rem); line-height: 1.22; letter-spacing: -.06em; }
+.tool-page header p { color: var(--muted); line-height: 1.85; }
+.date-difference-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: .8rem; align-items: end; padding: 1.1rem; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+.date-difference-form label { display: grid; gap: .35rem; color: var(--ink); font-size: .8rem; font-weight: 800; }
+.date-difference-form input { min-height: 43px; border: 1px solid #b8cac4; border-radius: 8px; padding: .5rem; font: inherit; }
+.date-difference-form button { min-height: 43px; border: 0; border-radius: 8px; padding: .5rem 1rem; background: var(--teal); color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
+.tool-result { display: grid; gap: .3rem; margin-top: 1rem; padding: 1.25rem; border: 1px solid #a7d1c0; border-radius: 14px; background: #effaf5; }
+.tool-result[hidden] { display: none; }
+.tool-result span { color: var(--teal); font-size: .72rem; font-weight: 800; }
+.tool-result strong { font-family: "DM Sans", sans-serif; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1; }
+.tool-result p, .tool-note { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.8; }
+.tool-note { margin-top: 1rem; }
 .footer-trust { border-right: 1px solid rgba(255,255,255,.16); padding-right: 1rem; }
 @media (max-width: 760px) { .admin-grid, .editor-form, .source-row { grid-template-columns: 1fr; } .admin-toolbar { align-items: flex-start; flex-direction: column; } .editor-form .content-textarea { min-height: 300px; } }
 @media (max-width: 760px) { .search-form { display: grid; grid-template-columns: 1fr; } .search-form button { min-height: 46px; } .calendar-method, .calendar-method dl { grid-template-columns: 1fr; } .footer-trust { border-right: 0; padding-right: 0; } }
+@media (max-width: 760px) { .analytics-totals { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 760px) { .push-control { grid-template-columns: 1fr; } .push-actions { justify-items: stretch; } .push-actions p { max-width: none; text-align: right; } }
+@media (max-width: 760px) { .date-difference-form { grid-template-columns: 1fr; } }

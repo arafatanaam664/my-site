@@ -51,4 +51,13 @@ describe("اتصال Supabase", () => {
 
     expect(response.status, `لم يمكن الوصول إلى جدول content_workflow_events، حالة HTTP ${response.status}`).toBeLessThan(400);
   });
+
+  it("يتحقق من وجود سجل تسليم إشعارات المتصفح دون إنشاء اشتراك أو إرسال", async () => {
+    const response = await fetch(`${supabaseUrl}/rest/v1/notification_deliveries?select=id,status&limit=1`, {
+      headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` },
+      signal: AbortSignal.timeout(10_000),
+    });
+
+    expect(response.status, `لم يمكن الوصول إلى جدول notification_deliveries، حالة HTTP ${response.status}`).toBeLessThan(400);
+  });
 });

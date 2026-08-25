@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { adminClient, requireEditor } from "../../../../../lib/server/admin";
 import { canAccessEditorialContent, canTransitionContent, isContentStatus } from "../../../../../lib/server/content-workflow";
+import { dispatchContentPush } from "../../../../../lib/server/web-push";
 
 export const prerender = false;
 
@@ -16,7 +17,7 @@ export const POST: APIRoute = async ({ params, request }) => {
     if (!isContentStatus(nextStatus)) return json({ error: "حالة المراجعة غير صالحة" }, 400);
 
     const client = adminClient();
-    const { data: current, error } = await client.from("content_items").select("id,status,created_by,title,excerpt,body_markdown,seo_title,seo_description,canonical_url,primary_media_id").eq("id", params.id).maybeSingle();
+    const { data: current, error } = await client.from("content_items").select("id,kind,slug,status,created_by,title,excerpt,body_markdown,seo_title,seo_description,canonical_url,primary_media_id").eq("id", params.id).maybeSingle();
     if (error || !current) return json({ error: "المادة غير موجودة" }, 404);
     if (!canAccessEditorialContent(editor.role, editor.id, current.created_by)) return json({ error: "لا تملك صلاحية هذه المادة" }, 403);
     if (!canTransitionContent(editor.role, current.status, nextStatus)) return json({ error: "هذا الانتقال غير مسموح لدورك أو لحالة المادة" }, 409);
@@ -28,7 +29,8 @@ export const POST: APIRoute = async ({ params, request }) => {
     const { error: revisionError } = await client.from("content_revisions").insert({ content_id: current.id, status: nextStatus, title: current.title, excerpt: current.excerpt, body_markdown: current.body_markdown, seo_title: current.seo_title, seo_description: current.seo_description, canonical_url: current.canonical_url, primary_media_id: current.primary_media_id, note: note || `نقل الحالة إلى ${nextStatus}`, created_by: editor.id });
     if (revisionError) return json({ error: "تغيرت الحالة لكن تعذر حفظ لقطة المراجعة" }, 500);
     await client.from("content_workflow_events").insert({ content_id: current.id, from_status: current.status, to_status: nextStatus, note, actor_id: editor.id });
-    return json({ data: content });
+    const notification = nextStatus === "published" ? await dispatchContentPush({ id: current.id, title: current.title, excerpt: current.excerpt, slug: current.slug, kind: current.kind }) : null;
+    return json({ data: content, notification });
   } catch (error) {
     if (error instanceof Response) return error;
     return json({ error: "تعذر تحديث حالة المادة" }, 500);
