@@ -990,3 +990,80 @@
 [2026-08-25T16:49:50.228Z] GET /tools/date-difference 200 OK (5ms)
 [2026-08-25T16:49:50.265Z] GET /_astro/BaseLayout.oadjWYq6.css 200 OK (5ms)
 [2026-08-25T16:49:50.398Z] GET /api/public/push-config 200 OK (9ms)
+[2026-08-25T17:00:33.629Z] GET / 200 OK (19ms)
+[2026-08-25T17:00:33.684Z] GET /api/public/push-config 200 OK (7ms)
+[2026-08-25T17:05:01.239Z] [ELIFECYCLE] Command failed.
+[2026-08-25T17:05:01.246Z] Dev server exited with code -1
+[2026-08-25T17:05:02.321Z] Starting dev server with command: pnpm run dev
+[2026-08-25T17:05:02.906Z] $ astro build && astro preview --host 0.0.0.0 --port 3000
+[2026-08-25T17:05:05.944Z] (node:53615) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-25T17:05:05.944Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-25T17:05:05.981Z] 17:05:05 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-25T17:05:06.113Z] 17:05:06 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-25T17:05:06.115Z] 17:05:06 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-25T17:05:07.131Z] 17:05:07 [vite] [optimizer] bundling dependencies...
+[2026-08-25T17:05:08.777Z] 17:05:08 [types] Generated 2.72s
+[2026-08-25T17:05:08.778Z] 17:05:08 [build] output: "server"
+[2026-08-25T17:05:08.778Z] 17:05:08 [build] mode: "server"
+[2026-08-25T17:05:08.778Z] 17:05:08 [build] directory: /home/ubuntu/alshafra-platform/dist/
+[2026-08-25T17:05:08.778Z] 17:05:08 [build] adapter: @astrojs/cloudflare
+[2026-08-25T17:05:08.778Z] 17:05:08 [build] Collecting build info...
+[2026-08-25T17:05:08.778Z] 17:05:08 [build] ✓ Completed in 2.80s.
+[2026-08-25T17:05:08.782Z] 17:05:08 [build] Building server entrypoints...
+[2026-08-25T17:05:09.079Z] 17:05:09 [vite] ✓ built in 252ms
+[2026-08-25T17:05:09.688Z] 17:05:09 [vite] ✓ built in 606ms
+[2026-08-25T17:05:09.866Z] 17:05:09 [vite] ✓ built in 170ms
+[2026-08-25T17:05:09.881Z] 17:05:09 [build] Rearranging server assets...
+[2026-08-25T17:05:09.883Z] 17:05:09 [build] ✓ Completed in 1.10s.
+[2026-08-25T17:05:09.885Z] 17:05:09 [@astrojs/cloudflare] Injected immutable Cache-Control for /_astro/* into _headers.
+[2026-08-25T17:05:09.887Z] 17:05:09 [build] Server built in 3.91s
+[2026-08-25T17:05:09.887Z] 17:05:09 [build] Complete!
+[2026-08-25T17:05:12.677Z] (node:53729) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-25T17:05:12.677Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-25T17:05:12.710Z] 17:05:12 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-25T17:05:12.869Z] 17:05:12 [@astrojs/cloudflare]
+[2026-08-25T17:05:12.869Z] astro  v14.2.4 ready in 79 ms
+[2026-08-25T17:05:12.869Z] ┃ Local    http://localhost:3000/
+[2026-08-25T17:05:12.869Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-25T17:05:12.891Z] ✨ Parsed 1 valid header rule.
+[2026-08-25T17:05:16.777Z] GET / 200 OK (29ms)
+[2026-08-25T17:05:23.143Z] GET / 200 OK (6ms)
+[2026-08-25T17:05:23.171Z] GET /_astro/BaseLayout.Cz8mggLF.css 200 OK (4ms)
+[2026-08-25T17:05:23.201Z] GET /api/public/push-config 200 OK (8ms)
+[2026-08-25T17:13:20.465Z] [ELIFECYCLE] Command failed.
+[2026-08-25T17:13:20.480Z] Dev server exited with code -1
+[2026-08-25T17:13:21.543Z] Starting dev server with command: pnpm run dev
+[2026-08-25T17:13:22.149Z] $ astro build && astro preview --host 0.0.0.0 --port 3000
+[2026-08-25T17:13:25.445Z] (node:55323) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-25T17:13:25.445Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-25T17:13:25.481Z] 17:13:25 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-25T17:13:25.634Z] 17:13:25 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-25T17:13:25.635Z] 17:13:25 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-25T17:13:25.767Z] 17:13:25 [types] Generated 193ms
+[2026-08-25T17:13:25.767Z] 17:13:25 [build] output: "server"
+[2026-08-25T17:13:25.767Z] 17:13:25 [build] mode: "server"
+[2026-08-25T17:13:25.767Z] 17:13:25 [build] directory: /home/ubuntu/alshafra-platform/dist/
+[2026-08-25T17:13:25.767Z] 17:13:25 [build] adapter: @astrojs/cloudflare
+[2026-08-25T17:13:25.767Z] 17:13:25 [build] Collecting build info...
+[2026-08-25T17:13:25.768Z] 17:13:25 [build] ✓ Completed in 289ms.
+[2026-08-25T17:13:25.773Z] 17:13:25 [build] Building server entrypoints...
+[2026-08-25T17:13:26.039Z] 17:13:26 [vite] ✓ built in 208ms
+[2026-08-25T17:13:26.664Z] 17:13:26 [vite] ✓ built in 620ms
+[2026-08-25T17:13:26.827Z] 17:13:26 [vite] ✓ built in 142ms
+[2026-08-25T17:13:26.840Z] 17:13:26 [build] Rearranging server assets...
+[2026-08-25T17:13:26.842Z] 17:13:26 [build] ✓ Completed in 1.07s.
+[2026-08-25T17:13:26.844Z] 17:13:26 [@astrojs/cloudflare] Injected immutable Cache-Control for /_astro/* into _headers.
+[2026-08-25T17:13:26.845Z] 17:13:26 [build] Server built in 1.37s
+[2026-08-25T17:13:26.845Z] 17:13:26 [build] Complete!
+[2026-08-25T17:13:29.593Z] (node:55433) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-25T17:13:29.593Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-25T17:13:29.644Z] 17:13:29 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-25T17:13:29.789Z] 17:13:29 [@astrojs/cloudflare]
+[2026-08-25T17:13:29.789Z] astro  v14.2.4 ready in 71 ms
+[2026-08-25T17:13:29.789Z] ┃ Local    http://localhost:3000/
+[2026-08-25T17:13:29.789Z] ┃ Network  http://169.254.0.21:3000/
+[2026-08-25T17:13:29.813Z] ✨ Parsed 1 valid header rule.
+[2026-08-25T17:13:34.896Z] HEAD / 200 OK (32ms)
+[2026-08-25T17:13:34.913Z] GET / 200 OK (5ms)
+[2026-08-25T17:13:38.465Z] GET / 200 OK (6ms)
+[2026-08-25T17:13:38.654Z] GET /api/public/push-config 200 OK (5ms)

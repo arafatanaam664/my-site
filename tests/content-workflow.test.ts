@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canAccessEditorialContent, canTransitionContent, isContentStatus } from "../src/lib/server/content-workflow";
+import { canAccessEditorialContent, canTransitionContent, isContentStatus, publicationReadiness } from "../src/lib/server/content-workflow";
 
 describe("سير مراجعة المحتوى", () => {
   it("يسمح بتسلسل المراجعة الصحيح فقط", () => {
@@ -22,5 +22,12 @@ describe("سير مراجعة المحتوى", () => {
     expect(canAccessEditorialContent("admin", "admin-1", "author-1")).toBe(true);
     expect(canAccessEditorialContent("author", "author-1", "author-1")).toBe(true);
     expect(canAccessEditorialContent("author", "author-2", "author-1")).toBe(false);
+  });
+
+  it("يطالب المقال والدليل بنص وصورة كبيرة ووصف ومصدر قبل النشر", () => {
+    const issues = publicationReadiness({ kind: "article", title: "عنوان صالح للمادة المنشورة", body: "ن".repeat(320), seoDescription: "و".repeat(75), primaryMedia: { width: 1200, height: 500 }, sourceCount: 0 });
+    expect(issues).toContain("أضف مصدرًا موثقًا واحدًا على الأقل");
+    expect(publicationReadiness({ kind: "guide", title: "عنوان صالح للمادة المنشورة", body: "ن".repeat(320), seoDescription: "و".repeat(75), primaryMedia: { width: 1199, height: 500 }, sourceCount: 1 })).toContain("الصورة الرئيسية تحتاج إلى عرض 1200px ومساحة 300 ألف بكسل على الأقل");
+    expect(publicationReadiness({ kind: "tool", title: "عنوان صالح للمادة المنشورة", body: "ن".repeat(320), seoDescription: "و".repeat(75), primaryMedia: { width: 1200, height: 500 }, sourceCount: 0 })).toEqual([]);
   });
 });

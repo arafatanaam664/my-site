@@ -61,6 +61,9 @@ a:hover { opacity: .82; }
 .tool-list h3, .guide-grid h3 { font-size: 1.2rem; line-height: 1.55; margin: .7rem 0; }
 .tool-list p { font-size: .85rem; color: var(--muted); }
 .tool-list b { margin-top: auto; color: var(--teal); font-size: .82rem; }
+.published-content-invite { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: center; max-width: 880px; padding: 1.3rem; border: 1px solid var(--line); border-radius: 12px; background: #f8fbf9; }
+.published-content-invite p { margin: 0; color: var(--muted); line-height: 1.8; }
+.published-content-invite div { display: flex; flex-wrap: wrap; gap: .55rem; }
 
 .calendar-feature { display: grid; grid-template-columns: 1fr .75fr; gap: 5rem; align-items: center; background: #e8f7f1; }
 .calendar-feature > div > p:not(.eyebrow) { color: var(--muted); max-width: 550px; margin-bottom: 1.8rem; }
@@ -304,3 +307,4 @@ a:hover { opacity: .82; }
 @media (max-width: 760px) { .analytics-totals { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 760px) { .push-control { grid-template-columns: 1fr; } .push-actions { justify-items: stretch; } .push-actions p { max-width: none; text-align: right; } }
 @media (max-width: 760px) { .date-difference-form { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .published-content-invite { grid-template-columns: 1fr; } }

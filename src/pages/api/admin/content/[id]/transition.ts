@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { adminClient, requireEditor } from "../../../../../lib/server/admin";
-import { canAccessEditorialContent, canTransitionContent, isContentStatus } from "../../../../../lib/server/content-workflow";
+import { canAccessEditorialContent, canTransitionContent, isContentStatus, publicationReadiness } from "../../../../../lib/server/content-workflow";
 import { dispatchContentPush } from "../../../../../lib/server/web-push";
 
 export const prerender = false;
@@ -21,7 +21,14 @@ export const POST: APIRoute = async ({ params, request }) => {
     if (error || !current) return json({ error: "المادة غير موجودة" }, 404);
     if (!canAccessEditorialContent(editor.role, editor.id, current.created_by)) return json({ error: "لا تملك صلاحية هذه المادة" }, 403);
     if (!canTransitionContent(editor.role, current.status, nextStatus)) return json({ error: "هذا الانتقال غير مسموح لدورك أو لحالة المادة" }, 409);
-    if (nextStatus === "published" && (!current.body_markdown || current.body_markdown.trim().length < 300 || !current.seo_description || !current.primary_media_id)) return json({ error: "تحتاج المادة المنشورة إلى نص كافٍ ووصف بحث وصورة رئيسية" }, 400);
+    if (nextStatus === "published") {
+      const [{ data: primaryMedia }, { count: sourceCount }] = await Promise.all([
+        current.primary_media_id ? client.from("media_assets").select("width,height").eq("id", current.primary_media_id).maybeSingle() : Promise.resolve({ data: null }),
+        client.from("content_sources").select("source_id", { count: "exact", head: true }).eq("content_id", current.id),
+      ]);
+      const issues = publicationReadiness({ kind: current.kind, title: current.title, body: current.body_markdown, seoDescription: current.seo_description, primaryMedia, sourceCount: sourceCount ?? 0 });
+      if (issues.length) return json({ error: issues.join(". ") }, 400);
+    }
 
     const update = { status: nextStatus, published_at: nextStatus === "published" ? new Date().toISOString() : null, updated_by: editor.id, updated_at: new Date().toISOString() };
     const { data: content, error: updateError } = await client.from("content_items").update(update).eq("id", current.id).select("id,status,published_at,updated_at").single();
