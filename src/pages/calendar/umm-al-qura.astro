@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { fetchUmmAlQura } from "../../lib/server/umm-al-qura";
+
+export const prerender = false;
+const current = await fetchUmmAlQura();
+const formattedGregorian = current ? `${current.gregorian.day}/${current.gregorian.month}/${current.gregorian.year}` : null;
+---
+
+<BaseLayout title="تاريخ اليوم الهجري وفق أم القرى" description="اعرف التاريخ الهجري اليوم وفق أم القرى من مصدر خادمي موضح مع وقت التحديث." canonical="https://alshafra.com/calendar/umm-al-qura">
+  <section class="calendar-page"><nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>التقويم والمواعيد</span></nav><header><p class="eyebrow">تقويم أم القرى</p><h1>تاريخ اليوم الهجري وفق أم القرى</h1><p>يُجلب التاريخ من الخادم بحسب توقيت الرياض، ثم يُخزّن مؤقتًا لليوم نفسه. لا تعتمد هذه الصفحة على إعدادات جهازك أو تاريخ متصفحك.</p></header>{current ? <div class="calendar-date-card"><p class="calendar-weekday">{current.hijri.weekday}</p><div class="calendar-day">{current.hijri.day}</div><p class="calendar-month">{current.hijri.month} {current.hijri.year} هـ</p><div class="calendar-gregorian"><span>الميلادي</span><strong>{formattedGregorian}</strong></div></div> : <div class="calendar-unavailable"><h2>التاريخ غير متاح مؤقتًا</h2><p>تعذر الاتصال بالمصدر في هذه اللحظة. أعد المحاولة لاحقًا، ولا تعتمد هذه الصفحة للمواعيد أو القرارات الحساسة إلى أن تظهر بيانات المصدر بوضوح.</p></div>}<section class="calendar-method"><div><p class="eyebrow">المصدر والتحديث</p><h2>كيف نعرض التاريخ؟</h2></div><dl><div><dt>الطريقة</dt><dd>أم القرى — HJCoSA</dd></div><div><dt>المصدر</dt><dd>{current ? <a href={current.sourceUrl} target="_blank" rel="noopener noreferrer">AlAdhan Calendar API</a> : "AlAdhan Calendar API"}</dd></div><div><dt>آخر تحديث</dt><dd>{current ? new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Riyadh" }).format(new Date(current.fetchedAt)) : "غير متاح"}</dd></div></dl><p class="calendar-disclaimer">التاريخ المعروض لأغراض المعلومات العامة. أما الإعلانات الرسمية، وبدايات الأشهر، والإجازات والمواعيد الحساسة فتُراجع من الجهة الرسمية المختصة.</p></section></section>
+</BaseLayout>

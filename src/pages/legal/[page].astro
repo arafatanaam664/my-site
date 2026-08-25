@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { legalPages } from "../../lib/legal-pages";
+
+export const prerender = false;
+const page = Astro.params.page ?? "";
+const content = legalPages[page];
+if (!content) Astro.response.status = 404;
+---
+
+{content ? <BaseLayout title={content.title} description={content.description} canonical={`https://alshafra.com/legal/${page}`}><article class="legal-page"><nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>{content.title}</span></nav><header><p class="eyebrow">{content.eyebrow}</p><h1>{content.title}</h1><p>{content.description}</p><small>آخر مراجعة: {content.updated}</small></header>{content.sections.map((section) => <section><h2>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</section>)}{page === "contact" && <p class="contact-email"><a href="mailto:runcode.company@gmail.com">runcode.company@gmail.com</a></p>}</article></BaseLayout> : <main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>تحقق من الرابط أو عد إلى الرئيسية.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main>}

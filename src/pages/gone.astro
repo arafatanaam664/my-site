@@ -1,0 +1,7 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+export const prerender = false;
+Astro.response.status = 410;
+---
+
+<BaseLayout title="هذه الصفحة لم تعد متاحة" description="أزيلت الصفحة المطلوبة أو لم تعد متاحة." canonical="https://alshafra.com/gone" noindex><main class="not-found-page"><p class="eyebrow">410</p><h1>هذه الصفحة لم تعد متاحة</h1><p>أزيلت هذه الوجهة عمدًا أو استبدلت بمحتوى مختلف. استخدم البحث أو عد إلى الرئيسية لمتابعة الاستكشاف.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a><a class="button button-secondary" href="/search">ابحث في Alshafra</a></main></BaseLayout>
