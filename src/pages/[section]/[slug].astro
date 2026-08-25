@@ -1,0 +1,17 @@
+---
+import PublicContentPage from "../../components/PublicContentPage.astro";
+import { publishedContent, type PublicContentKind } from "../../lib/server/public-content";
+
+export const prerender = false;
+const routeMap: Record<string, { kind: PublicContentKind; section: "articles" | "guides" | "tools" }> = {
+  articles: { kind: "article", section: "articles" },
+  guides: { kind: "guide", section: "guides" },
+  tools: { kind: "tool", section: "tools" },
+};
+const mapping = Astro.params.section ? routeMap[Astro.params.section] : undefined;
+const slug = Astro.params.slug ?? "";
+const content = mapping && slug ? await publishedContent(mapping.kind, slug) : null;
+if (!content) Astro.response.status = 404;
+---
+
+{content && mapping ? <PublicContentPage content={content} section={mapping.section} /> : <main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>قد يكون الرابط غير صحيح، أو أن المادة لم تعد متاحة للعامة.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main>}

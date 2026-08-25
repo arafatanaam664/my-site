@@ -5,9 +5,14 @@ interface Props {
   title: string;
   description: string;
   canonical?: string;
+  image?: string;
+  pageType?: "website" | "article";
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>;
 }
 
-const { title, description, canonical = "https://alshafra.com/" } = Astro.props;
+const { title, description, canonical = "https://alshafra.com/", image, pageType = "website", noindex = false, jsonLd } = Astro.props;
+const safeJsonLd = jsonLd ? JSON.stringify(jsonLd).replace(/</g, "\\u003c") : null;
 ---
 
 <!doctype html>
@@ -16,23 +21,26 @@ const { title, description, canonical = "https://alshafra.com/" } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="robots" content={noindex ? "noindex,follow" : "index,follow,max-image-preview:large"} />
     <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={pageType} />
     <meta property="og:locale" content="ar_AR" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    {image && <meta property="og:image" content={image} />}
     <meta name="twitter:card" content="summary_large_image" />
+    {image && <meta name="twitter:image" content={image} />}
+    {safeJsonLd && <script is:inline type="application/ld+json" set:html={safeJsonLd} />}
     <title>{title}</title>
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="/" aria-label="العودة إلى الرئيسية"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a>
-      <nav aria-label="التنقل الرئيسي"><a href="#solutions">الحلول</a><a href="#tools">الأدوات</a><a href="#guides">الأدلة</a><a href="#calendar">التقويم والمواعيد</a></nav>
-      <a class="header-search" href="#search">ابحث في Alshafra <span aria-hidden="true">⌕</span></a>
+      <nav aria-label="التنقل الرئيسي"><a href="/#solutions">الحلول</a><a href="/#tools">الأدوات</a><a href="/#guides">الأدلة</a><a href="/#calendar">التقويم والمواعيد</a></nav>
+      <a class="header-search" href="/search">ابحث في Alshafra <span aria-hidden="true">⌕</span></a>
     </header>
     <main><slot /></main>
-    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a><p>معلومات وأدوات عملية تساعدك على الوصول إلى خطوة واضحة.</p></div><div class="footer-links"><a href="#solutions">الحلول</a><a href="#tools">الأدوات</a><a href="#guides">الأدلة</a><a href="#calendar">التقويم والمواعيد</a></div></footer>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a><p>معلومات وأدوات عملية تساعدك على الوصول إلى خطوة واضحة.</p></div><div class="footer-links"><a href="/#solutions">الحلول</a><a href="/#tools">الأدوات</a><a href="/#guides">الأدلة</a><a href="/#calendar">التقويم والمواعيد</a></div></footer>
   </body>
 </html>

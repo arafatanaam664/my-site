@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { searchPublicContent } from "../lib/arabic-search";
+import { allPublishedContent } from "../lib/server/public-content";
+
+export const prerender = false;
+const query = (Astro.url.searchParams.get("q") ?? "").trim();
+const results = query.length >= 2 ? searchPublicContent(await allPublishedContent(), query) : [];
+const sectionFor = (kind: string) => ({ article: "articles", guide: "guides", tool: "tools" }[kind] ?? "articles");
+const labelFor = (kind: string) => ({ article: "مقال", guide: "دليل", tool: "أداة" }[kind] ?? "مادة");
+---
+
+<BaseLayout title="البحث في Alshafra" description="ابحث في المقالات والأدلة والأدوات المنشورة على Alshafra." canonical="https://alshafra.com/search" noindex>
+  <section class="search-page"><header><p class="eyebrow">بحث</p><h1>ابحث في Alshafra</h1><p>ابحث بكلمة أو عبارة من الموضوع الذي تريد فهمه أو إنجازه.</p></header><form class="search-form" action="/search" method="get"><label class="sr-only" for="search-query">عبارة البحث</label><input id="search-query" name="q" value={query} minlength="2" placeholder="مثال: تحويل التاريخ الهجري" /><button type="submit">بحث</button></form>{query.length > 0 && query.length < 2 && <p class="search-note">اكتب حرفين على الأقل لبدء البحث.</p>}{query.length >= 2 && <p class="search-note">{results.length ? `وجدنا ${results.length} نتيجة مرتبطة بعبارة «${query}».` : `لم نجد نتائج منشورة لعبارة «${query}».`}</p>}{results.length > 0 && <ol class="search-results">{results.map((item) => <li><span>{labelFor(item.kind)}</span><h2><a href={`/${sectionFor(item.kind)}/${item.slug}`}>{item.title}</a></h2><p>{item.excerpt || item.seo_description || "مادة عملية من Alshafra."}</p></li>)}</ol>}</section>
+</BaseLayout>
