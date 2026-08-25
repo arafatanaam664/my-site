@@ -1,6 +1,12 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "alshafra",
-  "compatibility_date": "2026-08-24",
-  "compatibility_flags": ["nodejs_compat"]
+	"name": "alshafra",
+	"compatibility_date": "2026-08-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"r2_buckets": [
+		{
+			"binding": "R2_MEDIA",
+			"bucket_name": "alshafra-media"
+		}
+	]
 }

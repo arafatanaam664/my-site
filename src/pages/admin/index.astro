@@ -18,7 +18,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <section class="admin-panel" id="dashboard" hidden>
       <div class="admin-toolbar"><div><span class="eyebrow">المحتوى</span><h2>المسودات والمواد المنشورة</h2></div><button type="button" id="refresh-content" class="subtle-button">تحديث القائمة</button></div>
       <div class="admin-grid">
-        <form id="new-draft-form" class="admin-card"><h3>مسودة جديدة</h3><label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
+        <form id="new-draft-form" class="admin-card"><h3>مسودة جديدة</h3><label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><fieldset class="media-fieldset"><legend>الصورة الرئيسية (اختياري)</legend><label for="primary-image">ملف الصورة</label><input id="primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="primary-image-alt">وصف بديل للصورة</label><input id="primary-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><p class="field-note">JPEG أو PNG أو WebP أو AVIF، حتى 10MB. لا تُستخدم الصورة إلا بعد ربطها بالمادة.</p></fieldset><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
         <div class="admin-card"><h3>آخر المواد</h3><ul id="content-list" class="content-list"><li>يجري تحميل المحتوى…</li></ul></div>
       </div>
     </section>
@@ -49,6 +49,21 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     contentList.innerHTML = result.data.length ? result.data.map((item: { title: string; slug: string; status: string; kind: string }) => `<li><span>${item.kind} · ${item.status}</span><strong>${item.title}</strong><small>/${item.slug}</small></li>`).join("") : "<li>لا توجد مواد بعد. أنشئ أول مسودة من النموذج.</li>";
   }
 
+  async function uploadPrimaryImage(headers: Record<string, string>) {
+    const fileInput = document.querySelector<HTMLInputElement>("#primary-image")!;
+    const altInput = document.querySelector<HTMLInputElement>("#primary-image-alt")!;
+    const file = fileInput.files?.[0];
+    if (!file) return null;
+    if (!altInput.value.trim()) throw new Error("أدخل وصفًا بديلًا دقيقًا للصورة.");
+    const formData = new FormData();
+    formData.set("file", file);
+    formData.set("altText", altInput.value);
+    const response = await fetch("/api/admin/media", { method: "POST", headers: { Authorization: headers.Authorization }, body: formData });
+    const result = await response.json();
+    if (!response.ok || !result.data?.id) throw new Error(result.error ?? "تعذر رفع الصورة.");
+    return result.data.id as string;
+  }
+
   async function establishSession() {
     if (!supabase) return;
     const { data } = await supabase.auth.getSession();
@@ -72,11 +87,16 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     const headers = await authHeaders();
     if (!headers) return;
     draftStatus.textContent = "يجري حفظ المسودة…";
-    const payload = { kind: document.querySelector<HTMLSelectElement>("#draft-kind")!.value, title: document.querySelector<HTMLInputElement>("#draft-title")!.value, slug: document.querySelector<HTMLInputElement>("#draft-slug")!.value, excerpt: document.querySelector<HTMLTextAreaElement>("#draft-excerpt")!.value };
-    const response = await fetch("/api/admin/content", { method: "POST", headers, body: JSON.stringify(payload) });
-    const result = await response.json();
-    draftStatus.textContent = response.ok ? "تم إنشاء المسودة وسجل المراجعة الأولي." : result.error ?? "تعذر إنشاء المسودة.";
-    if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadContent(); }
+    try {
+      const primaryMediaId = await uploadPrimaryImage(headers);
+      const payload = { kind: document.querySelector<HTMLSelectElement>("#draft-kind")!.value, title: document.querySelector<HTMLInputElement>("#draft-title")!.value, slug: document.querySelector<HTMLInputElement>("#draft-slug")!.value, excerpt: document.querySelector<HTMLTextAreaElement>("#draft-excerpt")!.value, primaryMediaId };
+      const response = await fetch("/api/admin/content", { method: "POST", headers, body: JSON.stringify(payload) });
+      const result = await response.json();
+      draftStatus.textContent = response.ok ? "تم إنشاء المسودة وسجل المراجعة الأولي." : result.error ?? "تعذر إنشاء المسودة.";
+      if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadContent(); }
+    } catch (error) {
+      draftStatus.textContent = error instanceof Error ? error.message : "تعذر حفظ المسودة.";
+    }
   });
 
   document.querySelector<HTMLButtonElement>("#refresh-content")!.addEventListener("click", loadContent);

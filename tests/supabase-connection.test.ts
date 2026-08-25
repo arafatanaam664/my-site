@@ -33,4 +33,13 @@ describe("اتصال Supabase", () => {
 
     expect(response.status, `لم يمكن الوصول إلى جدول editor_allowlist، حالة HTTP ${response.status}`).toBeLessThan(400);
   });
+
+  it("يتحقق من وجود manifest نسخ الوسائط المشتقة دون إنشاء ملفات", async () => {
+    const response = await fetch(`${supabaseUrl}/rest/v1/media_variants?select=id,status&limit=1`, {
+      headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` },
+      signal: AbortSignal.timeout(10_000),
+    });
+
+    expect(response.status, `لم يمكن الوصول إلى جدول media_variants، حالة HTTP ${response.status}`).toBeLessThan(400);
+  });
 });

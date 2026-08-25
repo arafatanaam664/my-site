@@ -114,6 +114,10 @@ a:hover { opacity: .82; }
 .admin-card label { font-size: .8rem; font-weight: 700; }
 .admin-card input, .admin-card textarea, .admin-card select { width: 100%; border: 1px solid #b8cac4; border-radius: 8px; padding: .7rem; font: inherit; font-size: .85rem; background: #fff; }
 .admin-card textarea { min-height: 88px; resize: vertical; }
+.media-fieldset { display: grid; gap: .65rem; margin: .3rem 0; padding: 1rem; border: 1px solid #c8d8d2; border-radius: 10px; background: #f7fbf9; }
+.media-fieldset legend { padding: 0 .35rem; color: var(--teal-dark); font-size: .82rem; font-weight: 800; }
+.media-fieldset input[type="file"] { padding: .5rem; background: #fff; }
+.field-note { margin: 0; color: var(--muted); font-size: .72rem; line-height: 1.6; }
 .admin-card button, .subtle-button { min-height: 42px; border: 0; border-radius: 8px; background: var(--teal); color: #fff; font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; padding: .5rem 1rem; }
 .form-status { min-height: 1.5rem; margin: .2rem 0 0; color: var(--muted); font-size: .8rem; }
 .admin-toolbar { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 1rem; }
