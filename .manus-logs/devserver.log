@@ -4368,3 +4368,7 @@
 [2026-08-26T23:09:59.458Z] [wrangler:info] Ready on http://0.0.0.0:3000
 [2026-08-26T23:09:59.458Z] [wrangler:info] - http://127.0.0.1:3000
 [2026-08-26T23:09:59.458Z] [wrangler:info] - http://169.254.0.21:3000
+[2026-08-26T23:10:11.628Z] [wrangler:info] GET / 200 OK (432ms)
+[2026-08-26T23:10:12.544Z] [wrangler:info] GET /_astro/BaseLayout.Cl10eU_0.css 200 OK (8ms)
+[2026-08-26T23:10:12.546Z] [wrangler:info] GET /_astro/page.DDsIKVU2.js 200 OK (9ms)
+[2026-08-26T23:10:12.694Z] [wrangler:info] GET /api/public/push-config 200 OK (7ms)
