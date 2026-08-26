@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { builtInToolCatalog } from "../src/lib/tool-catalog";
+import { builtInToolCatalog, searchBuiltInTools } from "../src/lib/tool-catalog";
 
 describe("كتالوج الأدوات", () => {
   it("يعرض تعريفات أدوات حقيقية ذات مسار وغرض ووضع تشغيل معلن", () => {
@@ -7,5 +7,12 @@ describe("كتالوج الأدوات", () => {
     expect(builtInToolCatalog).toContainEqual(expect.objectContaining({ id: "age-calculator", href: "/tools/age-calculator", mode: "client" }));
     expect(builtInToolCatalog).toContainEqual(expect.objectContaining({ id: "date-offset", href: "/tools/date-offset", mode: "client" }));
     expect(builtInToolCatalog.every((tool) => tool.title.length > 4 && tool.description.length > 20)).toBe(true);
+  });
+
+  it("يعيد الأدوات المطابقة ببحث عربي مطبع من دون اختراع نتائج", () => {
+    expect(searchBuiltInTools("العمر").map((tool) => tool.id)).toEqual(["age-calculator"]);
+    expect(searchBuiltInTools("تاريخ بعد")[0]?.id).toBe("date-offset");
+    expect(searchBuiltInTools("الايام").map((tool) => tool.id)).toContain("date-difference");
+    expect(searchBuiltInTools("بوصلة فضائية")).toEqual([]);
   });
 });

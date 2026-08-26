@@ -1,3 +1,5 @@
+import { normalizeArabicSearch } from "./arabic-search";
+
 export type ToolCatalogEntry = {
   id: string;
   href: string;
@@ -33,3 +35,20 @@ export const builtInToolCatalog: ToolCatalogEntry[] = [
     mode: "client",
   },
 ];
+
+export function searchBuiltInTools(query: string) {
+  const normalized = normalizeArabicSearch(query);
+  if (normalized.length < 2) return [];
+  const words = normalized.split(" ").filter(Boolean);
+  return builtInToolCatalog
+    .map((tool) => {
+      const title = normalizeArabicSearch(tool.title);
+      const description = normalizeArabicSearch(`${tool.description} ${tool.category}`);
+      const titleHits = words.filter((word) => title.includes(word)).length;
+      const descriptionHits = words.filter((word) => description.includes(word)).length;
+      return { tool, score: titleHits * 3 + descriptionHits };
+    })
+    .filter((result) => result.score > 0)
+    .sort((left, right) => right.score - left.score || left.tool.title.localeCompare(right.tool.title, "ar"))
+    .map((result) => result.tool);
+}
