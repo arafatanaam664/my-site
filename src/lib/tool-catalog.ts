@@ -16,4 +16,12 @@ export const builtInToolCatalog: ToolCatalogEntry[] = [
     category: "التاريخ والحساب",
     mode: "client",
   },
+  {
+    id: "age-calculator",
+    href: "/tools/age-calculator",
+    title: "حاسبة العمر بالسنوات والأشهر والأيام",
+    description: "تحسب عمرك بين تاريخ الميلاد وتاريخ مرجعي تختاره داخل المتصفح، من دون إرسال التاريخين إلى الخادم.",
+    category: "التاريخ والحساب",
+    mode: "client",
+  },
 ];
