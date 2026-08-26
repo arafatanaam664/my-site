@@ -4044,3 +4044,5 @@
 [2026-08-26T20:23:47.560Z] [wrangler:info] GET /_astro/BaseLayout.Cl10eU_0.css 200 OK (7ms)
 [2026-08-26T20:23:47.610Z] [wrangler:info] GET /api/public/push-config 200 OK (12ms)
 [2026-08-26T20:23:47.729Z] [wrangler:info] GET /api/public/push-config 200 OK (7ms)
+[2026-08-26T20:24:21.945Z] [wrangler:info] GET / 200 OK (621ms)
+[2026-08-26T20:24:22.802Z] [wrangler:info] GET /api/public/push-config 200 OK (7ms)
