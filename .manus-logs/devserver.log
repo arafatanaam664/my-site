@@ -5829,3 +5829,10 @@
 [2026-08-26T19:48:10.732Z] [wrangler:info] - http://169.254.0.21:3000
 [2026-08-26T19:48:14.634Z] [wrangler:info] GET / 200 OK (549ms)
 [2026-08-26T19:48:15.502Z] [wrangler:info] GET /api/public/push-config 200 OK (20ms)
+[2026-08-26T19:48:43.289Z] [wrangler:info] GET / 200 OK (430ms)
+[2026-08-26T19:48:44.034Z] [wrangler:info] GET /api/public/push-config 200 OK (7ms)
+[2026-08-26T19:50:23.689Z] [wrangler:info] GET /guides/umm-al-qura-calendar-guide 200 OK (702ms)
+[2026-08-26T19:50:25.006Z] [wrangler:info] GET /api/public/push-config 200 OK (7ms)
+[2026-08-26T19:50:31.293Z] [wrangler:info] GET /media/c7dd0bb1-2e61-4bf3-aec7-4da52cd8374b 200 OK (6449ms)
+[2026-08-26T19:50:36.457Z] [wrangler:warn] Local cf.image transforms are a low-fidelity mock; only resize, rotate and format conversion are applied. Deploy to preview the full transformation.
+[2026-08-26T19:50:36.462Z] [wrangler:info] GET /media/c7dd0bb1-2e61-4bf3-aec7-4da52cd8374b 200 OK (11628ms)
