@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isPlatformFeatureFlag, platformFeatureDefinitions, publicFeatureSnapshot } from "../src/lib/platform-foundation";
+import { featureForPublicSection, isPlatformFeatureFlag, platformFeatureDefinitions, publicFeatureSnapshot } from "../src/lib/platform-foundation";
 
 describe("أساس المنصة ومفاتيح الميزات", () => {
   it("يبقي الوحدات الحساسة أو غير المكتملة موقوفة افتراضيًا", () => {
@@ -11,5 +11,12 @@ describe("أساس المنصة ومفاتيح الميزات", () => {
     expect(isPlatformFeatureFlag("social_publishing")).toBe(true);
     expect(isPlatformFeatureFlag("unknown_feature")).toBe(false);
     expect(publicFeatureSnapshot([{ flag: "content_core", enabled: true, public_visible: true }, { flag: "community", enabled: false, public_visible: false }])).toEqual([{ flag: "content_core", enabled: true }]);
+  });
+
+  it("يربط مسارات المحتوى والأدوات بمفاتيح إتاحة صريحة", () => {
+    expect(featureForPublicSection("articles")).toBe("content_core");
+    expect(featureForPublicSection("guides")).toBe("content_core");
+    expect(featureForPublicSection("tools")).toBe("tools_core");
+    expect(featureForPublicSection("unknown")).toBeNull();
   });
 });

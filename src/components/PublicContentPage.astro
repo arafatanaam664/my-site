@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ShareActions from "./ShareActions.astro";
 import { contentBlocks } from "../lib/content-blocks";
+import { publicFeatureState } from "../lib/server/feature-gates";
 import { mediaForId, relatedPublishedContent, type PublicContent } from "../lib/server/public-content";
 
 interface Props { content: PublicContent; section: "articles" | "guides" | "tools"; }
@@ -15,6 +17,7 @@ const publishedDate = new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle:
 const updatedDate = new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle: "long" }).format(new Date(content.updated_at));
 const schemaType = content.kind === "tool" ? "WebPage" : "Article";
 const related = await relatedPublishedContent(content.kind, content.id);
+const features = await publicFeatureState();
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": schemaType,
@@ -31,7 +34,7 @@ const jsonLd = {
 <BaseLayout title={title} description={description} canonical={canonical} image={image} pageType={content.kind === "tool" ? "website" : "article"} jsonLd={jsonLd}>
   <article class="public-article" data-analytics-content-id={content.id}>
     <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href={`/${section}`}>{section === "articles" ? "المقالات" : section === "guides" ? "الأدلة" : "الأدوات"}</a><span aria-hidden="true">/</span><span>{content.title}</span></nav>
-    <header class="article-header"><p class="eyebrow">{section === "articles" ? "مقال" : section === "guides" ? "دليل عملي" : "أداة"}</p><h1>{content.title}</h1>{content.excerpt && <p class="article-excerpt">{content.excerpt}</p>}<div class="article-dates"><span>نُشر في {publishedDate}</span><span>آخر تحديث {updatedDate}</span></div></header>
+    <header class="article-header"><p class="eyebrow">{section === "articles" ? "مقال" : section === "guides" ? "دليل عملي" : "أداة"}</p><h1>{content.title}</h1>{content.excerpt && <p class="article-excerpt">{content.excerpt}</p>}<div class="article-dates"><span>نُشر في {publishedDate}</span><span>آخر تحديث {updatedDate}</span></div>{features.social_sharing && <ShareActions title={content.title} url={canonical} />}</header>
     {primaryMedia && <figure class="article-hero"><img src={`/media/${primaryMedia.id}?preset=hero`} srcset={`/media/${primaryMedia.id}?preset=compact 480w, /media/${primaryMedia.id}?preset=standard 768w, /media/${primaryMedia.id}?preset=hero 1200w`} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 768px, 1200px" alt={primaryMedia.alt_text} width={primaryMedia.width} height={primaryMedia.height} fetchpriority="high" /><figcaption>{primaryMedia.alt_text}</figcaption></figure>}
     <div class="article-layout"><div class="article-body">{blocks.length ? blocks.map((block) => {
       if (block.type === "heading") return block.level === 3 ? <h3>{block.text}</h3> : <h2>{block.text}</h2>;

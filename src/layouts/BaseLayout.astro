@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import PushSubscriptionControl from "../components/PushSubscriptionControl.astro";
 import { defaultSiteNotice } from "../lib/platform-settings";
+import { publicFeatureState } from "../lib/server/feature-gates";
 import { publicSiteNotice } from "../lib/server/platform-settings";
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 const { title, description, canonical = "https://alshafra.com/", image, pageType = "website", noindex = false, jsonLd } = Astro.props;
 const safeJsonLd = jsonLd ? JSON.stringify(jsonLd).replace(/</g, "\\u003c") : null;
 const siteNotice = await publicSiteNotice().catch(() => defaultSiteNotice);
+const features = await publicFeatureState();
 ---
 
 <!doctype html>
@@ -41,12 +43,12 @@ const siteNotice = await publicSiteNotice().catch(() => defaultSiteNotice);
   <body>
     <header class="site-header">
       <a class="brand" href="/" aria-label="العودة إلى الرئيسية"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a>
-      <nav aria-label="التنقل الرئيسي"><a href="/#solutions">الحلول</a><a href="/tools/date-difference">الأدوات</a><a href="/guides">الأدلة</a><a href="/calendar/umm-al-qura">التقويم والمواعيد</a></nav>
+      <nav aria-label="التنقل الرئيسي"><a href="/#solutions">الحلول</a>{features.tools_core && <a href="/tools/date-difference">الأدوات</a>}{features.content_core && <a href="/guides">الأدلة</a>}<a href="/calendar/umm-al-qura">التقويم والمواعيد</a></nav>
       <a class="header-search" href="/search">ابحث في Alshafra <span aria-hidden="true">⌕</span></a>
     </header>
     {siteNotice.enabled && siteNotice.message && <aside class="site-notice" aria-label="تنبيه من المنصة"><p>{siteNotice.message}</p></aside>}
     <main><slot /></main>
-    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a><p>معلومات وأدوات عملية تساعدك على الوصول إلى خطوة واضحة.</p></div><div class="footer-links"><a href="/#solutions">الحلول</a><a href="/tools/date-difference">الأدوات</a><a href="/guides">الأدلة</a><a href="/calendar/umm-al-qura">التقويم والمواعيد</a></div><div class="footer-links footer-trust"><a href="/legal/about">من نحن</a><a href="/legal/privacy">الخصوصية</a><a href="/legal/terms">الشروط</a><a href="/legal/contact">اتصل بنا</a></div></footer>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a><p>معلومات وأدوات عملية تساعدك على الوصول إلى خطوة واضحة.</p></div><div class="footer-links"><a href="/#solutions">الحلول</a>{features.tools_core && <a href="/tools/date-difference">الأدوات</a>}{features.content_core && <a href="/guides">الأدلة</a>}<a href="/calendar/umm-al-qura">التقويم والمواعيد</a></div><div class="footer-links footer-trust"><a href="/legal/about">من نحن</a><a href="/legal/privacy">الخصوصية</a><a href="/legal/terms">الشروط</a><a href="/legal/contact">اتصل بنا</a></div></footer>
     <PushSubscriptionControl />
     <section class="consent-card" id="analytics-consent" hidden aria-label="خيارات قياس الزيارة"><p>نستخدم قياسًا مجهّلًا واختياريًا لفهم قراءة المحتوى وتحسينه. لا نرسل عنوان IP أو اسمك أو بصمة جهازك.</p><div><button type="button" id="analytics-allow">السماح بالقياس</button><button type="button" id="analytics-decline">عدم السماح</button><a href="/legal/privacy">سياسة الخصوصية</a></div></section>
     <script is:inline>

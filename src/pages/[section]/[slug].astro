@@ -1,5 +1,7 @@
 ---
 import PublicContentPage from "../../components/PublicContentPage.astro";
+import { featureForPublicSection } from "../../lib/platform-foundation";
+import { publicFeatureState } from "../../lib/server/feature-gates";
 import { publishedContent, type PublicContentKind } from "../../lib/server/public-content";
 
 export const prerender = false;
@@ -10,7 +12,8 @@ const routeMap: Record<string, { kind: PublicContentKind; section: "articles" | 
 };
 const mapping = Astro.params.section ? routeMap[Astro.params.section] : undefined;
 const slug = Astro.params.slug ?? "";
-const content = mapping && slug ? await publishedContent(mapping.kind, slug) : null;
+const features = await publicFeatureState(); const enabled = mapping ? features[featureForPublicSection(mapping.section) ?? "content_core"] : false;
+const content = mapping && enabled && slug ? await publishedContent(mapping.kind, slug) : null;
 if (!content) Astro.response.status = 404;
 ---
 

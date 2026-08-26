@@ -5,7 +5,7 @@ export const platformFeatureDefinitions = [
   { flag: "member_accounts", label: "حسابات الأعضاء", defaultEnabled: false, publicVisible: false },
   { flag: "comments", label: "التعليقات", defaultEnabled: false, publicVisible: false },
   { flag: "opportunities", label: "الفرص والمنح", defaultEnabled: false, publicVisible: false },
-  { flag: "social_sharing", label: "مشاركة المحتوى", defaultEnabled: false, publicVisible: false },
+  { flag: "social_sharing", label: "مشاركة المحتوى", defaultEnabled: false, publicVisible: true },
   { flag: "social_publishing", label: "النشر الاجتماعي", defaultEnabled: false, publicVisible: false },
   { flag: "automation", label: "الأتمتة", defaultEnabled: false, publicVisible: false },
   { flag: "scheduled_publishing", label: "النشر المجدول", defaultEnabled: false, publicVisible: false },
@@ -13,6 +13,12 @@ export const platformFeatureDefinitions = [
 ] as const;
 
 export type PlatformFeatureFlag = (typeof platformFeatureDefinitions)[number]["flag"];
+
+export function featureForPublicSection(section: string): PlatformFeatureFlag | null {
+  if (section === "articles" || section === "guides") return "content_core";
+  if (section === "tools") return "tools_core";
+  return null;
+}
 
 export function isPlatformFeatureFlag(value: unknown): value is PlatformFeatureFlag {
   return typeof value === "string" && platformFeatureDefinitions.some((definition) => definition.flag === value);
