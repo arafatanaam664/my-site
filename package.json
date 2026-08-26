@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "astro build && astro preview --host 0.0.0.0 --port 3000",
+    "dev": "astro build && wrangler dev --config dist/server/wrangler.json --ip 0.0.0.0 --port 3000",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
