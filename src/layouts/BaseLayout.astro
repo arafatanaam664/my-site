@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 import PushSubscriptionControl from "../components/PushSubscriptionControl.astro";
+import { defaultSiteNotice } from "../lib/platform-settings";
+import { publicSiteNotice } from "../lib/server/platform-settings";
 
 interface Props {
   title: string;
@@ -14,6 +16,7 @@ interface Props {
 
 const { title, description, canonical = "https://alshafra.com/", image, pageType = "website", noindex = false, jsonLd } = Astro.props;
 const safeJsonLd = jsonLd ? JSON.stringify(jsonLd).replace(/</g, "\\u003c") : null;
+const siteNotice = await publicSiteNotice().catch(() => defaultSiteNotice);
 ---
 
 <!doctype html>
@@ -41,6 +44,7 @@ const safeJsonLd = jsonLd ? JSON.stringify(jsonLd).replace(/</g, "\\u003c") : nu
       <nav aria-label="التنقل الرئيسي"><a href="/#solutions">الحلول</a><a href="/tools/date-difference">الأدوات</a><a href="/guides">الأدلة</a><a href="/calendar/umm-al-qura">التقويم والمواعيد</a></nav>
       <a class="header-search" href="/search">ابحث في Alshafra <span aria-hidden="true">⌕</span></a>
     </header>
+    {siteNotice.enabled && siteNotice.message && <aside class="site-notice" aria-label="تنبيه من المنصة"><p>{siteNotice.message}</p></aside>}
     <main><slot /></main>
     <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a><p>معلومات وأدوات عملية تساعدك على الوصول إلى خطوة واضحة.</p></div><div class="footer-links"><a href="/#solutions">الحلول</a><a href="/tools/date-difference">الأدوات</a><a href="/guides">الأدلة</a><a href="/calendar/umm-al-qura">التقويم والمواعيد</a></div><div class="footer-links footer-trust"><a href="/legal/about">من نحن</a><a href="/legal/privacy">الخصوصية</a><a href="/legal/terms">الشروط</a><a href="/legal/contact">اتصل بنا</a></div></footer>
     <PushSubscriptionControl />

@@ -62,7 +62,7 @@ describe("اتصال Supabase", () => {
   });
 
   it("يتحقق من وجود جميع طبقات المنصة المشتركة دون تعديل بيانات", async () => {
-    const [typesResponse, categoriesResponse, tagsResponse, entitiesResponse, flagsResponse, auditResponse, eventsResponse] = await Promise.all([
+    const [typesResponse, categoriesResponse, tagsResponse, entitiesResponse, flagsResponse, auditResponse, eventsResponse, settingsResponse, settingsAuditResponse] = await Promise.all([
       fetch(`${supabaseUrl}/rest/v1/content_types?select=id,handle&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
       fetch(`${supabaseUrl}/rest/v1/content_categories?select=id,slug&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
       fetch(`${supabaseUrl}/rest/v1/content_tags?select=id,slug&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
@@ -70,6 +70,8 @@ describe("اتصال Supabase", () => {
       fetch(`${supabaseUrl}/rest/v1/feature_flags?select=flag,enabled&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
       fetch(`${supabaseUrl}/rest/v1/feature_flag_audit?select=id,flag&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
       fetch(`${supabaseUrl}/rest/v1/platform_events?select=id,event_type&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/platform_settings?select=setting_key,visibility&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/platform_setting_audit?select=id,setting_key&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
     ]);
     expect(typesResponse.status, `لم يمكن الوصول إلى جدول content_types، حالة HTTP ${typesResponse.status}`).toBeLessThan(400);
     expect(categoriesResponse.status, `لم يمكن الوصول إلى جدول content_categories، حالة HTTP ${categoriesResponse.status}`).toBeLessThan(400);
@@ -78,5 +80,7 @@ describe("اتصال Supabase", () => {
     expect(flagsResponse.status, `لم يمكن الوصول إلى جدول feature_flags، حالة HTTP ${flagsResponse.status}`).toBeLessThan(400);
     expect(auditResponse.status, `لم يمكن الوصول إلى جدول feature_flag_audit، حالة HTTP ${auditResponse.status}`).toBeLessThan(400);
     expect(eventsResponse.status, `لم يمكن الوصول إلى جدول platform_events، حالة HTTP ${eventsResponse.status}`).toBeLessThan(400);
+    expect(settingsResponse.status, `لم يمكن الوصول إلى جدول platform_settings، حالة HTTP ${settingsResponse.status}`).toBeLessThan(400);
+    expect(settingsAuditResponse.status, `لم يمكن الوصول إلى جدول platform_setting_audit، حالة HTTP ${settingsAuditResponse.status}`).toBeLessThan(400);
   });
 });

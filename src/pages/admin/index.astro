@@ -16,16 +16,20 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <p class="form-status" id="auth-status" aria-live="polite"></p>
     </section>
 
-    <section class="admin-panel" id="dashboard" hidden>
-      <div class="admin-toolbar"><div><span class="eyebrow">المحتوى</span><h2>المسودات والمواد المنشورة</h2></div><div class="admin-toolbar-actions"><button type="button" id="refresh-content" class="subtle-button">تحديث القائمة</button><button type="button" id="admin-logout" class="subtle-button">تسجيل الخروج</button></div></div>
-      <section class="analytics-panel"><div class="admin-toolbar"><div><span class="eyebrow">تحليلات خصوصية</span><h2>أداء المحتوى</h2><p>تعتمد هذه الأرقام على الزوار الذين اختاروا القياس المجهّل. لا تُعرض أي بيانات شخصية أو سجلات متخيلة.</p></div><label class="analytics-range" for="analytics-range">الفترة<select id="analytics-range"><option value="day">آخر 24 ساعة</option><option value="week">آخر 7 أيام</option><option value="month" selected>آخر 30 يومًا</option><option value="year">آخر 12 شهرًا</option></select></label></div><div class="analytics-totals" id="analytics-totals"><p>يجري تحميل التقرير…</p></div><div class="analytics-table-wrap"><table><thead><tr><th>الصفحة أو المادة</th><th>مشاهدات</th><th>زيارات مجهّلة</th><th>بلغ 50%</th><th>إكمال القراءة</th><th>متوسط القراءة</th></tr></thead><tbody id="analytics-rows"><tr><td colspan="6">لا توجد بيانات معروضة بعد.</td></tr></tbody></table></div></section>
-      <section class="admin-card" id="feature-flags-panel" hidden><div class="admin-toolbar"><div><span class="eyebrow">إتاحة المنصة</span><h2>مفاتيح الميزات</h2><p>لا تفعّل أي وحدة قبل اكتمال واجهتها وصلاحياتها واختباراتها. لا تظهر الوحدات الموقوفة للجمهور.</p></div></div><div id="feature-flags-list" class="feature-flags-list"></div><p class="form-status" id="feature-flags-status" aria-live="polite"></p></section>
-      <div class="admin-grid">
+    <section class="admin-panel admin-console" id="dashboard" hidden>
+      <div class="admin-console-top"><div><span class="eyebrow">غرفة العمليات</span><h2>مرحبًا بك في لوحة Alshafra</h2><p>نظرة عملية على المحتوى والقياس وإتاحة الوحدات، من دون أرقام مصطنعة أو وعود غير قابلة للتحقق.</p></div><button type="button" id="admin-logout" class="subtle-button">تسجيل الخروج</button></div>
+      <div class="admin-console-layout"><aside class="admin-sidebar" aria-label="تنقل لوحة الإدارة"><div class="admin-sidebar-label">مساحة العمل</div><button type="button" class="admin-nav-button" data-admin-nav="overview" aria-current="page"><span aria-hidden="true">◈</span> الملخص</button><button type="button" class="admin-nav-button" data-admin-nav="content"><span aria-hidden="true">✎</span> المحتوى</button><button type="button" class="admin-nav-button" data-admin-nav="analytics"><span aria-hidden="true">⌁</span> القياس</button><button type="button" class="admin-nav-button" data-admin-nav="settings" id="admin-settings-nav"><span aria-hidden="true">⚙</span> الإعدادات</button><div class="admin-sidebar-note"><strong>سير العمل</strong><span>مسودة ← مراجعة ← اعتماد ← نشر</span></div></aside><div class="admin-console-content">
+      <section class="admin-overview" id="admin-overview" data-admin-view="overview"><div class="admin-view-heading"><div><span class="eyebrow">الملخص</span><h3>ابدأ من خطوة واضحة</h3><p>تعرض هذه الصفحة ما يتوفر فعلًا في المنصة، وتوجّهك إلى الإجراء التالي بدل ملئها بمؤشرات افتراضية.</p></div><button type="button" id="open-draft-composer">مادة جديدة</button></div><div class="admin-overview-metrics"><article><span>مسودات قابلة للعمل</span><strong id="overview-drafts">—</strong><small>من قائمة المحتوى الحالية</small></article><article><span>مواد منشورة</span><strong id="overview-published">—</strong><small>تظهر فقط بعد النشر المعتمد</small></article><article><span>زيارات مجهّلة</span><strong id="overview-visits">—</strong><small>ضمن الفترة المختارة للقياس</small></article></div><div class="admin-next-actions"><article><span class="eyebrow">الإجراء التالي</span><h4 id="overview-next-step">أنشئ مسودة موثقة لتبدأ دورة التحرير.</h4><p>أضف النص والمصدر والصورة الرئيسية ثم مرّر المادة عبر المراجعة قبل النشر.</p><button type="button" class="subtle-button" id="open-content-queue">فتح طابور المحتوى</button></article><article><span class="eyebrow">حالة الإتاحة</span><h4>الوحدات الجديدة تبقى متوقفة</h4><p>يمكن للمدير فقط تفعيل وحدة بعد اكتمال واجهتها واختبارها؛ لا تظهر الوظائف غير الجاهزة للزائر.</p><button type="button" class="subtle-button" id="open-settings-workspace">عرض الإعدادات</button></article></div></section>
+      <div class="admin-toolbar" data-admin-view="content" hidden><div><span class="eyebrow">المحتوى</span><h2>طابور التحرير</h2><p>أنشئ المواد، راجعها، ثم انشرها فقط بعد اكتمال معايير الجودة.</p></div><div class="admin-toolbar-actions"><button type="button" id="refresh-content" class="subtle-button">تحديث القائمة</button><button type="button" id="open-draft-from-toolbar">مسودة جديدة</button></div></div>
+      <section class="analytics-panel" data-admin-view="analytics" hidden><div class="admin-toolbar"><div><span class="eyebrow">تحليلات خصوصية</span><h2>أداء المحتوى</h2><p>تعتمد هذه الأرقام على الزوار الذين اختاروا القياس المجهّل. لا تُعرض أي بيانات شخصية أو سجلات متخيلة.</p></div><label class="analytics-range" for="analytics-range">الفترة<select id="analytics-range"><option value="day">آخر 24 ساعة</option><option value="week">آخر 7 أيام</option><option value="month" selected>آخر 30 يومًا</option><option value="year">آخر 12 شهرًا</option></select></label></div><div class="analytics-totals" id="analytics-totals"><p>يجري تحميل التقرير…</p></div><div class="analytics-table-wrap"><table><thead><tr><th>الصفحة أو المادة</th><th>مشاهدات</th><th>زيارات مجهّلة</th><th>بلغ 50%</th><th>إكمال القراءة</th><th>متوسط القراءة</th></tr></thead><tbody id="analytics-rows"><tr><td colspan="6">لا توجد بيانات معروضة بعد.</td></tr></tbody></table></div></section>
+      <section class="admin-card" id="feature-flags-panel" data-admin-view="settings" hidden><div class="admin-toolbar"><div><span class="eyebrow">إتاحة المنصة</span><h2>مفاتيح الميزات</h2><p>لا تفعّل أي وحدة قبل اكتمال واجهتها وصلاحياتها واختباراتها. لا تظهر الوحدات الموقوفة للجمهور.</p></div></div><div id="feature-flags-list" class="feature-flags-list"></div><p class="form-status" id="feature-flags-status" aria-live="polite"></p></section>
+      <section class="admin-card" id="platform-settings-panel" data-admin-view="settings" hidden><div class="admin-toolbar"><div><span class="eyebrow">إعدادات المنصة</span><h2>التنبيه العام</h2><p>رسالة مؤقتة واضحة للزوار عند الحاجة. لا تستخدمها للوعود أو المعلومات الحساسة.</p></div></div><form id="site-notice-form"><label class="feature-flag-control"><input id="site-notice-enabled" type="checkbox" /><span>إظهار التنبيه للزوار</span></label><label for="site-notice-message">نص التنبيه</label><textarea id="site-notice-message" maxlength="240" placeholder="مثال: قد تتأخر بعض التحديثات المؤقتة اليوم."></textarea><button type="submit">حفظ التنبيه</button></form><p class="form-status" id="platform-settings-status" aria-live="polite"></p></section>
+      <div class="admin-grid" data-admin-view="content" hidden>
         <form id="new-draft-form" class="admin-card"><h3>مسودة جديدة</h3><label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><fieldset class="media-fieldset"><legend>الصورة الرئيسية (اختياري)</legend><label for="primary-image">ملف الصورة</label><input id="primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="primary-image-alt">وصف بديل للصورة</label><input id="primary-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><p class="field-note">JPEG أو PNG أو WebP أو AVIF، حتى 10MB. لا تُستخدم الصورة إلا بعد ربطها بالمادة.</p></fieldset><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
         <div class="admin-card"><h3>آخر المواد</h3><ul id="content-list" class="content-list"><li>يجري تحميل المحتوى…</li></ul></div>
       </div>
 
-      <section class="admin-editor" id="editor-panel" hidden>
+      <section class="admin-editor" id="editor-panel" data-admin-view="content" hidden>
         <div class="admin-toolbar"><div><span class="eyebrow">تحرير</span><h2 id="editor-heading">المسودة</h2></div><p class="status-pill" id="workflow-status">مسودة</p></div>
         <form id="edit-draft-form" class="editor-form">
           <div class="editor-main"><label for="edit-title">العنوان</label><input id="edit-title" minlength="15" maxlength="160" required /><label for="edit-excerpt">الوصف المختصر</label><textarea id="edit-excerpt" maxlength="320"></textarea><label for="edit-body">نص المادة</label><textarea id="edit-body" class="content-textarea" maxlength="100000" placeholder="اكتب المحتوى بصيغة Markdown. استخدم زر الصورة لإدراجها في موضع المؤشر."></textarea><fieldset class="media-fieldset"><legend>صورة داخل النص</legend><label for="inline-image">ملف الصورة</label><input id="inline-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="inline-image-alt">وصف بديل للصورة</label><input id="inline-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><button type="button" class="inline-media-button" id="insert-inline-image">رفع وإدراج عند موضع المؤشر</button><p class="field-note" id="inline-image-status" aria-live="polite">احفظ المسودة بعد الإدراج لتربط الصورة بالمادة.</p></fieldset><fieldset class="media-fieldset"><legend>استبدال الصورة الرئيسية</legend><label for="edit-primary-image">ملف الصورة</label><input id="edit-primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="edit-primary-image-alt">وصف بديل للصورة الجديدة</label><input id="edit-primary-image-alt" minlength="5" maxlength="180" placeholder="اكتب هذا الوصف فقط عند اختيار ملف جديد" /></fieldset></div>
@@ -35,6 +39,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <section class="source-manager"><div class="admin-toolbar"><div><span class="eyebrow">التوثيق</span><h3>مصادر المادة</h3></div><button type="button" class="subtle-button" id="add-source">إضافة مصدر</button></div><div id="source-list" class="source-list"></div><button type="button" id="save-sources" class="source-save">حفظ المصادر</button><p class="form-status" id="source-status" aria-live="polite"></p></section>
         <section class="revision-history"><div><span class="eyebrow">التدقيق</span><h3>سجل المراجعات</h3></div><ol id="history-list" class="history-list"><li>افتح مادة لعرض سجلها.</li></ol></section>
       </section>
+      </div></div>
     </section>
   </section>
 </BaseLayout>
@@ -67,15 +72,29 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   const featureFlagsPanel = document.querySelector<HTMLElement>("#feature-flags-panel")!;
   const featureFlagsList = document.querySelector<HTMLElement>("#feature-flags-list")!;
   const featureFlagsStatus = document.querySelector<HTMLElement>("#feature-flags-status")!;
+  const platformSettingsPanel = document.querySelector<HTMLElement>("#platform-settings-panel")!;
+  const platformSettingsStatus = document.querySelector<HTMLElement>("#platform-settings-status")!;
+  const overviewDrafts = document.querySelector<HTMLElement>("#overview-drafts")!;
+  const overviewPublished = document.querySelector<HTMLElement>("#overview-published")!;
+  const overviewVisits = document.querySelector<HTMLElement>("#overview-visits")!;
+  const overviewNextStep = document.querySelector<HTMLElement>("#overview-next-step")!;
   let supabase: ReturnType<typeof createClient> | null = null;
   let currentDraft: ContentDraft | null = null;
   let magicLinkRedirectUrl = "";
   let developmentAccessAvailable = false;
   let usingDevelopmentAccess = false;
+  let activeAdminView = "overview";
 
   const field = <T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(selector: string) => document.querySelector<T>(selector)!;
   const statusLabels: Record<string, string> = { draft: "مسودة", in_review: "قيد المراجعة", approved: "معتمدة", published: "منشورة", archived: "مؤرشفة" };
   const nextStatus: Record<string, { status: string; label: string } | undefined> = { draft: { status: "in_review", label: "إرسال للمراجعة" }, in_review: { status: "approved", label: "اعتماد المادة" }, approved: { status: "published", label: "نشر المادة" }, published: { status: "archived", label: "أرشفة المادة" } };
+
+  function activateAdminView(view: string) {
+    activeAdminView = view;
+    for (const panel of document.querySelectorAll<HTMLElement>("[data-admin-view]")) panel.hidden = panel.dataset.adminView !== view;
+    for (const button of document.querySelectorAll<HTMLButtonElement>("[data-admin-nav]")) { const active = button.dataset.adminNav === view; button.classList.toggle("is-active", active); if (active) button.setAttribute("aria-current", "page"); else button.removeAttribute("aria-current"); }
+    if (view === "content") { editorPanel.hidden = currentDraft === null; }
+  }
 
   async function authHeaders(): Promise<Record<string, string> | null> {
     if (usingDevelopmentAccess) return { "content-type": "application/json" };
@@ -87,6 +106,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
   function renderContentList(items: ContentSummary[]) {
     contentList.replaceChildren();
+    const drafts = items.filter((item) => item.status === "draft" || item.status === "in_review" || item.status === "approved").length; const published = items.filter((item) => item.status === "published").length; overviewDrafts.textContent = arabicNumber(drafts); overviewPublished.textContent = arabicNumber(published); overviewNextStep.textContent = !items.length ? "أنشئ مسودة موثقة لتبدأ دورة التحرير." : drafts ? "راجع المواد التي ما زالت ضمن طابور التحرير." : "أنشئ المادة التالية وفق معيار النشر الموثق.";
     if (!items.length) { const empty = document.createElement("li"); empty.textContent = "لا توجد مواد بعد. أنشئ أول مسودة من النموذج."; contentList.append(empty); return; }
     for (const item of items) {
       const li = document.createElement("li");
@@ -107,7 +127,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     return "تعذر طلب رابط الدخول من خدمة Auth. راجع إعدادات البريد ورابط إعادة التوجيه في Supabase.";
   }
   function renderAnalytics(report: { total: { pageViews: number; visits: number; completedReads: number; toolUses: number; averageReadSeconds: number }; pages: Array<{ path: string; title: string | null; pageViews: number; visits: number; read50: number; completionRate: number; averageReadSeconds: number }> }) {
-    analyticsTotals.replaceChildren(); for (const [label, value] of [["مشاهدات", arabicNumber(report.total.pageViews)], ["زيارات مجهّلة", arabicNumber(report.total.visits)], ["قراءات مكتملة", arabicNumber(report.total.completedReads)], ["استخدام أدوات", arabicNumber(report.total.toolUses)], ["متوسط القراءة", readTime(report.total.averageReadSeconds)]]) { const card = document.createElement("div"); const title = document.createElement("span"); title.textContent = label; const number = document.createElement("strong"); number.textContent = value; card.append(title, number); analyticsTotals.append(card); }
+    overviewVisits.textContent = arabicNumber(report.total.visits); analyticsTotals.replaceChildren(); for (const [label, value] of [["مشاهدات", arabicNumber(report.total.pageViews)], ["زيارات مجهّلة", arabicNumber(report.total.visits)], ["قراءات مكتملة", arabicNumber(report.total.completedReads)], ["استخدام أدوات", arabicNumber(report.total.toolUses)], ["متوسط القراءة", readTime(report.total.averageReadSeconds)]]) { const card = document.createElement("div"); const title = document.createElement("span"); title.textContent = label; const number = document.createElement("strong"); number.textContent = value; card.append(title, number); analyticsTotals.append(card); }
     analyticsRows.replaceChildren(); if (!report.pages.length) { const row = document.createElement("tr"); const cell = document.createElement("td"); cell.colSpan = 6; cell.textContent = "لا توجد أحداث مقاسة في هذه الفترة حتى الآن."; row.append(cell); analyticsRows.append(row); return; } for (const page of report.pages) { const row = document.createElement("tr"); for (const value of [page.title || page.path, arabicNumber(page.pageViews), arabicNumber(page.visits), arabicNumber(page.read50), `${arabicNumber(page.completionRate)}%`, readTime(page.averageReadSeconds)]) { const cell = document.createElement("td"); cell.textContent = value; row.append(cell); } analyticsRows.append(row); }
   }
   async function loadAnalytics() { const headers = await authHeaders(); if (!headers) return; analyticsTotals.textContent = "يجري تحميل التقرير…"; const range = field<HTMLSelectElement>("#analytics-range").value; const response = await fetch(`/api/admin/analytics?range=${range}`, { headers }); const result = await response.json(); if (!response.ok) { analyticsTotals.textContent = result.error ?? "تعذر تحميل التقرير."; return; } renderAnalytics(result.data); }
@@ -123,7 +143,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     }
   }
 
-  async function loadFeatureFlags() { const headers = await authHeaders(); if (!headers) return; const response = await fetch("/api/admin/platform/features", { headers }); if (response.status === 403) { featureFlagsPanel.hidden = true; return; } const result = await response.json(); if (!response.ok) { featureFlagsPanel.hidden = false; featureFlagsStatus.textContent = result.error ?? "تعذر تحميل مفاتيح الميزات."; return; } featureFlagsPanel.hidden = false; renderFeatureFlags(result.data); }
+  async function loadFeatureFlags() { const headers = await authHeaders(); if (!headers) return; const response = await fetch("/api/admin/platform/features", { headers }); if (response.status === 403) { featureFlagsPanel.hidden = true; return; } const result = await response.json(); if (!response.ok) { featureFlagsPanel.hidden = activeAdminView !== "settings"; featureFlagsStatus.textContent = result.error ?? "تعذر تحميل مفاتيح الميزات."; return; } featureFlagsPanel.hidden = activeAdminView !== "settings"; renderFeatureFlags(result.data); }
+  async function loadPlatformSettings() { const headers = await authHeaders(); if (!headers) return; const response = await fetch("/api/admin/platform/settings", { headers }); if (response.status === 403) { platformSettingsPanel.hidden = true; return; } const result = await response.json(); if (!response.ok) { platformSettingsPanel.hidden = activeAdminView !== "settings"; platformSettingsStatus.textContent = result.error ?? "تعذر تحميل إعدادات المنصة."; return; } const notice = (result.data as Array<{ setting_key: string; value: { enabled?: boolean; message?: string } }>).find((setting) => setting.setting_key === "site_notice"); field<HTMLInputElement>("#site-notice-enabled").checked = notice?.value.enabled === true; field<HTMLTextAreaElement>("#site-notice-message").value = typeof notice?.value.message === "string" ? notice.value.message : ""; platformSettingsPanel.hidden = activeAdminView !== "settings"; }
 
   async function loadContent() {
     const headers = await authHeaders(); if (!headers) return;
@@ -213,12 +234,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     field<HTMLInputElement>("#edit-canonical").value = currentDraft.canonical_url ?? "";
     field<HTMLTextAreaElement>("#edit-note").value = "";
     field<HTMLInputElement>("#edit-primary-image").value = ""; field<HTMLInputElement>("#edit-primary-image-alt").value = "";
-    editStatus.textContent = ""; workflowMessage.textContent = ""; editorPanel.hidden = false; renderWorkflow(); await Promise.all([loadSources(), loadHistory()]); editorPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    editStatus.textContent = ""; workflowMessage.textContent = ""; activateAdminView("content"); editorPanel.hidden = false; renderWorkflow(); await Promise.all([loadSources(), loadHistory()]); editorPanel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   async function establishSession() {
     if (!supabase) return; const developmentResponse = await fetch("/api/admin/development-access"); const development = developmentResponse.ok ? await developmentResponse.json() as { data: { authenticated: boolean } } : { data: { authenticated: false } }; const { data } = await supabase.auth.getSession(); usingDevelopmentAccess = development.data.authenticated; if (!data.session && !usingDevelopmentAccess) return;
-    authCard.hidden = true; dashboard.hidden = false; await Promise.all([loadContent(), loadAnalytics(), loadFeatureFlags()]);
+    authCard.hidden = true; dashboard.hidden = false; activateAdminView("overview"); await Promise.all([loadContent(), loadAnalytics(), loadFeatureFlags(), loadPlatformSettings()]);
   }
 
   document.querySelector<HTMLFormElement>("#magic-link-form")!.addEventListener("submit", async (event) => {
@@ -233,6 +254,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     if (!response.ok) { developmentAccessStatus.textContent = result.error ?? "تعذر فتح جلسة التطوير."; return; }
     field<HTMLInputElement>("#development-access-code").value = ""; developmentAccessStatus.textContent = "تم فتح جلسة التطوير."; await establishSession();
   });
+  document.querySelector<HTMLFormElement>("#site-notice-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; platformSettingsStatus.textContent = "يجري حفظ التنبيه…"; const value = { enabled: field<HTMLInputElement>("#site-notice-enabled").checked, message: field<HTMLTextAreaElement>("#site-notice-message").value }; const response = await fetch("/api/admin/platform/settings", { method: "PATCH", headers, body: JSON.stringify({ settingKey: "site_notice", value }) }); const result = await response.json(); platformSettingsStatus.textContent = response.ok ? "تم حفظ التنبيه العام." : result.error ?? "تعذر حفظ التنبيه."; });
 
   document.querySelector<HTMLFormElement>("#new-draft-form")!.addEventListener("submit", async (event) => {
     event.preventDefault(); const headers = await authHeaders(); if (!headers) return; draftStatus.textContent = "يجري حفظ المسودة…";
@@ -285,6 +307,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   });
 
   document.querySelector<HTMLButtonElement>("#refresh-content")!.addEventListener("click", () => void loadContent());
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-admin-nav]")) button.addEventListener("click", () => activateAdminView(button.dataset.adminNav ?? "overview"));
+  const openDraftComposer = () => { activateAdminView("content"); field<HTMLInputElement>("#draft-title").focus(); };
+  document.querySelector<HTMLButtonElement>("#open-draft-composer")!.addEventListener("click", openDraftComposer);
+  document.querySelector<HTMLButtonElement>("#open-draft-from-toolbar")!.addEventListener("click", openDraftComposer);
+  document.querySelector<HTMLButtonElement>("#open-content-queue")!.addEventListener("click", () => activateAdminView("content"));
+  document.querySelector<HTMLButtonElement>("#open-settings-workspace")!.addEventListener("click", () => activateAdminView("settings"));
   document.querySelector<HTMLButtonElement>("#admin-logout")!.addEventListener("click", async () => { await fetch("/api/admin/development-access", { method: "DELETE" }); await supabase?.auth.signOut(); window.location.reload(); });
   field<HTMLSelectElement>("#analytics-range").addEventListener("change", () => void loadAnalytics());
   void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } const config = await response.json(); magicLinkRedirectUrl = config.authRedirectUrl; developmentAccessAvailable = config.developmentAccessEnabled === true; developmentAccessCard.hidden = !developmentAccessAvailable; supabase = createClient(config.url, config.publishableKey); await establishSession(); })();

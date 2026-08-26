@@ -13,6 +13,7 @@ describe("رسائل دخول الإدارة وإعداد المعاينة", () 
     expect(adminPage).toContain("تعذر تحميل وظائف الإدارة في هذه المعاينة");
     expect(adminPage).toContain("دخول التطوير المؤقت");
     expect(adminPage).toContain("/api/admin/development-access");
+    expect(adminPage).toContain("/api/admin/platform/settings");
     expect(runtime).toContain("VITE_SUPABASE_URL");
     expect(runtime).toContain("VITE_SUPABASE_PUBLISHABLE_KEY");
   });
