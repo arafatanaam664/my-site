@@ -16,8 +16,13 @@ type RequiredRuntimeSecrets = {
 
 function environmentValues(): Partial<RequiredRuntimeSecrets> {
   const local = typeof process !== "undefined" ? (process.env as Partial<RequiredRuntimeSecrets>) : {};
+  const buildPublic = import.meta.env as Record<string, string | undefined>;
+  const publicValues: Partial<RequiredRuntimeSecrets> = {
+    SUPABASE_URL: buildPublic.VITE_SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY: buildPublic.VITE_SUPABASE_PUBLISHABLE_KEY,
+  };
   const workerValues = Object.fromEntries(Object.entries(env as unknown as Record<string, string | undefined>).filter(([, value]) => Boolean(value))) as Partial<RequiredRuntimeSecrets>;
-  return { ...local, ...workerValues };
+  return { ...publicValues, ...local, ...workerValues };
 }
 
 export function runtimeSecrets(): RequiredRuntimeSecrets {

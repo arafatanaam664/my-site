@@ -62,6 +62,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   const analyticsRows = document.querySelector<HTMLTableSectionElement>("#analytics-rows")!;
   let supabase: ReturnType<typeof createClient> | null = null;
   let currentDraft: ContentDraft | null = null;
+  let magicLinkRedirectUrl = "";
 
   const field = <T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(selector: string) => document.querySelector<T>(selector)!;
   const statusLabels: Record<string, string> = { draft: "مسودة", in_review: "قيد المراجعة", approved: "معتمدة", published: "منشورة", archived: "مؤرشفة" };
@@ -88,6 +89,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
   function arabicNumber(value: number) { return new Intl.NumberFormat("ar-SA").format(value); }
   function readTime(value: number) { return value ? `${arabicNumber(value)} ثانية` : "—"; }
+  function loginErrorMessage(error: { code?: string; message?: string } | null) {
+    if (error?.code === "email_provider_disabled") return "إرسال البريد غير مفعّل في إعدادات Auth الخاصة بالمنصة.";
+    if (error?.code === "over_email_send_rate_limit") return "تجاوزت خدمة الدخول حد إرسال الرسائل مؤقتًا. حاول بعد بضع دقائق.";
+    if (error?.code === "email_address_invalid") return "تحقق من صيغة البريد الإلكتروني ثم حاول مجددًا.";
+    return "تعذر طلب رابط الدخول من خدمة Auth. راجع إعدادات البريد ورابط إعادة التوجيه في Supabase.";
+  }
   function renderAnalytics(report: { total: { pageViews: number; visits: number; completedReads: number; toolUses: number; averageReadSeconds: number }; pages: Array<{ path: string; title: string | null; pageViews: number; visits: number; read50: number; completionRate: number; averageReadSeconds: number }> }) {
     analyticsTotals.replaceChildren(); for (const [label, value] of [["مشاهدات", arabicNumber(report.total.pageViews)], ["زيارات مجهّلة", arabicNumber(report.total.visits)], ["قراءات مكتملة", arabicNumber(report.total.completedReads)], ["استخدام أدوات", arabicNumber(report.total.toolUses)], ["متوسط القراءة", readTime(report.total.averageReadSeconds)]]) { const card = document.createElement("div"); const title = document.createElement("span"); title.textContent = label; const number = document.createElement("strong"); number.textContent = value; card.append(title, number); analyticsTotals.append(card); }
     analyticsRows.replaceChildren(); if (!report.pages.length) { const row = document.createElement("tr"); const cell = document.createElement("td"); cell.colSpan = 6; cell.textContent = "لا توجد أحداث مقاسة في هذه الفترة حتى الآن."; row.append(cell); analyticsRows.append(row); return; } for (const page of report.pages) { const row = document.createElement("tr"); for (const value of [page.title || page.path, arabicNumber(page.pageViews), arabicNumber(page.visits), arabicNumber(page.read50), `${arabicNumber(page.completionRate)}%`, readTime(page.averageReadSeconds)]) { const cell = document.createElement("td"); cell.textContent = value; row.append(cell); } analyticsRows.append(row); }
@@ -193,7 +200,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   document.querySelector<HTMLFormElement>("#magic-link-form")!.addEventListener("submit", async (event) => {
     event.preventDefault(); const email = field<HTMLInputElement>("#editor-email").value; authStatus.textContent = "يجري إرسال الرابط…";
     if (!supabase) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; }
-    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}/admin` } }); authStatus.textContent = error ? "تعذر إرسال رابط الدخول. تحقق من إعدادات Auth والبريد." : "أُرسل رابط الدخول إلى بريدك. افتحه ثم عد إلى هذه الصفحة.";
+    if (!magicLinkRedirectUrl) { authStatus.textContent = "تعذر تحديد رابط العودة الآمن لهذه المعاينة."; return; }
+    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: magicLinkRedirectUrl } }); authStatus.textContent = error ? loginErrorMessage(error) : "تم طلب رابط الدخول. تحقق من صندوق الوارد والبريد غير المرغوب فيه، ثم افتح الرابط وعد إلى هذه الصفحة.";
   });
 
   document.querySelector<HTMLFormElement>("#new-draft-form")!.addEventListener("submit", async (event) => {
@@ -248,5 +256,5 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
   document.querySelector<HTMLButtonElement>("#refresh-content")!.addEventListener("click", () => void loadContent());
   field<HTMLSelectElement>("#analytics-range").addEventListener("change", () => void loadAnalytics());
-  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } const config = await response.json(); supabase = createClient(config.url, config.publishableKey); await establishSession(); })();
+  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } const config = await response.json(); magicLinkRedirectUrl = config.authRedirectUrl; supabase = createClient(config.url, config.publishableKey); await establishSession(); })();
 </script>
