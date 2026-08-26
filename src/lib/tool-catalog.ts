@@ -24,4 +24,12 @@ export const builtInToolCatalog: ToolCatalogEntry[] = [
     category: "التاريخ والحساب",
     mode: "client",
   },
+  {
+    id: "date-offset",
+    href: "/tools/date-offset",
+    title: "حاسبة تاريخ بعد عدد من الأيام",
+    description: "تُظهر تاريخًا مستقبليًا أو سابقًا بعد عدد تختاره من الأيام داخل المتصفح، من دون إرسال تاريخ الإدخال إلى الخادم.",
+    category: "التاريخ والحساب",
+    mode: "client",
+  },
 ];

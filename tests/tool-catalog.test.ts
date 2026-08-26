@@ -5,6 +5,7 @@ describe("كتالوج الأدوات", () => {
   it("يعرض تعريفات أدوات حقيقية ذات مسار وغرض ووضع تشغيل معلن", () => {
     expect(builtInToolCatalog).toContainEqual(expect.objectContaining({ id: "date-difference", href: "/tools/date-difference", mode: "client" }));
     expect(builtInToolCatalog).toContainEqual(expect.objectContaining({ id: "age-calculator", href: "/tools/age-calculator", mode: "client" }));
+    expect(builtInToolCatalog).toContainEqual(expect.objectContaining({ id: "date-offset", href: "/tools/date-offset", mode: "client" }));
     expect(builtInToolCatalog.every((tool) => tool.title.length > 4 && tool.description.length > 20)).toBe(true);
   });
 });
