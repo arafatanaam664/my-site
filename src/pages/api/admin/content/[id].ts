@@ -7,6 +7,7 @@ export const prerender = false;
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8" } });
 const isUuid = (value: unknown): value is string => typeof value === "string" && /^[0-9a-f-]{36}$/i.test(value);
+const sameOrigin = (request: Request) => { const origin = request.headers.get("origin"); return !origin || origin === new URL(request.url).origin; };
 const optionalText = (value: unknown, maximum: number) => {
   if (value === null || value === undefined || value === "") return null;
   return typeof value === "string" && value.trim().length <= maximum ? value.trim() : undefined;
@@ -36,6 +37,7 @@ export const GET: APIRoute = async ({ params, request }) => {
 
 export const PATCH: APIRoute = async ({ params, request }) => {
   try {
+    if (!sameOrigin(request)) return json({ error: "مصدر الطلب غير مسموح" }, 403);
     const contentId = params.id;
     if (!isUuid(contentId)) return json({ error: "المادة غير موجودة" }, 404);
     const editor = await requireEditor(request);

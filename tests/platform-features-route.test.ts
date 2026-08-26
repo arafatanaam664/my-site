@@ -21,4 +21,10 @@ describe("إدارة مفاتيح الميزات", () => {
     expect(response.status).toBe(400);
     expect(adminClient).not.toHaveBeenCalled();
   });
+  it("يرفض تعديلًا صادرًا من أصل مختلف قبل التحقق من صلاحية المدير", async () => {
+    const request = new Request("https://example.test/api/admin/platform/features", { method: "PATCH", headers: { Origin: "https://attacker.test" }, body: JSON.stringify({ flag: "tools_core", enabled: false }) });
+    const response = await PATCH({ request } as Parameters<typeof PATCH>[0]);
+    expect(response.status).toBe(403);
+    expect(requireAdmin).not.toHaveBeenCalled();
+  });
 });

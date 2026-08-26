@@ -4,6 +4,7 @@ import { adminClient, requireEditor } from "../../../lib/server/admin";
 export const prerender = false;
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8" } });
+const sameOrigin = (request: Request) => { const origin = request.headers.get("origin"); return !origin || origin === new URL(request.url).origin; };
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -19,6 +20,7 @@ export const GET: APIRoute = async ({ request }) => {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    if (!sameOrigin(request)) return json({ error: "مصدر الطلب غير مسموح" }, 403);
     const editor = await requireEditor(request);
     const input = await request.json() as Record<string, unknown>;
     const kind = input.kind;

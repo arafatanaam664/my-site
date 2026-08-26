@@ -6,9 +6,11 @@ import { dispatchContentPush } from "../../../../../lib/server/web-push";
 export const prerender = false;
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8" } });
+const sameOrigin = (request: Request) => { const origin = request.headers.get("origin"); return !origin || origin === new URL(request.url).origin; };
 
 export const POST: APIRoute = async ({ params, request }) => {
   try {
+    if (!sameOrigin(request)) return json({ error: "مصدر الطلب غير مسموح" }, 403);
     if (!params.id || !/^[0-9a-f-]{36}$/i.test(params.id)) return json({ error: "المادة غير موجودة" }, 404);
     const editor = await requireEditor(request);
     const input = await request.json() as Record<string, unknown>;

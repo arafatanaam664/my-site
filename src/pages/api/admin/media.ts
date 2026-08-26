@@ -8,9 +8,11 @@ import { runtimeSecrets } from "../../../lib/server/runtime";
 export const prerender = false;
 
 const maxBytes = 10 * 1024 * 1024;
+const sameOrigin = (request: Request) => { const origin = request.headers.get("origin"); return !origin || origin === new URL(request.url).origin; };
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    if (!sameOrigin(request)) return new Response(JSON.stringify({ error: "مصدر الطلب غير مسموح" }), { status: 403, headers: { "content-type": "application/json" } });
     const editor = await requireEditor(request);
     const form = await request.formData();
     const file = form.get("file");

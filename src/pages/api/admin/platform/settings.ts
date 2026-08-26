@@ -4,6 +4,7 @@ import { adminClient, requireAdmin } from "../../../../lib/server/admin";
 
 export const prerender = false;
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
+const sameOrigin = (request: Request) => { const origin = request.headers.get("origin"); return !origin || origin === new URL(request.url).origin; };
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -15,6 +16,7 @@ export const GET: APIRoute = async ({ request }) => {
 
 export const PATCH: APIRoute = async ({ request }) => {
   try {
+    if (!sameOrigin(request)) return json({ error: "مصدر الطلب غير مسموح" }, 403);
     const actor = await requireAdmin(request);
     const input = await request.json().catch(() => null) as { settingKey?: unknown; value?: unknown } | null;
     if (!input || input.settingKey !== "site_notice") return json({ error: "مفتاح الإعداد غير مسموح" }, 400);
