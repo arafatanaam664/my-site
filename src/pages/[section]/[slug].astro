@@ -1,5 +1,6 @@
 ---
 import PublicContentPage from "../../components/PublicContentPage.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { featureForPublicSection } from "../../lib/platform-foundation";
 import { publicFeatureState } from "../../lib/server/feature-gates";
 import { publishedContent, type PublicContentKind } from "../../lib/server/public-content";
@@ -17,4 +18,4 @@ const content = mapping && enabled && slug ? await publishedContent(mapping.kind
 if (!content) Astro.response.status = 404;
 ---
 
-{content && mapping ? <PublicContentPage content={content} section={mapping.section} /> : <main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>قد يكون الرابط غير صحيح، أو أن المادة لم تعد متاحة للعامة.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main>}
+{content && mapping ? <PublicContentPage content={content} section={mapping.section} /> : <BaseLayout title="لم نعثر على هذه الصفحة" description="المادة المطلوبة غير متاحة للعامة." noindex><main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>قد يكون الرابط غير صحيح، أو أن المادة لم تعد متاحة للعامة.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main></BaseLayout>}
