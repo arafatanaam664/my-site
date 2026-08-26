@@ -12,6 +12,8 @@ describe("إعداد رمز وصول التطوير", () => {
     expect(cookie).toContain("alshafra_dev_admin=");
     const close = await fetch(`${origin}/api/admin/development-access`, { method: "DELETE", headers: { origin, cookie: cookie!.split(";")[0] } });
     expect(close.status).toBe(200);
+    expect(close.headers.get("set-cookie")).toContain("alshafra_dev_admin=");
+    expect(close.headers.get("set-cookie")).toContain("Max-Age=0");
   });
 
   it("يرفض الرمز على محاكاة النطاق النهائي حتى عند وجوده في بيئة المعاينة", async () => {
