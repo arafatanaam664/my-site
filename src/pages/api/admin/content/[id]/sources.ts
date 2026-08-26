@@ -6,7 +6,7 @@ import { canAccessEditorialContent } from "../../../../../lib/server/content-wor
 export const prerender = false;
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8" } });
 
-async function editableContent(id: string, userId: string, role: string) {
+async function editableContent(id: string, userId: string | null, role: string) {
   const client = adminClient();
   const { data, error } = await client.from("content_items").select("id,status,created_by,title,excerpt,body_markdown,seo_title,seo_description,canonical_url,primary_media_id").eq("id", id).maybeSingle();
   if (error || !data) return { content: null, status: 404 };

@@ -12,9 +12,10 @@ type RequiredRuntimeSecrets = {
   VAPID_PUBLIC_KEY?: string;
   VAPID_PRIVATE_KEY?: string;
   VAPID_SUBJECT?: string;
+  DEV_ADMIN_ACCESS_CODE?: string;
 };
 
-function environmentValues(): Partial<RequiredRuntimeSecrets> {
+export function environmentValues(): Partial<RequiredRuntimeSecrets> {
   const local = typeof process !== "undefined" ? (process.env as Partial<RequiredRuntimeSecrets>) : {};
   const buildPublic = import.meta.env as Record<string, string | undefined>;
   const publicValues: Partial<RequiredRuntimeSecrets> = {

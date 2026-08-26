@@ -10,6 +10,9 @@ describe("رسائل دخول الإدارة وإعداد المعاينة", () 
     expect(adminPage).toContain("email_provider_disabled");
     expect(adminPage).toContain("over_email_send_rate_limit");
     expect(adminPage).toContain("loginErrorMessage(error)");
+    expect(adminPage).toContain("تعذر تحميل وظائف الإدارة في هذه المعاينة");
+    expect(adminPage).toContain("دخول التطوير المؤقت");
+    expect(adminPage).toContain("/api/admin/development-access");
     expect(runtime).toContain("VITE_SUPABASE_URL");
     expect(runtime).toContain("VITE_SUPABASE_PUBLISHABLE_KEY");
   });

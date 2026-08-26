@@ -11,13 +11,15 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <section class="admin-card" id="auth-card">
       <h2>الدخول إلى مساحة التحرير</h2>
       <p>أدخل بريدك المعتمد. سنرسل رابط دخول آمن بدل كلمة مرور.</p>
-      <form id="magic-link-form"><label for="editor-email">البريد الإلكتروني</label><input id="editor-email" type="email" autocomplete="email" required placeholder="name@example.com" /><button type="submit">إرسال رابط الدخول</button></form>
+      <form id="magic-link-form" onsubmit="document.getElementById('auth-status').textContent = 'تعذر تحميل وظائف الإدارة في هذه المعاينة. حدّث الصفحة أو افتح رابط المعاينة في المتصفح ثم أعد المحاولة.'; return false;"><label for="editor-email">البريد الإلكتروني</label><input id="editor-email" type="email" autocomplete="email" required placeholder="name@example.com" /><button type="submit">إرسال رابط الدخول</button></form>
+      <section id="development-access-card" class="development-access-card" hidden><p><strong>دخول التطوير المؤقت</strong> متاح لهذه المعاينة فقط. أدخل رمز الوصول المحفوظ بأمان؛ لا يعمل على النطاق النهائي.</p><form id="development-access-form" onsubmit="document.getElementById('development-access-status').textContent = 'تعذر تحميل وظائف التطوير في هذه المعاينة. حدّث الصفحة أو افتحها في المتصفح.'; return false;"><label for="development-access-code">رمز وصول التطوير</label><input id="development-access-code" type="password" autocomplete="current-password" minlength="16" required /><button type="submit">فتح جلسة تطوير</button></form><p class="form-status" id="development-access-status" aria-live="polite"></p></section>
       <p class="form-status" id="auth-status" aria-live="polite"></p>
     </section>
 
     <section class="admin-panel" id="dashboard" hidden>
-      <div class="admin-toolbar"><div><span class="eyebrow">المحتوى</span><h2>المسودات والمواد المنشورة</h2></div><button type="button" id="refresh-content" class="subtle-button">تحديث القائمة</button></div>
+      <div class="admin-toolbar"><div><span class="eyebrow">المحتوى</span><h2>المسودات والمواد المنشورة</h2></div><div class="admin-toolbar-actions"><button type="button" id="refresh-content" class="subtle-button">تحديث القائمة</button><button type="button" id="admin-logout" class="subtle-button">تسجيل الخروج</button></div></div>
       <section class="analytics-panel"><div class="admin-toolbar"><div><span class="eyebrow">تحليلات خصوصية</span><h2>أداء المحتوى</h2><p>تعتمد هذه الأرقام على الزوار الذين اختاروا القياس المجهّل. لا تُعرض أي بيانات شخصية أو سجلات متخيلة.</p></div><label class="analytics-range" for="analytics-range">الفترة<select id="analytics-range"><option value="day">آخر 24 ساعة</option><option value="week">آخر 7 أيام</option><option value="month" selected>آخر 30 يومًا</option><option value="year">آخر 12 شهرًا</option></select></label></div><div class="analytics-totals" id="analytics-totals"><p>يجري تحميل التقرير…</p></div><div class="analytics-table-wrap"><table><thead><tr><th>الصفحة أو المادة</th><th>مشاهدات</th><th>زيارات مجهّلة</th><th>بلغ 50%</th><th>إكمال القراءة</th><th>متوسط القراءة</th></tr></thead><tbody id="analytics-rows"><tr><td colspan="6">لا توجد بيانات معروضة بعد.</td></tr></tbody></table></div></section>
+      <section class="admin-card" id="feature-flags-panel" hidden><div class="admin-toolbar"><div><span class="eyebrow">إتاحة المنصة</span><h2>مفاتيح الميزات</h2><p>لا تفعّل أي وحدة قبل اكتمال واجهتها وصلاحياتها واختباراتها. لا تظهر الوحدات الموقوفة للجمهور.</p></div></div><div id="feature-flags-list" class="feature-flags-list"></div><p class="form-status" id="feature-flags-status" aria-live="polite"></p></section>
       <div class="admin-grid">
         <form id="new-draft-form" class="admin-card"><h3>مسودة جديدة</h3><label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><fieldset class="media-fieldset"><legend>الصورة الرئيسية (اختياري)</legend><label for="primary-image">ملف الصورة</label><input id="primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="primary-image-alt">وصف بديل للصورة</label><input id="primary-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><p class="field-note">JPEG أو PNG أو WebP أو AVIF، حتى 10MB. لا تُستخدم الصورة إلا بعد ربطها بالمادة.</p></fieldset><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
         <div class="admin-card"><h3>آخر المواد</h3><ul id="content-list" class="content-list"><li>يجري تحميل المحتوى…</li></ul></div>
@@ -45,6 +47,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   const authCard = document.querySelector<HTMLElement>("#auth-card")!;
   const dashboard = document.querySelector<HTMLElement>("#dashboard")!;
   const authStatus = document.querySelector<HTMLElement>("#auth-status")!;
+  const developmentAccessCard = document.querySelector<HTMLElement>("#development-access-card")!;
+  const developmentAccessStatus = document.querySelector<HTMLElement>("#development-access-status")!;
   const contentList = document.querySelector<HTMLUListElement>("#content-list")!;
   const draftStatus = document.querySelector<HTMLElement>("#draft-status")!;
   const editorPanel = document.querySelector<HTMLElement>("#editor-panel")!;
@@ -60,18 +64,25 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   const historyList = document.querySelector<HTMLOListElement>("#history-list")!;
   const analyticsTotals = document.querySelector<HTMLElement>("#analytics-totals")!;
   const analyticsRows = document.querySelector<HTMLTableSectionElement>("#analytics-rows")!;
+  const featureFlagsPanel = document.querySelector<HTMLElement>("#feature-flags-panel")!;
+  const featureFlagsList = document.querySelector<HTMLElement>("#feature-flags-list")!;
+  const featureFlagsStatus = document.querySelector<HTMLElement>("#feature-flags-status")!;
   let supabase: ReturnType<typeof createClient> | null = null;
   let currentDraft: ContentDraft | null = null;
   let magicLinkRedirectUrl = "";
+  let developmentAccessAvailable = false;
+  let usingDevelopmentAccess = false;
 
   const field = <T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(selector: string) => document.querySelector<T>(selector)!;
   const statusLabels: Record<string, string> = { draft: "مسودة", in_review: "قيد المراجعة", approved: "معتمدة", published: "منشورة", archived: "مؤرشفة" };
   const nextStatus: Record<string, { status: string; label: string } | undefined> = { draft: { status: "in_review", label: "إرسال للمراجعة" }, in_review: { status: "approved", label: "اعتماد المادة" }, approved: { status: "published", label: "نشر المادة" }, published: { status: "archived", label: "أرشفة المادة" } };
 
-  async function authHeaders() {
+  async function authHeaders(): Promise<Record<string, string> | null> {
+    if (usingDevelopmentAccess) return { "content-type": "application/json" };
     if (!supabase) return null;
     const { data } = await supabase.auth.getSession();
-    return data.session ? { Authorization: `Bearer ${data.session.access_token}`, "content-type": "application/json" } : null;
+    if (!data.session) return null;
+    return { Authorization: `Bearer ${data.session.access_token}`, "content-type": "application/json" };
   }
 
   function renderContentList(items: ContentSummary[]) {
@@ -100,6 +111,19 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     analyticsRows.replaceChildren(); if (!report.pages.length) { const row = document.createElement("tr"); const cell = document.createElement("td"); cell.colSpan = 6; cell.textContent = "لا توجد أحداث مقاسة في هذه الفترة حتى الآن."; row.append(cell); analyticsRows.append(row); return; } for (const page of report.pages) { const row = document.createElement("tr"); for (const value of [page.title || page.path, arabicNumber(page.pageViews), arabicNumber(page.visits), arabicNumber(page.read50), `${arabicNumber(page.completionRate)}%`, readTime(page.averageReadSeconds)]) { const cell = document.createElement("td"); cell.textContent = value; row.append(cell); } analyticsRows.append(row); }
   }
   async function loadAnalytics() { const headers = await authHeaders(); if (!headers) return; analyticsTotals.textContent = "يجري تحميل التقرير…"; const range = field<HTMLSelectElement>("#analytics-range").value; const response = await fetch(`/api/admin/analytics?range=${range}`, { headers }); const result = await response.json(); if (!response.ok) { analyticsTotals.textContent = result.error ?? "تعذر تحميل التقرير."; return; } renderAnalytics(result.data); }
+
+  function renderFeatureFlags(flags: Array<{ flag: string; label: string; enabled: boolean; public_visible: boolean }>) {
+    featureFlagsList.replaceChildren();
+    for (const feature of flags) {
+      const row = document.createElement("div"); row.className = "feature-flag-row";
+      const details = document.createElement("div"); const title = document.createElement("strong"); title.textContent = feature.label; const hint = document.createElement("small"); hint.textContent = feature.enabled ? "مفعّلة" : "موقوفة"; details.append(title, hint);
+      const control = document.createElement("label"); control.className = "feature-flag-control"; const toggle = document.createElement("input"); toggle.type = "checkbox"; toggle.checked = feature.enabled; const label = document.createElement("span"); label.textContent = "تفعيل"; control.append(toggle, label);
+      toggle.addEventListener("change", async () => { const headers = await authHeaders(); if (!headers) return; toggle.disabled = true; featureFlagsStatus.textContent = "يجري حفظ حالة الميزة…"; const response = await fetch("/api/admin/platform/features", { method: "PATCH", headers, body: JSON.stringify({ flag: feature.flag, enabled: toggle.checked, note: "تحديث من لوحة الإدارة" }) }); const result = await response.json(); if (!response.ok) { toggle.checked = !toggle.checked; featureFlagsStatus.textContent = result.error ?? "تعذر حفظ حالة الميزة."; toggle.disabled = false; return; } featureFlagsStatus.textContent = "تم حفظ الحالة وسجل التغيير."; await loadFeatureFlags(); });
+      row.append(details, control); featureFlagsList.append(row);
+    }
+  }
+
+  async function loadFeatureFlags() { const headers = await authHeaders(); if (!headers) return; const response = await fetch("/api/admin/platform/features", { headers }); if (response.status === 403) { featureFlagsPanel.hidden = true; return; } const result = await response.json(); if (!response.ok) { featureFlagsPanel.hidden = false; featureFlagsStatus.textContent = result.error ?? "تعذر تحميل مفاتيح الميزات."; return; } featureFlagsPanel.hidden = false; renderFeatureFlags(result.data); }
 
   async function loadContent() {
     const headers = await authHeaders(); if (!headers) return;
@@ -193,8 +217,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   }
 
   async function establishSession() {
-    if (!supabase) return; const { data } = await supabase.auth.getSession(); if (!data.session) return;
-    authCard.hidden = true; dashboard.hidden = false; await Promise.all([loadContent(), loadAnalytics()]);
+    if (!supabase) return; const developmentResponse = await fetch("/api/admin/development-access"); const development = developmentResponse.ok ? await developmentResponse.json() as { data: { authenticated: boolean } } : { data: { authenticated: false } }; const { data } = await supabase.auth.getSession(); usingDevelopmentAccess = development.data.authenticated; if (!data.session && !usingDevelopmentAccess) return;
+    authCard.hidden = true; dashboard.hidden = false; await Promise.all([loadContent(), loadAnalytics(), loadFeatureFlags()]);
   }
 
   document.querySelector<HTMLFormElement>("#magic-link-form")!.addEventListener("submit", async (event) => {
@@ -202,6 +226,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     if (!supabase) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; }
     if (!magicLinkRedirectUrl) { authStatus.textContent = "تعذر تحديد رابط العودة الآمن لهذه المعاينة."; return; }
     const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: magicLinkRedirectUrl } }); authStatus.textContent = error ? loginErrorMessage(error) : "تم طلب رابط الدخول. تحقق من صندوق الوارد والبريد غير المرغوب فيه، ثم افتح الرابط وعد إلى هذه الصفحة.";
+  });
+  document.querySelector<HTMLFormElement>("#development-access-form")!.addEventListener("submit", async (event) => {
+    event.preventDefault(); if (!developmentAccessAvailable) return; const code = field<HTMLInputElement>("#development-access-code").value; developmentAccessStatus.textContent = "يجري فتح جلسة التطوير…";
+    const response = await fetch("/api/admin/development-access", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code }) }); const result = await response.json();
+    if (!response.ok) { developmentAccessStatus.textContent = result.error ?? "تعذر فتح جلسة التطوير."; return; }
+    field<HTMLInputElement>("#development-access-code").value = ""; developmentAccessStatus.textContent = "تم فتح جلسة التطوير."; await establishSession();
   });
 
   document.querySelector<HTMLFormElement>("#new-draft-form")!.addEventListener("submit", async (event) => {
@@ -255,6 +285,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   });
 
   document.querySelector<HTMLButtonElement>("#refresh-content")!.addEventListener("click", () => void loadContent());
+  document.querySelector<HTMLButtonElement>("#admin-logout")!.addEventListener("click", async () => { await fetch("/api/admin/development-access", { method: "DELETE" }); await supabase?.auth.signOut(); window.location.reload(); });
   field<HTMLSelectElement>("#analytics-range").addEventListener("change", () => void loadAnalytics());
-  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } const config = await response.json(); magicLinkRedirectUrl = config.authRedirectUrl; supabase = createClient(config.url, config.publishableKey); await establishSession(); })();
+  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } const config = await response.json(); magicLinkRedirectUrl = config.authRedirectUrl; developmentAccessAvailable = config.developmentAccessEnabled === true; developmentAccessCard.hidden = !developmentAccessAvailable; supabase = createClient(config.url, config.publishableKey); await establishSession(); })();
 </script>

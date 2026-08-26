@@ -12,7 +12,7 @@ export function canTransitionContent(role: AdminIdentity["role"], from: ContentS
   return false;
 }
 
-export function canAccessEditorialContent(role: AdminIdentity["role"], actorId: string, ownerId: string | null) {
+export function canAccessEditorialContent(role: AdminIdentity["role"], actorId: string | null, ownerId: string | null) {
   return role === "admin" || role === "editor" || ownerId === actorId;
 }
 

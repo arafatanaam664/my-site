@@ -60,4 +60,23 @@ describe("اتصال Supabase", () => {
 
     expect(response.status, `لم يمكن الوصول إلى جدول notification_deliveries، حالة HTTP ${response.status}`).toBeLessThan(400);
   });
+
+  it("يتحقق من وجود جميع طبقات المنصة المشتركة دون تعديل بيانات", async () => {
+    const [typesResponse, categoriesResponse, tagsResponse, entitiesResponse, flagsResponse, auditResponse, eventsResponse] = await Promise.all([
+      fetch(`${supabaseUrl}/rest/v1/content_types?select=id,handle&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/content_categories?select=id,slug&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/content_tags?select=id,slug&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/entities?select=id,slug&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/feature_flags?select=flag,enabled&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/feature_flag_audit?select=id,flag&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/platform_events?select=id,event_type&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+    ]);
+    expect(typesResponse.status, `لم يمكن الوصول إلى جدول content_types، حالة HTTP ${typesResponse.status}`).toBeLessThan(400);
+    expect(categoriesResponse.status, `لم يمكن الوصول إلى جدول content_categories، حالة HTTP ${categoriesResponse.status}`).toBeLessThan(400);
+    expect(tagsResponse.status, `لم يمكن الوصول إلى جدول content_tags، حالة HTTP ${tagsResponse.status}`).toBeLessThan(400);
+    expect(entitiesResponse.status, `لم يمكن الوصول إلى جدول entities، حالة HTTP ${entitiesResponse.status}`).toBeLessThan(400);
+    expect(flagsResponse.status, `لم يمكن الوصول إلى جدول feature_flags، حالة HTTP ${flagsResponse.status}`).toBeLessThan(400);
+    expect(auditResponse.status, `لم يمكن الوصول إلى جدول feature_flag_audit، حالة HTTP ${auditResponse.status}`).toBeLessThan(400);
+    expect(eventsResponse.status, `لم يمكن الوصول إلى جدول platform_events، حالة HTTP ${eventsResponse.status}`).toBeLessThan(400);
+  });
 });

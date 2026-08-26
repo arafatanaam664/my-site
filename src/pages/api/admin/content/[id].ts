@@ -12,7 +12,7 @@ const optionalText = (value: unknown, maximum: number) => {
   return typeof value === "string" && value.trim().length <= maximum ? value.trim() : undefined;
 };
 
-async function loadOwnedContent(id: string, editorId: string, role: string) {
+async function loadOwnedContent(id: string, editorId: string | null, role: string) {
   const client = adminClient();
   const { data, error } = await client.from("content_items").select("id,kind,status,slug,title,excerpt,body_markdown,seo_title,seo_description,canonical_url,primary_media_id,created_by,updated_at,created_at").eq("id", id).maybeSingle();
   if (error || !data) return { content: null, status: 404 };

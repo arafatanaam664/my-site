@@ -4,6 +4,7 @@ const createClient = vi.fn();
 
 vi.mock("@supabase/supabase-js", () => ({ createClient }));
 vi.mock("../src/lib/server/runtime", () => ({
+  environmentValues: () => ({}),
   runtimeSecrets: () => ({
     SUPABASE_URL: "https://example.supabase.co",
     SUPABASE_PUBLISHABLE_KEY: "publishable-test-key",
@@ -59,6 +60,6 @@ describe("حدود وصول محرر المحتوى", () => {
     };
     createClient.mockReturnValueOnce(authClient).mockReturnValueOnce(privilegedClient);
 
-    await expect(requireEditor(new Request("https://example.test/api/admin/content", { headers: { authorization: "Bearer valid-token" } }))).resolves.toEqual({ id: "editor-1", role: "editor" });
+    await expect(requireEditor(new Request("https://example.test/api/admin/content", { headers: { authorization: "Bearer valid-token" } }))).resolves.toEqual({ id: "editor-1", role: "editor", access: "supabase" });
   });
 });
