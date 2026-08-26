@@ -73,7 +73,7 @@ describe("اتصال Supabase", () => {
   });
 
   it("يتحقق من وجود جميع طبقات المنصة المشتركة دون تعديل بيانات", async () => {
-    const [typesResponse, categoriesResponse, tagsResponse, entitiesResponse, flagsResponse, auditResponse, eventsResponse, settingsResponse, settingsAuditResponse, memberProfilesResponse, questionsResponse, answersResponse, reportsResponse, moderationResponse] = await Promise.all([
+    const [typesResponse, categoriesResponse, tagsResponse, entitiesResponse, flagsResponse, auditResponse, eventsResponse, settingsResponse, settingsAuditResponse, memberProfilesResponse, questionsResponse, answersResponse, reportsResponse, moderationResponse, socialAccountsResponse, socialTemplatesResponse, socialOutboxResponse, socialLogResponse] = await Promise.all([
       fetch(`${supabaseUrl}/rest/v1/content_types?select=id,handle&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
       fetch(`${supabaseUrl}/rest/v1/content_categories?select=id,slug&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
       fetch(`${supabaseUrl}/rest/v1/content_tags?select=id,slug&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
@@ -88,6 +88,10 @@ describe("اتصال Supabase", () => {
       fetch(`${supabaseUrl}/rest/v1/community_answers?select=id,status&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
       fetch(`${supabaseUrl}/rest/v1/community_reports?select=id,status&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
       fetch(`${supabaseUrl}/rest/v1/community_moderation_actions?select=id,action&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/social_accounts?select=id,provider,connection_status&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/social_post_templates?select=id,name,enabled&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/social_outbox?select=id,status&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
+      fetch(`${supabaseUrl}/rest/v1/social_delivery_log?select=id,action&limit=1`, { headers: { apikey: secretKey!, Authorization: `Bearer ${secretKey!}` }, signal: AbortSignal.timeout(10_000) }),
     ]);
     expect(typesResponse.status, `لم يمكن الوصول إلى جدول content_types، حالة HTTP ${typesResponse.status}`).toBeLessThan(400);
     expect(categoriesResponse.status, `لم يمكن الوصول إلى جدول content_categories، حالة HTTP ${categoriesResponse.status}`).toBeLessThan(400);
@@ -103,5 +107,9 @@ describe("اتصال Supabase", () => {
     expect(answersResponse.status, `لم يمكن الوصول إلى جدول community_answers، حالة HTTP ${answersResponse.status}`).toBeLessThan(400);
     expect(reportsResponse.status, `لم يمكن الوصول إلى جدول community_reports، حالة HTTP ${reportsResponse.status}`).toBeLessThan(400);
     expect(moderationResponse.status, `لم يمكن الوصول إلى جدول community_moderation_actions، حالة HTTP ${moderationResponse.status}`).toBeLessThan(400);
+    expect(socialAccountsResponse.status, `لم يمكن الوصول إلى جدول social_accounts، حالة HTTP ${socialAccountsResponse.status}`).toBeLessThan(400);
+    expect(socialTemplatesResponse.status, `لم يمكن الوصول إلى جدول social_post_templates، حالة HTTP ${socialTemplatesResponse.status}`).toBeLessThan(400);
+    expect(socialOutboxResponse.status, `لم يمكن الوصول إلى جدول social_outbox، حالة HTTP ${socialOutboxResponse.status}`).toBeLessThan(400);
+    expect(socialLogResponse.status, `لم يمكن الوصول إلى جدول social_delivery_log، حالة HTTP ${socialLogResponse.status}`).toBeLessThan(400);
   }, 15_000);
 });
