@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { publicSupabaseConfig } from "./runtime";
+import { runtimeSecrets } from "./runtime";
 
 export type PublicContentKind = "article" | "guide" | "tool" | "page";
 export type PublicMedia = { id: string; alt_text: string; width: number; height: number; mime_type: string };
@@ -22,8 +22,8 @@ export type PublicContent = {
 
 function client() {
   try {
-    const { url, publishableKey } = publicSupabaseConfig();
-    return createClient(url, publishableKey, { auth: { persistSession: false, autoRefreshToken: false } });
+    const secrets = runtimeSecrets();
+    return createClient(secrets.SUPABASE_URL, secrets.SUPABASE_SECRET_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
   } catch {
     return null;
   }
