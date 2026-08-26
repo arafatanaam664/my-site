@@ -7,4 +7,7 @@ describe("التوزيع اليدوي الآمن", () => {
     expect(socialProviders).toContain("telegram");
     expect(renderSocialTemplate("{{title}}\n{{excerpt}}\n{{url}}", { title: "دليل", excerpt: "ملخص", url: "https://alshafra.com/guides/example" })).toBe("دليل\nملخص\nhttps://alshafra.com/guides/example");
   });
+  it("لا يضيف قيمة غير معروفة عند غياب الملخص", () => {
+    expect(renderSocialTemplate("{{title}}\n{{excerpt}}\n{{url}}", { title: "مقال موثق", url: "https://alshafra.com/articles/example" })).toBe("مقال موثق\n\nhttps://alshafra.com/articles/example");
+  });
 });

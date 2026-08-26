@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { renderSocialTemplate } from "../../../../lib/social-distribution";
 import { adminClient, requireAdmin } from "../../../../lib/server/admin";
 
 export const prerender = false;
@@ -11,14 +12,15 @@ export const GET: APIRoute = async ({ request }) => {
   try {
     await requireAdmin(request);
     const client = adminClient();
-    const [accounts, templates, outbox, activity] = await Promise.all([
+    const [accounts, templates, outbox, activity, publishedContent] = await Promise.all([
       client.from("social_accounts").select("id,provider,display_name,external_account_ref,connection_status,updated_at").order("updated_at", { ascending: false }),
       client.from("social_post_templates").select("id,name,provider,body_template,enabled,updated_at").order("updated_at", { ascending: false }),
       client.from("social_outbox").select("id,content_id,account_id,template_id,body_snapshot,destination_url,status,created_at").order("created_at", { ascending: false }).limit(30),
       client.from("social_delivery_log").select("id,outbox_id,action,note,created_at").order("created_at", { ascending: false }).limit(30),
+      client.from("content_items").select("id,kind,title,slug,excerpt,published_at").eq("status", "published").lte("published_at", new Date().toISOString()).in("kind", ["article", "guide", "tool"]).order("published_at", { ascending: false }).limit(30),
     ]);
-    if (accounts.error || templates.error || outbox.error || activity.error) return json({ error: "تعذر تحميل مساحة التوزيع" }, 500);
-    return json({ data: { accounts: accounts.data ?? [], templates: templates.data ?? [], outbox: outbox.data ?? [], activity: activity.data ?? [] } });
+    if (accounts.error || templates.error || outbox.error || activity.error || publishedContent.error) return json({ error: "تعذر تحميل مساحة التوزيع" }, 500);
+    return json({ data: { accounts: accounts.data ?? [], templates: templates.data ?? [], outbox: outbox.data ?? [], activity: activity.data ?? [], publishedContent: publishedContent.data ?? [] } });
   } catch (error) {
     if (error instanceof Response) return json({ error: error.status === 401 ? "يلزم تسجيل الدخول" : "لا تملك صلاحية إدارة التوزيع" }, error.status);
     return json({ error: "تعذر تحميل مساحة التوزيع" }, 500);
@@ -54,6 +56,23 @@ export const POST: APIRoute = async ({ request }) => {
       const { data, error } = await client.from("social_outbox").insert({ body_snapshot: body, destination_url: destinationUrl || null, status, content_id: isUuid(payload.contentId) ? payload.contentId : null, account_id: isUuid(payload.accountId) ? payload.accountId : null, template_id: isUuid(payload.templateId) ? payload.templateId : null, created_by: actor.id ?? null }).select("id,body_snapshot,destination_url,status,created_at").single();
       if (error || !data) return json({ error: "تعذر إضافة المنشور إلى الصندوق" }, 500);
       await client.from("social_delivery_log").insert({ outbox_id: data.id, action: "created", actor_id: actor.id ?? null });
+      return json({ data }, 201);
+    }
+    if (payload.action === "create_outbox_from_template" && isUuid(payload.contentId) && isUuid(payload.templateId)) {
+      const client = adminClient();
+      const [contentResult, templateResult] = await Promise.all([
+        client.from("content_items").select("id,kind,title,slug,excerpt,published_at").eq("id", payload.contentId).eq("status", "published").lte("published_at", new Date().toISOString()).in("kind", ["article", "guide", "tool"]).maybeSingle(),
+        client.from("social_post_templates").select("id,body_template,enabled").eq("id", payload.templateId).eq("enabled", true).maybeSingle(),
+      ]);
+      if (contentResult.error || templateResult.error || !contentResult.data || !templateResult.data) return json({ error: "اختر مادة منشورة وقالبًا مفعّلًا" }, 400);
+      const section = ({ article: "articles", guide: "guides", tool: "tools" } as Record<string, string | undefined>)[contentResult.data.kind];
+      if (!section) return json({ error: "نوع المادة غير صالح للتوزيع العام" }, 400);
+      const destinationUrl = `https://alshafra.com/${section}/${contentResult.data.slug}`;
+      const bodySnapshot = renderSocialTemplate(templateResult.data.body_template, { title: contentResult.data.title, excerpt: contentResult.data.excerpt, url: destinationUrl });
+      if (!bodySnapshot || bodySnapshot.length > 5000) return json({ error: "نتيجة القالب غير صالحة" }, 400);
+      const { data, error } = await client.from("social_outbox").insert({ content_id: contentResult.data.id, account_id: isUuid(payload.accountId) ? payload.accountId : null, template_id: templateResult.data.id, body_snapshot: bodySnapshot, destination_url: destinationUrl, status: "ready", created_by: actor.id ?? null }).select("id,body_snapshot,destination_url,status,created_at").single();
+      if (error || !data) return json({ error: "تعذر تجهيز المنشور من القالب" }, 500);
+      await client.from("social_delivery_log").insert({ outbox_id: data.id, action: "created", note: "جُهز من مادة منشورة وقالب", actor_id: actor.id ?? null });
       return json({ data }, 201);
     }
     if (payload.action === "mark_copied" && isUuid(payload.outboxId)) {
