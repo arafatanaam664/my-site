@@ -5969,3 +5969,5 @@
 [2026-08-27T15:31:44.575Z] [wrangler:info] GET /media/e58164b3-8703-4d13-9377-d589618ffe46 200 OK (2652ms)
 [2026-08-27T15:31:59.399Z] [wrangler:warn] Local cf.image transforms are a low-fidelity mock; only resize, rotate and format conversion are applied. Deploy to preview the full transformation.
 [2026-08-27T15:31:59.401Z] [wrangler:info] GET /media/e58164b3-8703-4d13-9377-d589618ffe46 200 OK (17546ms)
+[2026-08-27T16:06:28.309Z] [wrangler:info] GET / 200 OK (1579ms)
+[2026-08-27T16:06:29.469Z] [wrangler:info] GET /api/public/push-config 200 OK (7ms)
