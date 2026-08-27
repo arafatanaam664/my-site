@@ -1,4 +1,4 @@
-export const analyticEventTypes = ["page_view", "read_25", "read_50", "read_75", "read_complete", "tool_use"] as const;
+export const analyticEventTypes = ["page_view", "read_25", "read_50", "read_75", "read_complete", "tool_use", "content_share"] as const;
 export type AnalyticEventType = (typeof analyticEventTypes)[number];
 export type AnalyticsEvent = { path: string; eventType: AnalyticEventType; contentId: string | null; durationSeconds: number | null; anonymousDayHash: string; sessionHash: string };
 
@@ -20,7 +20,7 @@ export function isSameSiteAnalyticsRequest(request: Request) {
 }
 
 export function needsPriorPageView(eventType: AnalyticEventType) {
-  return eventType === "read_25" || eventType === "read_50" || eventType === "read_75" || eventType === "read_complete" || eventType === "tool_use";
+  return eventType === "read_25" || eventType === "read_50" || eventType === "read_75" || eventType === "read_complete" || eventType === "tool_use" || eventType === "content_share";
 }
 
 export function readingPredecessor(eventType: AnalyticEventType) {

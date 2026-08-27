@@ -12,11 +12,11 @@ const { title, url } = Astro.props;
 <script>
   const container = document.currentScript?.previousElementSibling as HTMLElement | null;
   if (container) {
-    const title = container.dataset.shareTitle ?? ""; const url = container.dataset.shareUrl ?? location.href; const text = `${title} — ${url}`;
+    const title = container.dataset.shareTitle ?? ""; const url = container.dataset.shareUrl ?? location.href; const text = `${title} — ${url}`; const recordCompletedShare = () => dispatchEvent(new Event("alshafra:content-share"));
     const status = container.querySelector<HTMLElement>("[data-share-status]")!;
     const whatsapp = container.querySelector<HTMLAnchorElement>("[data-share-whatsapp]")!; const telegram = container.querySelector<HTMLAnchorElement>("[data-share-telegram]")!;
     whatsapp.href = `https://wa.me/?text=${encodeURIComponent(text)}`; telegram.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
-    container.querySelector<HTMLButtonElement>("[data-share-native]")!.addEventListener("click", async () => { if (!navigator.share) { status.textContent = "استخدم نسخ الرابط أو إحدى الروابط المتاحة للمشاركة."; return; } try { await navigator.share({ title, url }); status.textContent = "تمت المشاركة."; } catch { status.textContent = "أُلغيت المشاركة."; } });
-    container.querySelector<HTMLButtonElement>("[data-share-copy]")!.addEventListener("click", async () => { try { await navigator.clipboard.writeText(url); status.textContent = "تم نسخ الرابط."; } catch { status.textContent = "تعذر النسخ تلقائيًا؛ انسخ الرابط من شريط العنوان."; } });
+    container.querySelector<HTMLButtonElement>("[data-share-native]")!.addEventListener("click", async () => { if (!navigator.share) { status.textContent = "استخدم نسخ الرابط أو إحدى الروابط المتاحة للمشاركة."; return; } try { await navigator.share({ title, url }); status.textContent = "تمت المشاركة."; recordCompletedShare(); } catch { status.textContent = "أُلغيت المشاركة."; } });
+    container.querySelector<HTMLButtonElement>("[data-share-copy]")!.addEventListener("click", async () => { try { await navigator.clipboard.writeText(url); status.textContent = "تم نسخ الرابط."; recordCompletedShare(); } catch { status.textContent = "تعذر النسخ تلقائيًا؛ انسخ الرابط من شريط العنوان."; } });
   }
 </script>

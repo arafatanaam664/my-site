@@ -8,5 +8,6 @@ describe("مشاركة المحتوى الاختيارية", () => {
     const component = await readFile(new URL("../src/components/ShareActions.astro", import.meta.url), "utf8");
     expect(component).toContain("navigator.share");
     expect(component).toContain("navigator.clipboard.writeText");
+    expect(component).toContain("alshafra:content-share");
   });
 });

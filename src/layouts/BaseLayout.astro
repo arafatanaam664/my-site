@@ -60,6 +60,7 @@ const features = await publicFeatureState();
         const grant = () => { localStorage.setItem(consentKey, "granted"); card.hidden = true; send("page_view"); }; const decline = () => { localStorage.setItem(consentKey, "denied"); card.hidden = true; };
         if (!consent()) card.hidden = false; else if (consent() === "granted") send("page_view");
         document.querySelector("#analytics-allow")?.addEventListener("click", grant); document.querySelector("#analytics-decline")?.addEventListener("click", decline);
+        addEventListener("alshafra:content-share", () => send("content_share"));
         if (article) { const depth = () => { const max = document.documentElement.scrollHeight - innerHeight; const percent = max > 0 ? (scrollY / max) * 100 : 100; if (percent >= 25) send("read_25"); if (percent >= 50) send("read_50"); if (percent >= 75) send("read_75"); if (percent >= 90) send("read_complete", Math.min(7200, Math.round((Date.now() - started) / 1000))); }; addEventListener("scroll", depth, { passive: true }); addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") depth(); }); }
       })();
     </script>
