@@ -13,7 +13,7 @@ export function analyticsSince(range: AnalyticsRange, now = new Date()) {
 }
 
 export function aggregateAnalytics(events: RawEvent[]) {
-  const total = { pageViews: events.filter((event) => event.event_type === "page_view").length, visits: new Set(events.filter((event) => event.event_type === "page_view").map((event) => event.anonymous_day_hash)).size, completedReads: events.filter((event) => event.event_type === "read_complete").length, toolUses: events.filter((event) => event.event_type === "tool_use").length };
+  const total = { pageViews: events.filter((event) => event.event_type === "page_view").length, visits: new Set(events.filter((event) => event.event_type === "page_view").map((event) => event.anonymous_day_hash)).size, completedReads: events.filter((event) => event.event_type === "read_complete").length, toolUses: events.filter((event) => event.event_type === "tool_use").length, contentShares: events.filter((event) => event.event_type === "content_share").length };
   const durations = events.filter((event) => event.event_type === "read_complete" && event.duration_seconds != null).map((event) => event.duration_seconds as number);
   const averageReadSeconds = durations.length ? Math.round(durations.reduce((sum, value) => sum + value, 0) / durations.length) : 0;
   const byPage = new Map<string, RawEvent[]>();
