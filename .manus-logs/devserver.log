@@ -4497,3 +4497,284 @@
 [2026-08-27T17:49:50.906Z] [wrangler:info] POST /api/admin/development-access 401 Unauthorized (5ms)
 [2026-08-27T17:50:18.962Z] ⎔ Reloading local server...
 [2026-08-27T17:50:19.431Z] ⎔ Local server updated and ready
+[2026-08-27T17:51:10.835Z] [wrangler:info] GET / 200 OK (965ms)
+[2026-08-27T17:51:12.114Z] [wrangler:info] GET /api/public/push-config 200 OK (9ms)
+[2026-08-27T17:51:13.643Z] [wrangler:info] GET /push-sw.js 404 Not Found (8ms)
+[2026-08-27T17:57:56.081Z] [wrangler:info] POST /api/admin/development-access 200 OK (42ms)
+[2026-08-27T17:57:56.086Z] [wrangler:info] GET /api/public/push-config 200 OK (22ms)
+[2026-08-27T17:57:56.096Z] [wrangler:info] DELETE /api/admin/development-access 200 OK (6ms)
+[2026-08-27T17:57:56.106Z] [wrangler:info] POST /api/admin/development-access 401 Unauthorized (6ms)
+[2026-08-27T17:58:42.044Z] [wrangler:info] GET /articles/calculate-days-between-two-dates 200 OK (700ms)
+[2026-08-27T17:58:53.696Z] [wrangler:info] GET /articles/calculate-days-between-two-dates 200 OK (635ms)
+[2026-08-27T17:58:55.184Z] [wrangler:info] GET /articles 200 OK (517ms)
+[2026-08-27T17:59:06.151Z] [wrangler:info] GET /articles/calculate-days-between-two-dates 200 OK (623ms)
+[2026-08-27T17:59:17.301Z] [wrangler:info] GET /articles/calculate-days-between-two-dates 200 OK (634ms)
+[2026-08-27T17:59:18.908Z] [wrangler:info] GET /articles 200 OK (538ms)
+[2026-08-27T17:59:21.835Z] [wrangler:info] GET /media/a442fca9-a20e-49e3-b799-94ae4654e454 200 OK (2393ms)
+[2026-08-27T17:59:26.278Z] [wrangler:warn] Local cf.image transforms are a low-fidelity mock; only resize, rotate and format conversion are applied. Deploy to preview the full transformation.
+[2026-08-27T17:59:26.281Z] [wrangler:info] GET /media/a442fca9-a20e-49e3-b799-94ae4654e454 200 OK (6854ms)
+[2026-08-27T17:59:37.708Z] [wrangler:info] GET /articles 200 OK (564ms)
+[2026-08-27T17:59:37.758Z] [wrangler:info] GET /articles/calculate-days-between-two-dates 200 OK (600ms)
+[2026-08-27T17:59:38.193Z] [wrangler:info] GET /api/public/push-config 200 OK (8ms)
+[2026-08-27T17:59:38.965Z] [wrangler:info] GET /api/public/push-config 200 OK (8ms)
+[2026-08-27T17:59:41.791Z] [wrangler:info] GET /media/a442fca9-a20e-49e3-b799-94ae4654e454 200 OK (2972ms)
+[2026-08-27T17:59:41.972Z] [wrangler:info] GET /push-sw.js 404 Not Found (9ms)
+[2026-08-27T18:00:05.039Z] [wrangler:info] GET /media/a442fca9-a20e-49e3-b799-94ae4654e454 200 OK (26224ms)
+[2026-08-27T18:01:04.996Z] [wrangler:info] GET / 200 OK (558ms)
+[2026-08-27T18:01:05.845Z] [wrangler:info] GET /tools 200 OK (288ms)
+[2026-08-27T18:01:06.640Z] [wrangler:info] GET /tools/weekday-calculator 200 OK (266ms)
+[2026-08-27T18:01:07.746Z] [wrangler:info] GET /articles 200 OK (538ms)
+[2026-08-27T18:01:08.847Z] [wrangler:info] GET /articles/calculate-days-between-two-dates 200 OK (542ms)
+[2026-08-27T18:01:11.382Z] [wrangler:info] GET /calendar/umm-al-qura 200 OK (1427ms)
+[2026-08-27T18:01:12.483Z] [wrangler:info] GET /guides/umm-al-qura-calendar-guide 200 OK (568ms)
+[2026-08-27T18:01:14.063Z] [wrangler:info] GET /guides/calculate-date-after-days-leap-year-guide 200 OK (521ms)
+[2026-08-27T18:01:15.709Z] [wrangler:info] GET /search 200 OK (577ms)
+[2026-08-27T18:01:30.389Z] [wrangler:info] POST /api/admin/development-access 200 OK (45ms)
+[2026-08-27T18:01:30.390Z] [wrangler:info] GET /api/public/push-config 200 OK (19ms)
+[2026-08-27T18:01:30.401Z] [wrangler:info] DELETE /api/admin/development-access 200 OK (4ms)
+[2026-08-27T18:01:30.409Z] [wrangler:info] POST /api/admin/development-access 401 Unauthorized (4ms)
+[2026-08-27T18:02:10.456Z] [ELIFECYCLE] Command failed.
+[2026-08-27T18:02:10.470Z] Dev server exited with code -1
+[2026-08-27T18:02:11.538Z] Starting dev server with command: pnpm run dev
+[2026-08-27T18:02:12.114Z] $ astro build && wrangler dev --config dist/server/wrangler.json --ip 0.0.0.0 --port 3000 --var DEV_ADMIN_ACCESS_CODE:$DEV_ADMIN_ACCESS_CODE --var SUPABASE_URL:$SUPABASE_URL --var SUPABASE_PUBLISHABLE_KEY:$SUPABASE_PUBLISHABLE_KEY --var SUPABASE_SECRET_KEY:$SUPABASE_SECRET_KEY --var R2_ENDPOINT:$R2_ENDPOINT --var R2_ACCESS_KEY_ID:$R2_ACCESS_KEY_ID --var R2_SECRET_ACCESS_KEY:$R2_SECRET_ACCESS_KEY --var R2_BUCKET_NAME:$R2_BUCKET_NAME --var R2_PUBLIC_BASE_URL:$R2_PUBLIC_BASE_URL --var VAPID_PUBLIC_KEY:$VAPID_PUBLIC_KEY --var VAPID_PRIVATE_KEY:$VAPID_PRIVATE_KEY --var VAPID_SUBJECT:$VAPID_SUBJECT
+[2026-08-27T18:02:15.125Z] (node:129171) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[2026-08-27T18:02:15.125Z] (Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-08-27T18:02:15.166Z] 18:02:15 [@astrojs/cloudflare] Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2026-08-27T18:02:15.306Z] 18:02:15 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-27T18:02:15.307Z] 18:02:15 [vite] Re-optimizing dependencies because vite config has changed
+[2026-08-27T18:02:15.417Z] 18:02:15 [types] Generated 165ms
+[2026-08-27T18:02:15.417Z] 18:02:15 [build] output: "server"
+[2026-08-27T18:02:15.417Z] 18:02:15 [build] mode: "server"
+[2026-08-27T18:02:15.417Z] 18:02:15 [build] directory: /home/ubuntu/alshafra-platform/dist/
+[2026-08-27T18:02:15.417Z] 18:02:15 [build] adapter: @astrojs/cloudflare
+[2026-08-27T18:02:15.418Z] 18:02:15 [build] Collecting build info...
+[2026-08-27T18:02:15.418Z] 18:02:15 [build] ✓ Completed in 253ms.
+[2026-08-27T18:02:15.422Z] 18:02:15 [build] Building server entrypoints...
+[2026-08-27T18:02:15.647Z] 18:02:15 [vite] ✓ built in 183ms
+[2026-08-27T18:02:16.259Z] 18:02:16 [vite] ✓ built in 609ms
+[2026-08-27T18:02:16.413Z] 18:02:16 [vite] ✓ built in 146ms
+[2026-08-27T18:02:16.426Z] 18:02:16 [build] Rearranging server assets...
+[2026-08-27T18:02:16.429Z] 18:02:16 [build] ✓ Completed in 1.01s.
+[2026-08-27T18:02:16.431Z] 18:02:16 [@astrojs/cloudflare] Injected immutable Cache-Control for /_astro/* into _headers.
+[2026-08-27T18:02:16.431Z] 18:02:16 [build] Server built in 1.27s
+[2026-08-27T18:02:16.431Z] 18:02:16 [build] Complete!
+[2026-08-27T18:02:17.858Z] ⛅️ wrangler 4.125.0
+[2026-08-27T18:02:17.858Z] ────────────────────
+[2026-08-27T18:02:17.918Z] Your Worker has access to the following bindings:
+[2026-08-27T18:02:17.918Z] Binding                                            Resource                  Mode
+[2026-08-27T18:02:17.918Z] env.SESSION                                        KV Namespace              local
+[2026-08-27T18:02:17.918Z] env.R2_MEDIA (alshafra-media)                      R2 Bucket                 local
+[2026-08-27T18:02:17.918Z] env.ASSETS                                         Assets                    local
+[2026-08-27T18:02:17.919Z] env.DEV_ADMIN_ACCESS_CODE ("(hidden)")             Environment Variable      local
+[2026-08-27T18:02:17.919Z] env.SUPABASE_URL ("(hidden)")                      Environment Variable      local
+[2026-08-27T18:02:17.919Z] env.SUPABASE_PUBLISHABLE_KEY ("(hidden)")          Environment Variable      local
+[2026-08-27T18:02:17.919Z] env.SUPABASE_SECRET_KEY ("(hidden)")               Environment Variable      local
+[2026-08-27T18:02:17.919Z] env.R2_ENDPOINT ("(hidden)")                       Environment Variable      local
+[2026-08-27T18:02:17.919Z] env.R2_ACCESS_KEY_ID ("(hidden)")                  Environment Variable      local
+[2026-08-27T18:02:17.919Z] env.R2_SECRET_ACCESS_KEY ("(hidden)")              Environment Variable      local
+[2026-08-27T18:02:17.919Z] env.R2_BUCKET_NAME ("(hidden)")                    Environment Variable      local
+[2026-08-27T18:02:17.919Z] env.R2_PUBLIC_BASE_URL ("(hidden)")                Environment Variable      local
+[2026-08-27T18:02:17.920Z] env.VAPID_PUBLIC_KEY ("(hidden)")                  Environment Variable      local
+[2026-08-27T18:02:17.920Z] env.VAPID_PRIVATE_KEY ("(hidden)")                 Environment Variable      local
+[2026-08-27T18:02:17.920Z] env.VAPID_SUBJECT ("(hidden)")                     Environment Variable      local
+[2026-08-27T18:02:18.076Z] Attaching additional modules:
+[2026-08-27T18:02:18.096Z] ┌───────────────────────────────────────────────────────────┬──────┬─────────────┐
+[2026-08-27T18:02:18.096Z] │ Name                                                      │ Type │ Size        │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/404_g0EzdXxV.mjs                                   │ esm  │ 1.63 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/AwsRestJsonProtocol_F6-tD4BK.mjs                   │ esm  │ 31.34 KiB   │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/BaseLayout_CCVGkuf9.mjs                            │ esm  │ 9.45 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/CredentialsProviderError_C8g3yrpW.mjs              │ esm  │ 1.37 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/HttpInterceptingShapeSerializer_Ci97zo7T.mjs       │ esm  │ 15.49 KiB   │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/S3Client_Bm3vrwQO.mjs                              │ esm  │ 149.51 KiB  │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/TypeRegistry_C6Hos7Zs.mjs                          │ esm  │ 2.54 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/_astro_assets_AgXS--O0.mjs                         │ esm  │ 22.15 KiB   │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/_id__2B_HUgU-.mjs                                  │ esm  │ 7.46 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/_id__BXrJwksb.mjs                                  │ esm  │ 4.24 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/_page__C4tQUkb6.mjs                                │ esm  │ 12.31 KiB   │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/_section__CvY7ldye.mjs                             │ esm  │ 4.46 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/_slug__CGIT1o0C.mjs                                │ esm  │ 10.47 KiB   │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/_virtual_astro_server-island-manifest_q0HM18kM.mjs │ esm  │ 0.27 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/_virtual_astro_session-driver_Bvb4Kaq4.mjs         │ esm  │ 2.98 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/admin_DbrGTT5a.mjs                                 │ esm  │ 1.90 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/age-calculator_BI7prhTM.mjs                        │ esm  │ 3.71 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/analytics_D8-V921l.mjs                             │ esm  │ 4.40 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/assets_C0Zzc7Fr.mjs                                │ esm  │ 15.12 KiB   │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/chain_CWIAvB-R.mjs                                 │ esm  │ 0.62 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/compiler_D8ApliaT.mjs                              │ esm  │ 1.32 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/config_CU0jU2X8.mjs                                │ esm  │ 1.69 KiB    │
+[2026-08-27T18:02:18.096Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.096Z] │ chunks/content-workflow_DhBK9STM.mjs                      │ esm  │ 2.00 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/content_mM9RTUDf.mjs                               │ esm  │ 4.03 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/date-difference_Bek42mX7.mjs                       │ esm  │ 3.59 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/date-offset_Bn_YcY8U.mjs                           │ esm  │ 3.89 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/development-access_28wx9HCQ.mjs                    │ esm  │ 3.26 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/development-access_IP2Tn5Bt.mjs                    │ esm  │ 1.93 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist-es_A1hV0euq.mjs                               │ esm  │ 11.71 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist-es_BR4Jp-IF.mjs                               │ esm  │ 12.86 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist-es_BUG3jNA8.mjs                               │ esm  │ 10.22 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist-es_CmRZDuJ2.mjs                               │ esm  │ 2.73 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist-es_CpNg_y2w.mjs                               │ esm  │ 1.62 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist-es_DaCzMBFF.mjs                               │ esm  │ 14.39 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist-es_DgSWwTEp.mjs                               │ esm  │ 0.13 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist-es_DkJeEkkE.mjs                               │ esm  │ 3.33 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist-es_XIVngQFp.mjs                               │ esm  │ 6.85 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/dist_-Zml08yI.mjs                                  │ esm  │ 703.07 KiB  │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/distribution_CKCrwwpS.mjs                          │ esm  │ 9.81 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/entrypoints_Y2Y3FLbK.mjs                           │ esm  │ 305.78 KiB  │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/errors_CBEdjlNS.mjs                                │ esm  │ 22.12 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/event_CSvPo_2z.mjs                                 │ esm  │ 4.75 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/features_BLhzp8vO.mjs                              │ esm  │ 3.21 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/gone_BdcG1UQY.mjs                                  │ esm  │ 1.82 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/hex-encoding_CZk2gMPx.mjs                          │ esm  │ 1.98 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/history_BItDI5qj.mjs                               │ esm  │ 2.14 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/httpRequest_BFjlj3lZ.mjs                           │ esm  │ 1.62 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/image-passthrough-endpoint_Gz_XBARB.mjs            │ esm  │ 2.47 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/index.browser_BuuJAsNf.mjs                         │ esm  │ 175.87 KiB  │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/index.browser_CXDWnaWP.mjs                         │ esm  │ 0.96 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/index.browser_DP-WdBKu.mjs                         │ esm  │ 28.79 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/index.browser_DXlq5QN3.mjs                         │ esm  │ 0.24 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/index_BBgbfwby.mjs                                 │ esm  │ 3.49 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/index_CzVJSCkm.mjs                                 │ esm  │ 6.80 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/index_DuaJFZhU.mjs                                 │ esm  │ 22.05 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/loadSso_BDsLBk8g.mjs                               │ esm  │ 18.76 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/media_Cg4NhKiZ.mjs                                 │ esm  │ 8.72 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/moderation_CKpqlupw.mjs                            │ esm  │ 5.97 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/node-http-handler_DdFmV-q6.mjs                     │ esm  │ 29.61 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/noop-entrypoint_BYLrzUxc.mjs                       │ esm  │ 0.15 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/noop_xEDOQxut.mjs                                  │ esm  │ 0.76 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/package_B-aggCwy.mjs                               │ esm  │ 4.42 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/parseUrl_C0NpWhYr.mjs                              │ esm  │ 1.10 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/platform-foundation_DTGOBoBc.mjs                   │ esm  │ 1.85 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/platform-settings_D1b1m0vu.mjs                     │ esm  │ 0.57 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/public-content_G1JIGId3.mjs                        │ esm  │ 3.40 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/push-config_CqDTn9e_.mjs                           │ esm  │ 0.78 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/resolveAwsSdkSigV4AConfig_DsIsMPqE.mjs             │ esm  │ 18.54 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/rolldown-runtime_D7vh-g_o.mjs                      │ esm  │ 0.41 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/runtime_BWxWgMA-.mjs                               │ esm  │ 0.14 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/runtime_DQ1yG6vh.mjs                               │ esm  │ 2.04 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/sdk-stream-mixin.browser_kH5C-M14.mjs              │ esm  │ 2.25 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/search_7CsGu82j.mjs                                │ esm  │ 4.09 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/server_CvY74TIX.mjs                                │ esm  │ 219.86 KiB  │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/service_BCdARORL.mjs                               │ esm  │ 48.73 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/setCredentialFeature_BuyQh6-L.mjs                  │ esm  │ 0.40 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/settings_DvTWbGgg.mjs                              │ esm  │ 3.04 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/signin_CgJnoyEh.mjs                                │ esm  │ 21.21 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/sitemap_ejMCX2TL.mjs                               │ esm  │ 1.79 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/sources_Cy41GZcK.mjs                               │ esm  │ 6.26 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/sso-oidc_Bt0AsWKg.mjs                              │ esm  │ 23.88 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/static-image-collection_Rfe9SBsL.mjs               │ esm  │ 2.40 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/sts_Du0A0a1O.mjs                                   │ esm  │ 47.19 KiB   │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/subscription_D5wllsNl.mjs                          │ esm  │ 3.37 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/tool-catalog_C81mytSz.mjs                          │ esm  │ 3.63 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/transition_CXfjIT6x.mjs                            │ esm  │ 4.61 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/umm-al-qura_BvyxZvnr.mjs                           │ esm  │ 1.78 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/umm-al-qura_CiUZY7jJ.mjs                           │ esm  │ 1.41 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.097Z] │ chunks/umm-al-qura_DNgjrSFT.mjs                           │ esm  │ 3.88 KiB    │
+[2026-08-27T18:02:18.097Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.098Z] │ chunks/web-push_CUi0dw2V.mjs                              │ esm  │ 19.88 KiB   │
+[2026-08-27T18:02:18.098Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.098Z] │ chunks/weekday-calculator_CWGIQcOU.mjs                    │ esm  │ 3.71 KiB    │
+[2026-08-27T18:02:18.098Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.098Z] │ virtual_astro_middleware.mjs                              │ esm  │ 0.15 KiB    │
+[2026-08-27T18:02:18.098Z] ├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+[2026-08-27T18:02:18.098Z] │ Total (92 modules)                                        │      │ 2204.67 KiB │
+[2026-08-27T18:02:18.098Z] └───────────────────────────────────────────────────────────┴──────┴─────────────┘
+[2026-08-27T18:02:18.110Z] ⎔ Starting local server...
+[2026-08-27T18:02:18.313Z] [wrangler:info] ✨ Parsed 1 valid header rule.
+[2026-08-27T18:02:18.726Z] [wrangler:info] Ready on http://0.0.0.0:3000
+[2026-08-27T18:02:18.726Z] [wrangler:info] - http://127.0.0.1:3000
+[2026-08-27T18:02:18.726Z] [wrangler:info] - http://169.254.0.21:3000
+[2026-08-27T18:02:23.799Z] [wrangler:info] GET /articles/calculate-days-between-two-dates 200 OK (792ms)
+[2026-08-27T18:02:25.103Z] [wrangler:info] GET /api/public/push-config 200 OK (7ms)
+[2026-08-27T18:02:26.973Z] [wrangler:info] GET /media/a442fca9-a20e-49e3-b799-94ae4654e454 200 OK (2013ms)
+[2026-08-27T18:02:28.103Z] [wrangler:info] GET /push-sw.js 200 OK (6ms)
+[2026-08-27T18:02:36.907Z] [wrangler:warn] Local cf.image transforms are a low-fidelity mock; only resize, rotate and format conversion are applied. Deploy to preview the full transformation.
+[2026-08-27T18:02:36.911Z] [wrangler:info] GET /media/a442fca9-a20e-49e3-b799-94ae4654e454 200 OK (11962ms)

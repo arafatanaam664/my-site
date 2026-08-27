@@ -6,6 +6,7 @@ describe("تدقيق جودة الصفحات العامة", () => {
     const script = await readFile(new URL("../scripts/verify-public-page-quality.mjs", import.meta.url), "utf8");
     expect(script).toContain("scope: \"public_page_structure_and_metadata\"");
     expect(script).toContain('path: "/tools/weekday-calculator"');
+    expect(script).toContain('path: "/articles/calculate-days-between-two-dates"');
     expect(script).toContain('path: "/guides/calculate-date-after-days-leap-year-guide"');
     expect(script).toContain('name=\"robots\" content=\"noindex,follow\"');
     expect(script).toContain('<main id=\\"main-content\\"');
