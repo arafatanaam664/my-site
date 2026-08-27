@@ -4778,3 +4778,15 @@
 [2026-08-27T18:02:28.103Z] [wrangler:info] GET /push-sw.js 200 OK (6ms)
 [2026-08-27T18:02:36.907Z] [wrangler:warn] Local cf.image transforms are a low-fidelity mock; only resize, rotate and format conversion are applied. Deploy to preview the full transformation.
 [2026-08-27T18:02:36.911Z] [wrangler:info] GET /media/a442fca9-a20e-49e3-b799-94ae4654e454 200 OK (11962ms)
+[2026-08-27T18:03:37.056Z] [wrangler:info] GET / 200 OK (1047ms)
+[2026-08-27T18:03:37.765Z] [wrangler:info] GET /api/public/push-config 200 OK (5ms)
+[2026-08-27T18:03:39.306Z] [wrangler:info] GET /push-sw.js 304 Not Modified (4ms)
+[2026-08-27T18:06:13.414Z] [wrangler:info] POST /api/admin/development-access 200 OK (53ms)
+[2026-08-27T18:06:13.438Z] [wrangler:info] DELETE /api/admin/development-access 200 OK (6ms)
+[2026-08-27T18:06:13.448Z] [wrangler:info] POST /api/admin/development-access 401 Unauthorized (5ms)
+[2026-08-27T18:06:52.212Z] [wrangler:info] POST /api/admin/development-access 200 OK (21ms)
+[2026-08-27T18:06:52.214Z] [wrangler:info] GET /api/public/push-config 200 OK (20ms)
+[2026-08-27T18:06:52.229Z] [wrangler:info] DELETE /api/admin/development-access 200 OK (5ms)
+[2026-08-27T18:06:52.242Z] [wrangler:info] POST /api/admin/development-access 401 Unauthorized (4ms)
+[2026-08-27T18:06:59.790Z] ⎔ Reloading local server...
+[2026-08-27T18:07:00.201Z] ⎔ Local server updated and ready

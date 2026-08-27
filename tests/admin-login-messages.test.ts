@@ -10,7 +10,9 @@ describe("رسائل دخول الإدارة وإعداد المعاينة", () 
     expect(adminPage).toContain("email_provider_disabled");
     expect(adminPage).toContain("over_email_send_rate_limit");
     expect(adminPage).toContain("loginErrorMessage(error)");
-    expect(adminPage).toContain("تعذر تحميل وظائف الإدارة في هذه المعاينة");
+    expect(adminPage).toContain("تحتاج مساحة الإدارة إلى JavaScript");
+    expect(adminPage).toContain("<noscript>");
+    expect(adminPage).not.toContain("onsubmit=");
     expect(adminPage).toContain("دخول التطوير المؤقت");
     expect(adminPage).toContain("/api/admin/development-access");
     expect(adminPage).toContain("/api/admin/platform/settings");

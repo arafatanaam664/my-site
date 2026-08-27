@@ -11,9 +11,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <section class="admin-card" id="auth-card">
       <h2>الدخول إلى مساحة التحرير</h2>
       <p>أدخل بريدك المعتمد. سنرسل رابط دخول آمن بدل كلمة مرور.</p>
-      <form id="magic-link-form" onsubmit="document.getElementById('auth-status').textContent = 'تعذر تحميل وظائف الإدارة في هذه المعاينة. حدّث الصفحة أو افتح رابط المعاينة في المتصفح ثم أعد المحاولة.'; return false;"><label for="editor-email">البريد الإلكتروني</label><input id="editor-email" type="email" autocomplete="email" required placeholder="name@example.com" /><button type="submit">إرسال رابط الدخول</button></form>
-      <section id="development-access-card" class="development-access-card" hidden><p><strong>دخول التطوير المؤقت</strong> متاح لهذه المعاينة فقط. أدخل رمز الوصول المحفوظ بأمان؛ لا يعمل على النطاق النهائي.</p><form id="development-access-form" onsubmit="document.getElementById('development-access-status').textContent = 'تعذر تحميل وظائف التطوير في هذه المعاينة. حدّث الصفحة أو افتحها في المتصفح.'; return false;"><label for="development-access-code">رمز وصول التطوير</label><input id="development-access-code" type="password" autocomplete="current-password" minlength="16" required /><button type="submit">فتح جلسة تطوير</button></form><p class="form-status" id="development-access-status" aria-live="polite"></p></section>
+      <form id="magic-link-form"><label for="editor-email">البريد الإلكتروني</label><input id="editor-email" type="email" autocomplete="email" required placeholder="name@example.com" /><button type="submit">إرسال رابط الدخول</button></form>
+      <section id="development-access-card" class="development-access-card" hidden><p><strong>دخول التطوير المؤقت</strong> متاح لهذه المعاينة فقط. أدخل رمز الوصول المحفوظ بأمان؛ لا يعمل على النطاق النهائي.</p><form id="development-access-form"><label for="development-access-code">رمز وصول التطوير</label><input id="development-access-code" type="password" autocomplete="current-password" minlength="16" required /><button type="submit">فتح جلسة تطوير</button></form><p class="form-status" id="development-access-status" aria-live="polite"></p></section>
       <p class="form-status" id="auth-status" aria-live="polite"></p>
+      <noscript><p class="form-status">تحتاج مساحة الإدارة إلى JavaScript. افتح رابط المعاينة في متصفح يدعم JavaScript ثم أعد المحاولة.</p></noscript>
     </section>
 
     <section class="admin-panel admin-console" id="dashboard" hidden>
