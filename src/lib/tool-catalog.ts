@@ -34,6 +34,14 @@ export const builtInToolCatalog: ToolCatalogEntry[] = [
     category: "التاريخ والحساب",
     mode: "client",
   },
+  {
+    id: "weekday-calculator",
+    href: "/tools/weekday-calculator",
+    title: "معرفة يوم الأسبوع من التاريخ الميلادي",
+    description: "تحدد يوم الأسبوع لتاريخ ميلادي صحيح داخل المتصفح، من دون إرسال تاريخ الإدخال إلى الخادم.",
+    category: "التاريخ والحساب",
+    mode: "client",
+  },
 ];
 
 export function searchBuiltInTools(query: string) {

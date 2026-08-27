@@ -10,6 +10,7 @@ describe("نتائج الأدوات في البحث", () => {
     expect(searchAvailableTools("تاريخ", true).map((tool) => tool.href)).toEqual([
       "/tools/date-offset",
       "/tools/date-difference",
+      "/tools/weekday-calculator",
       "/tools/age-calculator",
     ]);
   });
