@@ -13,6 +13,9 @@ describe("رسائل دخول الإدارة وإعداد المعاينة", () 
     expect(adminPage).toContain("تحتاج مساحة الإدارة إلى JavaScript");
     expect(adminPage).toContain("<noscript>");
     expect(adminPage).not.toContain("onsubmit=");
+    expect(adminPage).toContain('submit.disabled = true');
+    expect(adminPage).toContain('form.setAttribute("aria-busy", "true")');
+    expect(adminPage).toContain('form.removeAttribute("aria-busy")');
     expect(adminPage).toContain("دخول التطوير المؤقت");
     expect(adminPage).toContain("/api/admin/development-access");
     expect(adminPage).toContain("/api/admin/platform/settings");

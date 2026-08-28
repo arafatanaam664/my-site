@@ -298,16 +298,21 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   }
 
   document.querySelector<HTMLFormElement>("#magic-link-form")!.addEventListener("submit", async (event) => {
-    event.preventDefault(); const email = field<HTMLInputElement>("#editor-email").value; authStatus.textContent = "يجري إرسال الرابط…";
-    if (!supabase) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; }
-    if (!magicLinkRedirectUrl) { authStatus.textContent = "تعذر تحديد رابط العودة الآمن لهذه المعاينة."; return; }
-    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: magicLinkRedirectUrl } }); authStatus.textContent = error ? loginErrorMessage(error) : "تم طلب رابط الدخول. تحقق من صندوق الوارد والبريد غير المرغوب فيه، ثم افتح الرابط وعد إلى هذه الصفحة.";
+    event.preventDefault(); const form = event.currentTarget as HTMLFormElement; const submit = form.querySelector<HTMLButtonElement>("button[type=submit]")!; const email = field<HTMLInputElement>("#editor-email").value; submit.disabled = true; form.setAttribute("aria-busy", "true"); authStatus.textContent = "يجري إرسال الرابط…";
+    try {
+      if (!supabase) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; }
+      if (!magicLinkRedirectUrl) { authStatus.textContent = "تعذر تحديد رابط العودة الآمن لهذه المعاينة."; return; }
+      const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: magicLinkRedirectUrl } }); authStatus.textContent = error ? loginErrorMessage(error) : "تم طلب رابط الدخول. تحقق من صندوق الوارد والبريد غير المرغوب فيه، ثم افتح الرابط وعد إلى هذه الصفحة.";
+    } finally { submit.disabled = false; form.removeAttribute("aria-busy"); }
   });
+  
   document.querySelector<HTMLFormElement>("#development-access-form")!.addEventListener("submit", async (event) => {
-    event.preventDefault(); if (!developmentAccessAvailable) return; const code = field<HTMLInputElement>("#development-access-code").value; developmentAccessStatus.textContent = "يجري فتح جلسة التطوير…";
-    const response = await fetch("/api/admin/development-access", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code }) }); const result = await response.json();
-    if (!response.ok) { developmentAccessStatus.textContent = result.error ?? "تعذر فتح جلسة التطوير."; return; }
-    field<HTMLInputElement>("#development-access-code").value = ""; developmentAccessStatus.textContent = "تم فتح جلسة التطوير."; await establishSession();
+    event.preventDefault(); const form = event.currentTarget as HTMLFormElement; if (!developmentAccessAvailable) return; const submit = form.querySelector<HTMLButtonElement>("button[type=submit]")!; const code = field<HTMLInputElement>("#development-access-code").value; submit.disabled = true; form.setAttribute("aria-busy", "true"); developmentAccessStatus.textContent = "يجري فتح جلسة التطوير…";
+    try {
+      const response = await fetch("/api/admin/development-access", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code }) }); const result = await response.json();
+      if (!response.ok) { developmentAccessStatus.textContent = result.error ?? "تعذر فتح جلسة التطوير."; return; }
+      field<HTMLInputElement>("#development-access-code").value = ""; developmentAccessStatus.textContent = "تم فتح جلسة التطوير."; await establishSession();
+    } finally { submit.disabled = false; form.removeAttribute("aria-busy"); }
   });
   document.querySelector<HTMLFormElement>("#site-notice-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; platformSettingsStatus.textContent = "يجري حفظ التنبيه…"; const value = { enabled: field<HTMLInputElement>("#site-notice-enabled").checked, message: field<HTMLTextAreaElement>("#site-notice-message").value }; const response = await fetch("/api/admin/platform/settings", { method: "PATCH", headers, body: JSON.stringify({ settingKey: "site_notice", value }) }); const result = await response.json(); platformSettingsStatus.textContent = response.ok ? "تم حفظ التنبيه العام." : result.error ?? "تعذر حفظ التنبيه."; });
   document.querySelector<HTMLFormElement>("#social-account-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; const message = document.querySelector<HTMLElement>("#social-account-status-message")!; message.textContent = "يجري حفظ الحساب المرجعي…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "create_account", provider: field<HTMLSelectElement>("#social-account-provider").value, displayName: field<HTMLInputElement>("#social-account-name").value, externalAccountRef: field<HTMLInputElement>("#social-account-ref").value, connectionStatus: field<HTMLSelectElement>("#social-account-status").value }) }); const result = await response.json(); message.textContent = response.ok ? "تم حفظ المرجع من دون أي سر أو اتصال خارجي." : result.error ?? "تعذر حفظ الحساب المرجعي."; if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSocialDistribution(); } });
