@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ToolExtras from "../../components/ToolExtras.astro";
+import { breadcrumbListLd, toolWebApplicationLd } from "../../lib/site-schema";
+import { publicFeatureState } from "../../lib/server/feature-gates";
+const features = await publicFeatureState();
+if (!features.tools_core) Astro.response.status = 404;
+const canonical = "https://alshafra.com/tools/countdown";
+const title = "عدّاد تنازلي لتاريخ مستهدف";
+const description = "احسب الزمن المتبقي حتى تاريخ ووقت تختارهما، بالأيام والساعات والدقائق والثواني داخل المتصفح.";
+---
+
+{features.tools_core ? <BaseLayout title={title} description={description} canonical={canonical} jsonLd={[toolWebApplicationLd(title, description, canonical), breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: "الأدوات", url: "https://alshafra.com/tools" }, { name: title, url: canonical }])]}>
+  <section class="tool-page">
+    <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href="/tools">الأدوات</a><span aria-hidden="true">/</span><span>العدّاد التنازلي</span></nav>
+    <header><p class="eyebrow">أداة عملية</p><h1>{title}</h1><p>اختر تاريخًا ووقتًا مستهدفين. يعتمد العدّ على ساعة جهازك المحلية.</p></header>
+    <form class="date-difference-form" id="countdown-form">
+      <label for="countdown-target">التاريخ والوقت<input id="countdown-target" type="datetime-local" required /></label>
+      <button type="submit">ابدأ العدّ</button>
+    </form>
+    <section class="tool-result" id="countdown-result" aria-live="polite" hidden><span>المتبقي</span><strong id="countdown-value"></strong><p id="countdown-copy"></p></section>
+    <p class="tool-note">العدّاد ليس تذكيرًا رسميًا ولا إشعارًا مجدولًا. لا تعتمد عليه للمواعيد النظامية أو الرحلات دون مصدر الجهة المختصة.</p>
+    <ToolExtras id="countdown" title={title} url={canonical} />
+  </section>
+</BaseLayout> : <BaseLayout title="لم نعثر على هذه الصفحة" description="الأداة غير متاحة حاليًا." noindex><main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>الأداة غير متاحة حاليًا.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main></BaseLayout>}
+
+<script>
+  import { remainingUntil } from "../../lib/countdown";
+  import { trackToolUse } from "../../lib/tool-analytics";
+  const form = document.querySelector<HTMLFormElement>("#countdown-form")!;
+  const result = document.querySelector<HTMLElement>("#countdown-result")!;
+  const value = document.querySelector<HTMLElement>("#countdown-value")!;
+  const copy = document.querySelector<HTMLElement>("#countdown-copy")!;
+  const number = new Intl.NumberFormat("ar-SA");
+  let timer = 0;
+  let target = "";
+  let tracked = false;
+  const render = () => {
+    const remaining = remainingUntil(target);
+    if (!remaining) { copy.textContent = "تحقق من التاريخ والوقت."; result.hidden = false; return; }
+    if (remaining.expired) { value.textContent = "انتهى الوقت"; copy.textContent = "التاريخ المستهدف قد مضى وفق ساعة جهازك."; result.hidden = false; return; }
+    value.textContent = `${number.format(remaining.days)}ي ${number.format(remaining.hours)}س ${number.format(remaining.minutes)}د ${number.format(remaining.seconds)}ث`;
+    copy.textContent = `متبقٍ ${number.format(remaining.days)} يومًا و${number.format(remaining.hours)} ساعة و${number.format(remaining.minutes)} دقيقة و${number.format(remaining.seconds)} ثانية.`;
+    result.hidden = false;
+  };
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    target = document.querySelector<HTMLInputElement>("#countdown-target")!.value;
+    if (!target) return;
+    if (!tracked) { trackToolUse(); tracked = true; }
+    window.clearInterval(timer);
+    render();
+    timer = window.setInterval(render, 1000);
+  });
+</script>

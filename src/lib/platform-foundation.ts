@@ -1,11 +1,11 @@
 export const platformFeatureDefinitions = [
   { flag: "content_core", label: "المحتوى العام", defaultEnabled: true, publicVisible: true },
   { flag: "tools_core", label: "الأدوات العامة", defaultEnabled: true, publicVisible: true },
-  { flag: "community", label: "المجتمع والأسئلة", defaultEnabled: false, publicVisible: false },
+  { flag: "community", label: "المجتمع والأسئلة", defaultEnabled: false, publicVisible: true },
   { flag: "member_accounts", label: "حسابات الأعضاء", defaultEnabled: false, publicVisible: false },
   { flag: "comments", label: "التعليقات", defaultEnabled: false, publicVisible: false },
   { flag: "opportunities", label: "الفرص والمنح", defaultEnabled: false, publicVisible: false },
-  { flag: "social_sharing", label: "مشاركة المحتوى", defaultEnabled: false, publicVisible: true },
+  { flag: "social_sharing", label: "مشاركة المحتوى", defaultEnabled: true, publicVisible: true },
   { flag: "social_publishing", label: "النشر الاجتماعي", defaultEnabled: false, publicVisible: false },
   { flag: "automation", label: "الأتمتة", defaultEnabled: false, publicVisible: false },
   { flag: "scheduled_publishing", label: "النشر المجدول", defaultEnabled: false, publicVisible: false },
@@ -15,8 +15,9 @@ export const platformFeatureDefinitions = [
 export type PlatformFeatureFlag = (typeof platformFeatureDefinitions)[number]["flag"];
 
 export function featureForPublicSection(section: string): PlatformFeatureFlag | null {
-  if (section === "articles" || section === "guides") return "content_core";
+  if (section === "articles" || section === "guides" || section === "solutions" || section === "faqs" || section === "news") return "content_core";
   if (section === "tools") return "tools_core";
+  if (section === "community") return "community";
   return null;
 }
 

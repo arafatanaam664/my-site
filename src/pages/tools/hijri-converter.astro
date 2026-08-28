@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ToolExtras from "../../components/ToolExtras.astro";
+import { hijriMonthNames } from "../../lib/hijri-calendar";
+import { breadcrumbListLd, faqPageLd, toolWebApplicationLd } from "../../lib/site-schema";
+import { publicFeatureState } from "../../lib/server/feature-gates";
+
+const features = await publicFeatureState();
+if (!features.tools_core) Astro.response.status = 404;
+const canonical = "https://alshafra.com/tools/hijri-converter";
+const title = "تحويل التاريخ الهجري إلى الميلادي";
+const description = "حوّل بين التاريخ الهجري والميلادي بسرعة. النتيجة حسابية وفق التقويم المدني الجدولي، وليست إعلان أم القرى الرسمي.";
+const faqs = [
+  { question: "هل التحويل مطابق لتقويم أم القرى؟", answer: "لا. هذه الأداة تستخدم تقويمًا هجريًا مدنيًا جدوليًا للحساب الفوري داخل المتصفح. التواريخ الرسمية في السعودية تتبع أم القرى وقد تختلف يومًا." },
+  { question: "أين أتحقق من تاريخ اليوم الرسمي؟", answer: "استخدم صفحة تقويم أم القرى في Alshafra، فهي تجلب التاريخ من مصدر خادمي معلن بطريقة HJCoSA." },
+  { question: "هل تُرسل التواريخ إلى الخادم؟", answer: "لا. التحويل الجدولي يتم داخل متصفحك ولا نرسل التاريخ الذي تدخله إلى الخادم." },
+];
+const jsonLd = [toolWebApplicationLd(title, description, canonical), breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: "الأدوات", url: "https://alshafra.com/tools" }, { name: title, url: canonical }]), faqPageLd(faqs)];
+---
+
+{features.tools_core ? <BaseLayout title={title} description={description} canonical={canonical} jsonLd={jsonLd}>
+  <section class="tool-page">
+    <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href="/tools">الأدوات</a><span aria-hidden="true">/</span><span>تحويل التاريخ</span></nav>
+    <header><p class="eyebrow">أداة عملية</p><h1>{title}</h1><p>أدخل تاريخًا ميلاديًا أو هجريًا للحصول على المقابل الحسابي. للمواعيد الرسمية استخدم <a href="/calendar/umm-al-qura">تقويم أم القرى</a>.</p></header>
+    <div class="tool-dual">
+      <form class="date-offset-form" id="gregorian-to-hijri-form">
+        <label for="gregorian-date">التاريخ الميلادي<input id="gregorian-date" type="date" required /></label>
+        <button type="submit">حوّل إلى هجري</button>
+      </form>
+      <form class="date-offset-form" id="hijri-to-gregorian-form">
+        <label for="hijri-year">السنة الهجرية<input id="hijri-year" type="number" min="1" max="1800" required /></label>
+        <label for="hijri-month">الشهر<select id="hijri-month">{hijriMonthNames.map((name, index) => <option value={index + 1}>{name}</option>)}</select></label>
+        <label for="hijri-day">اليوم<input id="hijri-day" type="number" min="1" max="30" required /></label>
+        <button type="submit">حوّل إلى ميلادي</button>
+      </form>
+    </div>
+    <section class="tool-result" id="hijri-result" aria-live="polite" hidden><span>النتيجة</span><strong id="hijri-value"></strong><p id="hijri-copy"></p></section>
+    <p class="tool-note">التقويم الجدولي يفترض دورة 30 سنة شهرية ثابتة. لا تعتمد هذه النتيجة لبداية شهر رمضان أو العيدين أو الإجازات الرسمية.</p>
+    <ToolExtras id="hijri-converter" title={title} url={canonical} />
+    <section class="tool-faq"><h2>أسئلة متكررة</h2>{faqs.map((item) => <details><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section>
+  </section>
+</BaseLayout> : <BaseLayout title="لم نعثر على هذه الصفحة" description="الأداة غير متاحة حاليًا." noindex><main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>الأداة غير متاحة حاليًا.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main></BaseLayout>}
+
+<script>
+  import { gregorianToHijri, hijriMonthNames, hijriToGregorianIso } from "../../lib/hijri-calendar";
+  import { trackToolUse } from "../../lib/tool-analytics";
+  const result = document.querySelector<HTMLElement>("#hijri-result")!;
+  const value = document.querySelector<HTMLElement>("#hijri-value")!;
+  const copy = document.querySelector<HTMLElement>("#hijri-copy")!;
+  const show = (headline: string, detail: string) => { value.textContent = headline; copy.textContent = detail; result.hidden = false; trackToolUse(); };
+  document.querySelector<HTMLFormElement>("#gregorian-to-hijri-form")!.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const iso = document.querySelector<HTMLInputElement>("#gregorian-date")!.value;
+    const hijri = gregorianToHijri(iso);
+    if (!hijri) { copy.textContent = "تحقق من التاريخ الميلادي ثم حاول مجددًا."; result.hidden = false; return; }
+    show(`${hijri.day} ${hijri.monthName} ${hijri.year} هـ`, `المقابل الحسابي لـ ${iso} هو ${hijri.day} ${hijri.monthName} ${hijri.year} هـ وفق التقويم المدني الجدولي.`);
+  });
+  document.querySelector<HTMLFormElement>("#hijri-to-gregorian-form")!.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const year = Number(document.querySelector<HTMLInputElement>("#hijri-year")!.value);
+    const month = Number(document.querySelector<HTMLSelectElement>("#hijri-month")!.value);
+    const day = Number(document.querySelector<HTMLInputElement>("#hijri-day")!.value);
+    const iso = hijriToGregorianIso(year, month, day);
+    if (!iso) { copy.textContent = "تحقق من اليوم والشهر والسنة الهجرية ثم حاول مجددًا."; result.hidden = false; return; }
+    show(iso, `المقابل الحسابي لـ ${day} ${hijriMonthNames[month - 1]} ${year} هـ هو ${iso} ميلاديًا.`);
+  });
+</script>

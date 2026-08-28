@@ -7,7 +7,7 @@ export default defineConfig({
   site: "https://alshafra.com",
   trailingSlash: "never",
   prefetch: true,
-  server: { allowedHosts: ["3000-igrycpt3pzscmeqwsre56-029d6cb6.us4.manus.computer"] },
+  server: { host: true, allowedHosts: true },
   vite: {
     ssr: { noExternal: ["@astrojs/cloudflare"] },
     optimizeDeps: { exclude: ["@astrojs/cloudflare"] },

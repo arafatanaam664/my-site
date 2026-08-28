@@ -3,7 +3,7 @@ import { featureForPublicSection, isPlatformFeatureFlag, platformFeatureDefiniti
 
 describe("أساس المنصة ومفاتيح الميزات", () => {
   it("يبقي الوحدات الحساسة أو غير المكتملة موقوفة افتراضيًا", () => {
-    expect(platformFeatureDefinitions.find((definition) => definition.flag === "community")).toMatchObject({ defaultEnabled: false, publicVisible: false });
+    expect(platformFeatureDefinitions.find((definition) => definition.flag === "community")).toMatchObject({ defaultEnabled: false, publicVisible: true });
     expect(platformFeatureDefinitions.find((definition) => definition.flag === "content_core")).toMatchObject({ defaultEnabled: true, publicVisible: true });
   });
 
@@ -16,7 +16,9 @@ describe("أساس المنصة ومفاتيح الميزات", () => {
   it("يربط مسارات المحتوى والأدوات بمفاتيح إتاحة صريحة", () => {
     expect(featureForPublicSection("articles")).toBe("content_core");
     expect(featureForPublicSection("guides")).toBe("content_core");
+    expect(featureForPublicSection("solutions")).toBe("content_core");
     expect(featureForPublicSection("tools")).toBe("tools_core");
+    expect(featureForPublicSection("community")).toBe("community");
     expect(featureForPublicSection("unknown")).toBeNull();
   });
 });

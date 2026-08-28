@@ -29,5 +29,6 @@ describe("سير مراجعة المحتوى", () => {
     expect(issues).toContain("أضف مصدرًا موثقًا واحدًا على الأقل");
     expect(publicationReadiness({ kind: "guide", title: "عنوان صالح للمادة المنشورة", body: "ن".repeat(320), seoDescription: "و".repeat(75), primaryMedia: { width: 1199, height: 500 }, sourceCount: 1 })).toContain("الصورة الرئيسية تحتاج إلى عرض 1200px ومساحة 300 ألف بكسل على الأقل");
     expect(publicationReadiness({ kind: "tool", title: "عنوان صالح للمادة المنشورة", body: "ن".repeat(320), seoDescription: "و".repeat(75), primaryMedia: { width: 1200, height: 500 }, sourceCount: 0 })).toEqual([]);
+    expect(publicationReadiness({ kind: "solution", title: "عنوان صالح للمادة المنشورة", body: "ن".repeat(320), seoDescription: "و".repeat(75), primaryMedia: { width: 1200, height: 500 }, sourceCount: 0 })).toContain("أضف مصدرًا موثقًا واحدًا على الأقل");
   });
 });

@@ -13,4 +13,11 @@ describe("البحث العربي", () => {
     ], "تحويل التاريخ");
     expect(results.map((item) => item.id)).toEqual(["1", "2"]);
   });
+
+  it("يوسع المرادفات الشائعة مثل واتساب دون اختراع صفحات", () => {
+    const results = searchPublicContent([
+      { id: "1", kind: "article", slug: "wa", title: "حل مشكلة واتساب", excerpt: null, seo_description: null, primary_media_id: null, published_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z", media: [] },
+    ], "واتس");
+    expect(results.map((item) => item.id)).toEqual(["1"]);
+  });
 });

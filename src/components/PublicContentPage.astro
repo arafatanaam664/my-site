@@ -2,10 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ShareActions from "./ShareActions.astro";
 import { contentBlocks } from "../lib/content-blocks";
+import { labelForKind, sectionForKind, type PublicSection } from "../lib/content-taxonomy";
 import { publicFeatureState } from "../lib/server/feature-gates";
 import { mediaForId, relatedPublishedContent, type PublicContent } from "../lib/server/public-content";
+import { builtInToolCatalog } from "../lib/tool-catalog";
 
-interface Props { content: PublicContent; section: "articles" | "guides" | "tools"; }
+interface Props { content: PublicContent; section: PublicSection; }
 const { content, section } = Astro.props;
 const canonical = content.canonical_url || `https://alshafra.com/${section}/${content.slug}`;
 const title = content.seo_title || content.title;
@@ -15,9 +17,10 @@ const image = primaryMedia ? `https://alshafra.com/media/${primaryMedia.id}?pres
 const blocks = contentBlocks(content.body_markdown);
 const publishedDate = new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle: "long" }).format(new Date(content.published_at));
 const updatedDate = new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle: "long" }).format(new Date(content.updated_at));
-const schemaType = content.kind === "tool" ? "WebPage" : "Article";
+const schemaType = content.kind === "tool" ? "WebPage" : content.kind === "news" ? "NewsArticle" : content.kind === "faq" ? "Article" : "Article";
 const related = await relatedPublishedContent(content.kind, content.id);
 const features = await publicFeatureState();
+const tools = builtInToolCatalog.slice(0, 3);
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": schemaType,
@@ -27,20 +30,20 @@ const jsonLd = {
   datePublished: content.published_at,
   dateModified: content.updated_at,
   ...(image ? { image } : {}),
-  ...(schemaType === "Article" ? { author: { "@type": "Organization", name: "Alshafra", url: "https://alshafra.com/" }, publisher: { "@type": "Organization", name: "Alshafra", url: "https://alshafra.com/" } } : {}),
+  ...(schemaType !== "WebPage" ? { author: { "@type": "Organization", name: "Alshafra", url: "https://alshafra.com/" }, publisher: { "@type": "Organization", name: "Alshafra", url: "https://alshafra.com/" } } : {}),
 };
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} image={image} pageType={content.kind === "tool" ? "website" : "article"} jsonLd={jsonLd}>
   <article class="public-article" data-analytics-content-id={content.id}>
-    <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href={`/${section}`}>{section === "articles" ? "المقالات" : section === "guides" ? "الأدلة" : "الأدوات"}</a><span aria-hidden="true">/</span><span>{content.title}</span></nav>
-    <header class="article-header"><p class="eyebrow">{section === "articles" ? "مقال" : section === "guides" ? "دليل عملي" : "أداة"}</p><h1>{content.title}</h1>{content.excerpt && <p class="article-excerpt">{content.excerpt}</p>}<div class="article-dates"><span>نُشر في {publishedDate}</span><span>آخر تحديث {updatedDate}</span></div>{features.social_sharing && <ShareActions title={content.title} url={canonical} />}</header>
+    <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href={`/${section}`}>{labelForKind(content.kind)}</a><span aria-hidden="true">/</span><span>{content.title}</span></nav>
+    <header class="article-header"><p class="eyebrow">{labelForKind(content.kind)}</p><h1>{content.title}</h1>{content.excerpt && <p class="article-excerpt">{content.excerpt}</p>}<div class="article-dates"><span>نُشر في {publishedDate}</span><span>آخر تحديث {updatedDate}</span></div>{features.social_sharing && <ShareActions title={content.title} url={canonical} />}</header>
     {primaryMedia && <figure class="article-hero"><img src={`/media/${primaryMedia.id}?preset=hero`} srcset={`/media/${primaryMedia.id}?preset=compact 480w, /media/${primaryMedia.id}?preset=standard 768w, /media/${primaryMedia.id}?preset=hero 1200w`} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 768px, 1200px" alt={primaryMedia.alt_text} width={primaryMedia.width} height={primaryMedia.height} fetchpriority="high" /><figcaption>{primaryMedia.alt_text}</figcaption></figure>}
     <div class="article-layout"><div class="article-body">{blocks.length ? blocks.map((block) => {
       if (block.type === "heading") return block.level === 3 ? <h3>{block.text}</h3> : <h2>{block.text}</h2>;
       if (block.type === "media" && block.mediaId) { const media = mediaForId(content, block.mediaId); return media ? <figure class="inline-media"><img src={`/media/${media.id}?preset=standard`} srcset={`/media/${media.id}?preset=compact 480w, /media/${media.id}?preset=standard 768w`} sizes="(max-width: 640px) 100vw, 768px" alt={media.alt_text} width={media.width} height={media.height} loading="lazy" /><figcaption>{media.alt_text}</figcaption></figure> : null; }
       return <p>{block.text}</p>;
-    }) : <p>لم يُنشر نص هذه المادة بعد.</p>}{related.length > 0 && <section class="related-content"><p class="eyebrow">تابع القراءة</p><h2>مواد ذات صلة</h2><div>{related.map((item) => <a href={`/${section}/${item.slug}`}><span>{item.kind === "guide" ? "دليل" : item.kind === "tool" ? "أداة" : "مقال"}</span><strong>{item.title}</strong><b aria-hidden="true">←</b></a>)}</div></section>}</div>
+    }) : <p>لم يُنشر نص هذه المادة بعد.</p>}{related.length > 0 && <section class="related-content"><p class="eyebrow">تابع القراءة</p><h2>مواد ذات صلة</h2><div>{related.map((item) => { const itemSection = sectionForKind(item.kind) ?? section; return <a href={`/${itemSection}/${item.slug}`}><span>{labelForKind(item.kind)}</span><strong>{item.title}</strong><b aria-hidden="true">←</b></a>; })}</div></section>}{features.tools_core && tools.length > 0 && <section class="related-content"><p class="eyebrow">أدوات</p><h2>جرّب أداة مرتبطة</h2><div>{tools.map((tool) => <a href={tool.href}><span>أداة</span><strong>{tool.title}</strong><b aria-hidden="true">←</b></a>)}</div></section>}</div>
       <aside class="article-aside"><div><p class="eyebrow">معلومات المادة</p><p>هذه المادة منشورة بعد مراجعة تحريرية. راجع المصادر قبل الاعتماد على المعلومات الحساسة.</p></div>{content.sources.length > 0 && <div><h2>المصادر</h2><ol class="source-citations">{content.sources.map((source) => <li><a href={source.url} rel="noopener noreferrer" target="_blank">{source.title}</a>{source.publisher && <span>{source.publisher}</span>}</li>)}</ol></div>}</aside>
     </div>
   </article>

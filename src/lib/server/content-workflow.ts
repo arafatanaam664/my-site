@@ -29,6 +29,6 @@ export function publicationReadiness(candidate: PublicationCandidate) {
   if (!candidate.seoDescription || candidate.seoDescription.trim().length < 70) issues.push("أضف وصفًا واضحًا لنتائج البحث");
   if (!candidate.primaryMedia) issues.push("أضف صورة رئيسية");
   else if (candidate.primaryMedia.width < 1200 || candidate.primaryMedia.width * candidate.primaryMedia.height < 300_000) issues.push("الصورة الرئيسية تحتاج إلى عرض 1200px ومساحة 300 ألف بكسل على الأقل");
-  if (["article", "guide"].includes(candidate.kind) && candidate.sourceCount < 1) issues.push("أضف مصدرًا موثقًا واحدًا على الأقل");
+  if (["article", "guide", "solution", "faq", "news"].includes(candidate.kind) && candidate.sourceCount < 1) issues.push("أضف مصدرًا موثقًا واحدًا على الأقل");
   return issues;
 }

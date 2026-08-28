@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { publishedAnswers, publishedQuestion } from "../../lib/server/community-public";
+import { publicFeatureState } from "../../lib/server/feature-gates";
+
+export const prerender = false;
+const features = await publicFeatureState();
+const slug = Astro.params.slug ?? "";
+const question = features.community && slug ? await publishedQuestion(slug) : null;
+const answers = question ? await publishedAnswers(question.id) : [];
+if (!question) Astro.response.status = 404;
+const canonical = question ? `https://alshafra.com/community/${question.slug}` : "https://alshafra.com/community";
+---
+
+{question ? <BaseLayout title={question.title} description={question.body_markdown.slice(0, 150)} canonical={canonical}>
+  <article class="public-article">
+    <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href="/community">المجتمع</a><span aria-hidden="true">/</span><span>{question.title}</span></nav>
+    <header class="article-header"><p class="eyebrow">سؤال منشور</p><h1>{question.title}</h1><p class="article-excerpt">{question.body_markdown}</p></header>
+    <section class="related-content">
+      <p class="eyebrow">الإجابات</p>
+      <h2>{answers.length ? "إجابات مراجعة" : "لا توجد إجابات منشورة بعد"}</h2>
+      {answers.map((answer) => <div class="content-empty"><p>{answer.body_markdown}</p></div>)}
+    </section>
+  </article>
+</BaseLayout> : <BaseLayout title="لم نعثر على هذه الصفحة" description="السؤال غير متاح." noindex><main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>قد يكون السؤال غير منشور أو أن المجتمع غير مفتوح.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main></BaseLayout>}

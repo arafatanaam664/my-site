@@ -1,17 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { isPublicSection, publicSectionMap } from "../lib/content-taxonomy";
 import { featureForPublicSection } from "../lib/platform-foundation";
 import { publicFeatureState } from "../lib/server/feature-gates";
-import { mediaForId, publishedContentList, type PublicContentKind } from "../lib/server/public-content";
+import { mediaForId, publishedContentList } from "../lib/server/public-content";
 
 export const prerender = false;
-const routeMap: Record<string, { kind: PublicContentKind; title: string; description: string; singular: string }> = {
-  articles: { kind: "article", title: "مقالات عملية موثقة", description: "مقالات عربية منظمة تشرح الموضوع وتعرض مصادره وخطواته بوضوح.", singular: "مقال" },
-  guides: { kind: "guide", title: "أدلة عملية خطوة بخطوة", description: "أدلة تساعدك على تنفيذ المهمة وفهم ما تحتاجه قبل أن تبدأ.", singular: "دليل" },
-  tools: { kind: "tool", title: "أدوات Alshafra العملية", description: "صفحات أدوات وشروحات تساعدك على الوصول إلى نتيجة قابلة للاستخدام.", singular: "أداة" },
-};
 const section = Astro.params.section ?? "";
-const mapping = routeMap[section];
+const mapping = isPublicSection(section) ? publicSectionMap[section] : null;
 const features = await publicFeatureState(); const requiredFeature = featureForPublicSection(section); const enabled = !requiredFeature || features[requiredFeature];
 const items = mapping && enabled ? await publishedContentList(mapping.kind) : [];
 if (!mapping || !enabled) Astro.response.status = 404;

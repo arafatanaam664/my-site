@@ -4,8 +4,15 @@ const { title, url } = Astro.props;
 ---
 
 <section class="share-actions" data-share-title={title} data-share-url={url} aria-label="مشاركة المادة">
-  <p><strong>شارك هذه المادة</strong><span>استخدم وسيلة المشاركة التي تناسبك.</span></p>
-  <div><button type="button" data-share-native>مشاركة</button><button type="button" class="share-copy" data-share-copy>نسخ الرابط</button><a data-share-whatsapp target="_blank" rel="noopener noreferrer">واتساب</a><a data-share-telegram target="_blank" rel="noopener noreferrer">تيليجرام</a></div>
+  <p><strong>شارك هذه المادة</strong><span>استخدم وسيلة المشاركة التي تناسبك. لا يتم النشر التلقائي من الموقع.</span></p>
+  <div>
+    <button type="button" data-share-native>مشاركة</button>
+    <button type="button" class="share-copy" data-share-copy>نسخ الرابط</button>
+    <a data-share-whatsapp target="_blank" rel="noopener noreferrer">واتساب</a>
+    <a data-share-telegram target="_blank" rel="noopener noreferrer">تيليجرام</a>
+    <a data-share-facebook target="_blank" rel="noopener noreferrer">فيسبوك</a>
+    <a data-share-x target="_blank" rel="noopener noreferrer">X</a>
+  </div>
   <small data-share-status aria-live="polite"></small>
 </section>
 
@@ -14,8 +21,14 @@ const { title, url } = Astro.props;
   if (container) {
     const title = container.dataset.shareTitle ?? ""; const url = container.dataset.shareUrl ?? location.href; const text = `${title} — ${url}`; const recordCompletedShare = () => dispatchEvent(new Event("alshafra:content-share"));
     const status = container.querySelector<HTMLElement>("[data-share-status]")!;
-    const whatsapp = container.querySelector<HTMLAnchorElement>("[data-share-whatsapp]")!; const telegram = container.querySelector<HTMLAnchorElement>("[data-share-telegram]")!;
-    whatsapp.href = `https://wa.me/?text=${encodeURIComponent(text)}`; telegram.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+    const whatsapp = container.querySelector<HTMLAnchorElement>("[data-share-whatsapp]")!;
+    const telegram = container.querySelector<HTMLAnchorElement>("[data-share-telegram]")!;
+    const facebook = container.querySelector<HTMLAnchorElement>("[data-share-facebook]")!;
+    const x = container.querySelector<HTMLAnchorElement>("[data-share-x]")!;
+    whatsapp.href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    telegram.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+    facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    x.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
     container.querySelector<HTMLButtonElement>("[data-share-native]")!.addEventListener("click", async () => { if (!navigator.share) { status.textContent = "استخدم نسخ الرابط أو إحدى الروابط المتاحة للمشاركة."; return; } try { await navigator.share({ title, url }); status.textContent = "تمت المشاركة."; recordCompletedShare(); } catch { status.textContent = "أُلغيت المشاركة."; } });
     container.querySelector<HTMLButtonElement>("[data-share-copy]")!.addEventListener("click", async () => { try { await navigator.clipboard.writeText(url); status.textContent = "تم نسخ الرابط."; recordCompletedShare(); } catch { status.textContent = "تعذر النسخ تلقائيًا؛ انسخ الرابط من شريط العنوان."; } });
   }

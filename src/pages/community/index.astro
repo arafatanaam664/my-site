@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { publishedQuestions } from "../../lib/server/community-public";
+import { publicFeatureState } from "../../lib/server/feature-gates";
+
+export const prerender = false;
+const features = await publicFeatureState();
+if (!features.community) Astro.response.status = 404;
+const questions = features.community ? await publishedQuestions() : [];
+---
+
+{features.community ? <BaseLayout title="مجتمع Alshafra" description="أسئلة وإجابات مراجعة ترتبط بالمحتوى والأدوات. لا تظهر إلا المواد المنشورة بعد الإشراف." canonical="https://alshafra.com/community" noindex={!questions.length}>
+  <section class="content-index">
+    <header class="content-index-header">
+      <p class="eyebrow">المجتمع</p>
+      <h1>أسئلة وإجابات بعد المراجعة</h1>
+      <p>يظهر هنا فقط ما اجتاز الإشراف ونُشر. لا نفتح التعليق أو إنشاء سؤال للزائر المجهول في هذه المرحلة.</p>
+    </header>
+    {questions.length ? <ol class="search-results">{questions.map((question) => <li><span>سؤال</span><h2><a href={`/community/${question.slug}`}>{question.title}</a></h2><p>{question.body_markdown.slice(0, 180)}</p></li>)}</ol> : <div class="content-empty"><h2>لا توجد أسئلة منشورة بعد</h2><p>يبقى المجتمع مغلقًا عن الإدخال العام حتى تتوفر حماية كافية ومراجعة مستمرة. يمكنك استخدام الأدوات والأدلة الآن.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></div>}
+  </section>
+</BaseLayout> : <BaseLayout title="لم نعثر على هذه الصفحة" description="المجتمع غير متاح حاليًا." noindex><main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>قسم المجتمع غير مفتوح للعامة في هذه المرحلة.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main></BaseLayout>}

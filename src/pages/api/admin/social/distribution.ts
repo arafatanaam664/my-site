@@ -17,7 +17,7 @@ export const GET: APIRoute = async ({ request }) => {
       client.from("social_post_templates").select("id,name,provider,body_template,enabled,updated_at").order("updated_at", { ascending: false }),
       client.from("social_outbox").select("id,content_id,account_id,template_id,body_snapshot,destination_url,status,created_at").order("created_at", { ascending: false }).limit(30),
       client.from("social_delivery_log").select("id,outbox_id,action,note,created_at").order("created_at", { ascending: false }).limit(30),
-      client.from("content_items").select("id,kind,title,slug,excerpt,published_at").eq("status", "published").lte("published_at", new Date().toISOString()).in("kind", ["article", "guide", "tool"]).order("published_at", { ascending: false }).limit(30),
+      client.from("content_items").select("id,kind,title,slug,excerpt,published_at").eq("status", "published").lte("published_at", new Date().toISOString()).in("kind", ["article", "guide", "solution", "faq", "news", "tool"]).order("published_at", { ascending: false }).limit(30),
     ]);
     if (accounts.error || templates.error || outbox.error || activity.error || publishedContent.error) return json({ error: "تعذر تحميل مساحة التوزيع" }, 500);
     return json({ data: { accounts: accounts.data ?? [], templates: templates.data ?? [], outbox: outbox.data ?? [], activity: activity.data ?? [], publishedContent: publishedContent.data ?? [] } });
@@ -61,11 +61,11 @@ export const POST: APIRoute = async ({ request }) => {
     if (payload.action === "create_outbox_from_template" && isUuid(payload.contentId) && isUuid(payload.templateId)) {
       const client = adminClient();
       const [contentResult, templateResult] = await Promise.all([
-        client.from("content_items").select("id,kind,title,slug,excerpt,published_at").eq("id", payload.contentId).eq("status", "published").lte("published_at", new Date().toISOString()).in("kind", ["article", "guide", "tool"]).maybeSingle(),
+        client.from("content_items").select("id,kind,title,slug,excerpt,published_at").eq("id", payload.contentId).eq("status", "published").lte("published_at", new Date().toISOString()).in("kind", ["article", "guide", "solution", "faq", "news", "tool"]).maybeSingle(),
         client.from("social_post_templates").select("id,body_template,enabled").eq("id", payload.templateId).eq("enabled", true).maybeSingle(),
       ]);
       if (contentResult.error || templateResult.error || !contentResult.data || !templateResult.data) return json({ error: "اختر مادة منشورة وقالبًا مفعّلًا" }, 400);
-      const section = ({ article: "articles", guide: "guides", tool: "tools" } as Record<string, string | undefined>)[contentResult.data.kind];
+      const section = ({ article: "articles", guide: "guides", solution: "solutions", faq: "faqs", news: "news", tool: "tools" } as Record<string, string | undefined>)[contentResult.data.kind];
       if (!section) return json({ error: "نوع المادة غير صالح للتوزيع العام" }, 400);
       const destinationUrl = `https://alshafra.com/${section}/${contentResult.data.slug}`;
       const bodySnapshot = renderSocialTemplate(templateResult.data.body_template, { title: contentResult.data.title, excerpt: contentResult.data.excerpt, url: destinationUrl });

@@ -1,7 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import { runtimeSecrets } from "./runtime";
 
-export type PublicContentKind = "article" | "guide" | "tool" | "page";
+import type { PublicContentKind as TaxonomyKind } from "../content-taxonomy";
+
+export type PublicContentKind = TaxonomyKind;
 export type PublicMedia = { id: string; alt_text: string; width: number; height: number; mime_type: string };
 export type PublicContent = {
   id: string;

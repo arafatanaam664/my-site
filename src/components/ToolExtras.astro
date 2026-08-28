@@ -1,0 +1,13 @@
+---
+import ShareActions from "./ShareActions.astro";
+import { relatedTools } from "../lib/tool-catalog";
+import { publicFeatureState } from "../lib/server/feature-gates";
+
+interface Props { id: string; title: string; url: string; }
+const { id, title, url } = Astro.props;
+const features = await publicFeatureState();
+const related = relatedTools(id);
+---
+
+{features.social_sharing && <ShareActions title={title} url={url} />}
+{related.length > 0 && <section class="related-content"><p class="eyebrow">أدوات ذات صلة</p><h2>أكمل المهمة بأداة أخرى</h2><div>{related.map((tool) => <a href={tool.href}><span>{tool.category}</span><strong>{tool.title}</strong><b aria-hidden="true">←</b></a>)}</div></section>}

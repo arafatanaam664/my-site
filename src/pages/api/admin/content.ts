@@ -29,7 +29,7 @@ export const POST: APIRoute = async ({ request }) => {
     const excerpt = typeof input.excerpt === "string" ? input.excerpt.trim() : null;
     const bodyMarkdown = typeof input.bodyMarkdown === "string" ? input.bodyMarkdown.trim() : null;
     const primaryMediaId = typeof input.primaryMediaId === "string" && input.primaryMediaId ? input.primaryMediaId : null;
-    if (!(["article", "guide", "page", "tool"] as const).includes(kind as never) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || title.length < 15 || title.length > 160 || (primaryMediaId && !/^[0-9a-f-]{36}$/i.test(primaryMediaId))) return json({ error: "بيانات المسودة غير صالحة" }, 400);
+    if (!(["article", "guide", "solution", "faq", "news", "page", "tool"] as const).includes(kind as never) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || title.length < 15 || title.length > 160 || (primaryMediaId && !/^[0-9a-f-]{36}$/i.test(primaryMediaId))) return json({ error: "بيانات المسودة غير صالحة" }, 400);
 
     const client = adminClient();
     if (primaryMediaId) {

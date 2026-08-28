@@ -4,8 +4,14 @@ import { publishedContentList } from "../lib/server/public-content";
 import { publicFeatureState } from "../lib/server/feature-gates";
 import { builtInToolCatalog } from "../lib/tool-catalog";
 
-const [features, publishedArticles, publishedGuides] = await Promise.all([publicFeatureState(), publishedContentList("article", 1), publishedContentList("guide", 1)]);
-const hasPublishedEditorial = publishedArticles.length > 0 || publishedGuides.length > 0;
+const [features, publishedArticles, publishedGuides, publishedSolutions] = await Promise.all([
+  publicFeatureState(),
+  publishedContentList("article", 1),
+  publishedContentList("guide", 1),
+  publishedContentList("solution", 1),
+]);
+const hasPublishedEditorial = publishedArticles.length > 0 || publishedGuides.length > 0 || publishedSolutions.length > 0;
+const highlightedTools = builtInToolCatalog.filter((tool) => ["hijri-converter", "percentage", "age-calculator", "discount"].includes(tool.id));
 ---
 
 <BaseLayout title="Alshafra | أدوات وحلول ومعلومات عملية بالعربية" description="اكتشف أدوات عملية وأدلة واضحة ومعلومات موثوقة تساعدك على إنجاز ما تحتاجه بالعربية." canonical="https://alshafra.com/">
@@ -13,24 +19,28 @@ const hasPublishedEditorial = publishedArticles.length > 0 || publishedGuides.le
     <div class="hero-copy">
       <p class="eyebrow">معلومة موثوقة، وخطوة عملية</p>
       <h1>اعثر على ما تحتاجه، <em>ثم أنجزه.</em></h1>
-      <p class="hero-description">Alshafra منصة عربية تجمع الأدوات العملية والأدلة المفيدة والمعلومات التي تساعدك على فهم المهمة واتخاذ خطوتك التالية بثقة.</p>
-      <div class="hero-actions">{features.tools_core && <a class="button button-primary" href="/tools">استكشف الأدوات</a>}{features.content_core && <a class="button button-secondary" href="/guides">تصفح الأدلة</a>}<a class="button button-secondary" href="/calendar/umm-al-qura">التقويم</a></div>
+      <p class="hero-description">Alshafra منصة عربية تجمع البحث والمحتوى والأدوات في مسار واحد: افهم المسألة، استخدم أداة، ثم انتقل إلى الخطوة التالية بثقة.</p>
+      <div class="hero-actions">
+        {features.tools_core && <a class="button button-primary" href="/tools">استكشف الأدوات</a>}
+        {features.content_core && <a class="button button-secondary" href="/guides">تصفح الأدلة</a>}
+        <a class="button button-secondary" href="/calendar">التقويم</a>
+      </div>
     </div>
     <aside class="hero-paths" aria-label="مسارات الاستخدام">
       <p>ابدأ بما تريد إنجازه</p>
-      <a href="#calendar"><span>01</span><strong>تحويل تاريخ أو معرفة تاريخ اليوم</strong><b aria-hidden="true">←</b></a>
-      {features.tools_core && <a href={builtInToolCatalog[0]?.href ?? "/tools"}><span>02</span><strong>{builtInToolCatalog[0]?.title ?? "استخدم أداة عملية"}</strong><b aria-hidden="true">←</b></a>}
+      {features.tools_core && <a href="/tools/hijri-converter"><span>01</span><strong>تحويل التاريخ الهجري والميلادي</strong><b aria-hidden="true">←</b></a>}
+      {features.tools_core && <a href="/tools/percentage"><span>02</span><strong>حساب نسبة أو خصم بسرعة</strong><b aria-hidden="true">←</b></a>}
       {features.content_core && <a href="/guides"><span>03</span><strong>فهم خطوة أو خدمة قبل اتخاذ قرار</strong><b aria-hidden="true">←</b></a>}
     </aside>
   </section>
 
   <section id="solutions" class="section section-dark"><div class="section-intro"><p class="eyebrow">حلول ومعلومات عملية</p><h2>صفحات تصنع فرقًا في المهمة، لا مجرد قراءة أطول.</h2><p>لكل موضوع غرض واضح: تفسير، خطوات، مصدر مناسب، وروابط تساعدك على الوصول إلى ما بعد الإجابة الأولى.</p></div><div class="principles"><article><span>01</span><h3>سؤال واضح</h3><p>نبدأ بما يبحث عنه المستخدم فعلًا، لا بما يملأ الصفحة.</p></article><article><span>02</span><h3>نتيجة قابلة للاستخدام</h3><p>أداة أو دليل أو معلومة تُقربك من إنجاز المهمة.</p></article><article><span>03</span><h3>سياق موثوق</h3><p>الموعد والمعلومة يتضح مصدرهما وحالتهما عند الحاجة.</p></article></div></section>
 
-  {features.tools_core && <section id="tools" class="section"><div class="section-heading"><div><p class="eyebrow">أدوات يومية</p><h2>نتائج سريعة، وشرح عند الحاجة.</h2></div><a href="/tools">كل الأدوات ←</a></div><div class="tool-list"><a href="/calendar/umm-al-qura"><span>التاريخ</span><h3>تاريخ اليوم الهجري وفق أم القرى</h3><p>تاريخ خادمي بمصدر واضح وتحديث قابل للمراجعة.</p><b>افتح التقويم ←</b></a>{builtInToolCatalog.map((tool) => <a href={tool.href}><span>{tool.category}</span><h3>{tool.title}</h3><p>{tool.description}</p><b>استخدم الأداة ←</b></a>)}</div></section>}
+  {features.tools_core && <section id="tools" class="section"><div class="section-heading"><div><p class="eyebrow">أدوات يومية</p><h2>نتائج سريعة، وشرح عند الحاجة.</h2></div><a href="/tools">كل الأدوات ←</a></div><div class="tool-list"><a href="/calendar/umm-al-qura"><span>التاريخ</span><h3>تاريخ اليوم الهجري وفق أم القرى</h3><p>تاريخ خادمي بمصدر واضح وتحديث قابل للمراجعة.</p><b>افتح التقويم ←</b></a>{highlightedTools.map((tool) => <a href={tool.href}><span>{tool.category}</span><h3>{tool.title}</h3><p>{tool.description}</p><b>استخدم الأداة ←</b></a>)}</div></section>}
 
-  <section id="calendar" class="section calendar-feature"><div><p class="eyebrow">التقويم والمواعيد</p><h2>التاريخ والتحويل والمواعيد في مكان واحد.</h2><p>يعرض القسم تقويم أم القرى وتاريخ اليوم من مصدر خادمي معلن، مع التفريق الواضح بين التاريخ المحسوب والموعد الرسمي.</p><a class="button button-dark" href="/calendar/umm-al-qura">افتح تقويم أم القرى</a></div><a class="calendar-card" href="/calendar/umm-al-qura"><span>تقويم أم القرى</span><strong>تاريخ اليوم مع المصدر والتحديث</strong><p>عرض مستقل بمعلومة مصدر واضحة وحالة وصول معلنة.</p></a></section>
+  <section id="calendar" class="section calendar-feature"><div><p class="eyebrow">التقويم والمواعيد</p><h2>التاريخ والتحويل في مسار واضح.</h2><p>يعرض القسم تاريخ أم القرى من مصدر خادمي، وتحويلًا حسابيًا بين الهجري والميلادي، مع التفريق بين التاريخ المحسوب والموعد الرسمي.</p><a class="button button-dark" href="/calendar">افتح قسم التقويم</a></div><a class="calendar-card" href="/calendar/umm-al-qura"><span>تقويم أم القرى</span><strong>تاريخ اليوم مع المصدر والتحديث</strong><p>عرض مستقل بمعلومة مصدر واضحة وحالة وصول معلنة.</p></a></section>
 
-  {features.content_core && hasPublishedEditorial && <section id="guides" class="section"><div class="section-heading"><div><p class="eyebrow">أدلة ومقالات</p><h2>فهم أفضل قبل الخطوة التالية.</h2></div><a href="/guides">تصفح الأدلة المنشورة ←</a></div><div class="published-content-invite"><p>تعرض المنصة المواد التي اكتملت مراجعتها التحريرية فقط. يمكنك تصفح الأدلة والمقالات المنشورة أو البحث داخلها.</p><div><a class="button button-primary" href="/guides">الأدلة المنشورة</a><a class="button button-secondary" href="/articles">المقالات المنشورة</a></div></div></section>}
+  {features.content_core && hasPublishedEditorial && <section id="guides" class="section"><div class="section-heading"><div><p class="eyebrow">أدلة وحلول ومقالات</p><h2>فهم أفضل قبل الخطوة التالية.</h2></div><a href="/guides">تصفح الأدلة المنشورة ←</a></div><div class="published-content-invite"><p>تعرض المنصة المواد التي اكتملت مراجعتها التحريرية فقط. يمكنك تصفح الأدلة والحلول والمقالات المنشورة أو البحث داخلها.</p><div><a class="button button-primary" href="/guides">الأدلة المنشورة</a><a class="button button-secondary" href="/solutions">الحلول</a><a class="button button-secondary" href="/articles">المقالات المنشورة</a></div></div></section>}
 
-  <section id="search" class="search-section"><p class="eyebrow">ابدأ من حاجتك</p><h2>ما الذي تريد إنجازه اليوم؟</h2><form action="/search" role="search"><label class="sr-only" for="query">ابحث في المنصة</label><input id="query" name="q" placeholder="مثال: تحويل التاريخ الهجري إلى ميلادي" /><button type="submit">بحث</button></form></section>
+  <section id="search" class="search-section"><p class="eyebrow">ابدأ من حاجتك</p><h2>ما الذي تريد إنجازه اليوم؟</h2><form action="/search" role="search"><label class="sr-only" for="query">ابحث في المنصة</label><input id="query" name="q" placeholder="مثال: تحويل التاريخ الهجري أو حساب الخصم" /><button type="submit">بحث</button></form></section>
 </BaseLayout>
