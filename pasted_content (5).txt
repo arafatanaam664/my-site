@@ -1,0 +1,2528 @@
+رسالتي:
+طيب ماهي الاستضافة المجانية التي لن تسبب لي مشاكل مع الإعلانات او بطئ في الموقع او اي مشاكل بدلا من فيرسل
+رده:
+نعم. وبعد التحقق من الشروط الحالية في أغسطس 2026، هناك خيار أفضله لك بوضوح على Vercel:
+🥇 Cloudflare Pages
+وبالنسبة لمشروع alshafra.com تحديدًا، أرى أن أفضل بنية مجانية لك حاليًا هي:
+Cloudflare Pages + Supabase + Cloudflare R2
+وليس:
+Vercel + Supabase + R2
+لماذا Cloudflare Pages؟
+Cloudflare Pages متاح مجانًا، ويدعم الدومينات المخصصة وSSL، وتذكر Cloudflare أن طلبات الأصول الثابتة مجانية وغير محدودة على Pages. كما أن شبكة Cloudflare موزعة عالميًا، وهذا ممتاز للسرعة. 
+والأهم بالنسبة لسؤالك: لم أجد في شروط Cloudflare Pages الحالية قيدًا مماثلًا لقيد Vercel Hobby الذي يمنع الاستخدام التجاري/الإعلاني. لكن توجد حدود تقنية للخطة المجانية، لذلك لا أريد أن أقول لك "غير محدودة في كل شيء".
+
+───
+
+البنية التي أنصحك بها
+text
+alshafra.com
+                         │
+                         ▼
+                  Cloudflare DNS
+                         │
+                         ▼
+                  Cloudflare Pages
+                    Frontend
+                         │
+              ┌──────────┴──────────┐
+              ▼                     ▼
+          Supabase                  R2
+         PostgreSQL             الصور/الملفات
+
+ثم لاحقًا:
+text
+Cloudflare
+                        │
+                 CDN + Cache
+                        │
+                  alshafra.com
+                        │
+              ┌─────────┴─────────┐
+              │                   │
+          Static Pages        Dynamic
+              │                   │
+              │                Supabase
+              │
+              └────── R2 ─────────┘
+
+وهذا مناسب جدًا لفكرة المنصة التي تحدثنا عنها.
+
+───
+
+لكن انتبه إلى نقطة مهمة جدًا
+إذا كنت ستبني الموقع باستخدام Next.js، فهناك فرق بين:
+Next.js Static
+و
+Next.js Server/SSR
+Cloudflare Pages ممتاز جدًا عندما نجعل الموقع يعتمد قدر الإمكان على Static Generation / SSG.
+مثلاً مقالة:
+/solutions/whatsapp-not-working
+يمكن توليد HTML لها ثم تقديمها من شبكة Cloudflare.
+وهذا ممتاز جدًا للـSEO والسرعة.
+أما إذا جعلنا كل زيارة تنفذ:
+text
+Request
+ ↓
+Next.js Server
+ ↓
+Supabase
+ ↓
+Render HTML
+ ↓
+User
+
+فسنحتاج إلى Compute/Functions، وستدخل حدود أخرى.
+لذلك المشروع يجب أن يُصمم من البداية بطريقة Cache-first / Static-first.
+
+───
+
+ماذا عن Netlify؟
+Netlify أيضًا لديه خطة مجانية حاليًا، وتدعم الدومينات المخصصة وSSL وCDN وعدة أطر، والخطة الحالية تعتمد على نظام Credits شهري. 
+لذلك هو خيار حقيقي.
+لكن بالنسبة لمشروعك، أضعه خلف Cloudflare لأنك أصلًا تستخدم:
+Cloudflare R2 + Cloudflare DNS
+فوجود:
+Cloudflare Pages
+يجعل البنية كلها تقريبًا داخل منظومة واحدة.
+
+───
+
+ماذا عن Render؟
+هنا لا أنصحك به للموقع الرئيسي.
+Render لديه استضافة مجانية، لكن Render نفسه يقول بوضوح إن Free Web Services لا ينبغي استخدامها لتطبيقات الإنتاج، وهي موجهة أكثر للاختبار والهوايات والمعاينة. 
+والأسوأ لمشروع SEO:
+إذا لم تصل طلبات إلى الخدمة لمدة 15 دقيقة، يتم إيقافها، وعند أول طلب بعدها قد يستغرق تشغيلها حوالي دقيقة. 
+تخيل:
+Googlebot يزور صفحة → الخدمة نائمة → انتظار تشغيل.
+أو مستخدم يدخل من Google:
+شاشة انتظار.
+هذا ليس ما أريده لموقع نريد أن ينافس في SEO وDiscover.
+كما أن Render يذكر أن الخدمة المجانية قد تُوقف إذا بدأت تولد حجمًا غير معتاد من الاتصالات الخارجية، مثل الوصول إلى قاعدة بيانات خارجية أو نقل بيانات من Object Storage. 
+
+───
+
+إذن ترتيبي لك
+🥇 Cloudflare Pages
+اختياري الأول
+★★★★★ السرعة
+ ★★★★★ CDN
+ ★★★★★ الدومين
+ ★★★★★ مناسب للـStatic
+ ★★★★★ تكامل R2
+ ★★★★★ مناسب لبنيتك
+ ★★★★☆ Dynamic/SSR حسب طريقة التنفيذ
+
+───
+
+🥈 Netlify
+خيار ممتاز أيضًا.
+★★★★☆ السرعة
+ ★★★★★ CDN
+ ★★★★★ الدومين
+ ★★★★☆ الحدود المجانية
+ ★★★★☆ مناسب للمشروع
+
+───
+
+🥉 Render
+ممتاز للتجارب والـBackend البسيط.
+لكن:
+★★☆☆☆ لمشروع SEO تجاري كبير على الخطة المجانية.
+
+───
+
+❌ Vercel Hobby
+تقنيًا ممتاز.
+لكن لا أختاره لموقعك الذي هدفه الإعلانات بسبب شروط الاستخدام التجاري للخطة Hobby. Vercel توضح أن Hobby مخصص للاستخدام الشخصي غير التجاري، وتذكر الإعلانات/AdSense ضمن الاستخدام التجاري.
+
+───
+
+وهناك شيء أجمل
+أنت أصلًا تملك:
+Cloudflare R2
+إذن يمكننا أن نجعل Cloudflare هو العمود الفقري:
+text
+Cloudflare
+                       │
+          ┌────────────┼────────────┐
+          │            │            │
+         DNS         Pages          R2
+          │            │            │
+          │         الموقع          الصور
+          │            │            │
+          └────────────┼────────────┘
+                       │
+                   Supabase
+                   PostgreSQL
+
+وهذا يقلل عدد الخدمات المختلفة التي نعتمد عليها.
+
+───
+
+هل هذا يكفي لـ100 ألف زيارة؟
+نعم، من ناحية المعمارية يمكن أن يكون نقطة بداية ممتازة.
+لكن لا أريد أن أقول لك:
+"Cloudflare Free سيضمن مليون زيارة بدون أي مشكلة."
+هذا غير صحيح.
+الذي يجعلها قادرة على تحمل نمو كبير هو طريقة بناء الموقع.
+إذا كان:
+text
+100,000 زيارة
+↓
+100,000 طلب إلى Supabase
+↓
+100,000 Server Render
+
+فستواجه مشاكل أسرع.
+أما:
+text
+100,000 زيارة
+↓
+Cloudflare CDN
+↓
+صفحات Cached/Static
+
+فالوضع مختلف تمامًا.
+Cloudflare تقول إن الأصول الثابتة على Pages مجانية وغير محدودة من ناحية الطلبات، مع حدود أخرى مثل حد 20,000 ملف في المشروع على الخطة المجانية وحجم 25 MiB للملف الواحد. 
+وهذا بالضبط ما يجعلني أريد Static-first Architecture لموقعك.
+
+───
+
+ولو كنت مكانك الآن
+لن أدفع دولارًا واحدًا.
+سأبدأ:
+alshafra.com
+↓
+Cloudflare DNS
+↓
+Cloudflare Pages
+↓
+Supabase Free
+↓
+Cloudflare R2 Free
+↓
+Cloudflare CDN/Cache
+ثم عندما تبدأ الزيارات فعليًا:
+text
+Traffic grows
+     ↓
+نراقب الحدود
+     ↓
+نحدد عنق الزجاجة
+     ↓
+ندفع فقط للجزء الذي يحتاج ترقية
+
+وليس شراء VPS كامل من اليوم الأول.
+وبصراحة، أرى أن هذه البنية أفضل بكثير لمشروعك من Vercel + Supabase + R2.
+والخطوة التالية التي تستحق أن نحسمها قبل البرمجة هي اختيار الـStack نفسه: هل نبني alshafra.com بـNext.js رغم أنك كنت غير مرتاح له سابقًا، أم React/Vite + Cloudflare Pages، أم إطار آخر يعطيك SSR/SSG وSEO ممتازين مع هذه البنية المجانية؟
+
+رسالتي:
+حسنا انا موافق على اقتراحاتك وافكارك وبالنسبة لل stack ماهو الخيار الذي تراه أنت مناسبا وسوف يلعب دورا في نجاح الموقع خلال اقصر مدة،
+ ايضا اريد أن اسألك سؤالا وهو: هل استطيع عمل قسم منتدى للمستخدمين بحيث يستطيعون النشر والتعليق فيه وسؤال الأسئلة والإجابة عنها او التعليق على منشوراتي ومقالاتي وغيره وايضا هل هي مفيدة أم لا؟
+
+رده:
+نعم، وأرى أن المنتدى مفيد جدًا للمشروع، لكن ليس في يوم الإطلاق كقسم مفتوح بالكامل. أما الـstack، فسأغير اختياري قليلًا عن اقتراحاتي السابقة لأن هدفنا الآن أصبح واضحًا: SEO قوي + سرعة + استضافة مجانية + قابلية التوسع + أدوات + محتوى + مجتمع.
+اختياري النهائي للـStack
+🥇 Astro + React + Supabase + Cloudflare
+هذا هو الخيار الذي سأختاره لـalshafra.com.
+text
+alshafra.com
+                         │
+                    Cloudflare
+                 DNS / CDN / Cache
+                         │
+                       Astro
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+       Articles        Tools          Forum
+          │              │              │
+          └──────────────┼──────────────┘
+                         │
+                      Supabase
+                    PostgreSQL
+                         │
+                    Cloudflare R2
+                  Images / Files
+
+لماذا Astro بدل Next.js؟
+لأن مشروعنا في جوهره موقع محتوى وأدوات وليس تطبيق SaaS تقليديًا.
+Astro مصمم أصلًا للمواقع التي يكون فيها المحتوى هو العنصر الأساسي، ويستطيع توليد صفحات HTML ثابتة مع JavaScript قليل جدًا عند الحاجة. وهذا ممتاز للسرعة وCore Web Vitals وSEO.
+وفي نفس الوقت، لا نفقد React؛ نستطيع استخدام React فقط في الأجزاء التفاعلية:
+• الحاسبات
+• أدوات PDF
+• محرر المنتدى
+• التعليقات
+• البحث التفاعلي
+• الحساب الشخصي
+• الإشعارات
+• لوحة المستخدم
+أي:
+text
+Astro
+│
+├── المقالات → HTML
+├── الأدلة → HTML
+├── صفحات الحلول → HTML
+├── صفحات الأدوات → HTML
+├── SEO → ممتاز
+│
+└── React Islands
+    ├── Calculator
+    ├── PDF Tool
+    ├── Comments
+    ├── Forum
+    ├── Search
+    └── User Dashboard
+
+وهذه بالنسبة لي أفضل ملاءمة لمشروعك من Next.js.
+
+───
+
+لكن هل Astro يعني أن المنتدى سيكون صعبًا؟
+لا.
+وهنا يأتي مفهوم مهم جدًا:
+الموقع سيكون هجينًا
+الجزء الذي نريد أن يكون سريعًا جدًا وقابلًا للفهرسة:
+Static
+والجزء الذي يحتاج تفاعلًا:
+Dynamic
+مثلاً المقال:
+text
+Google
+ ↓
+Cloudflare Cache
+ ↓
+Astro HTML
+
+لكن التعليقات:
+text
+المستخدم
+ ↓
+React
+ ↓
+Supabase
+
+وهذا ممتاز.
+
+───
+
+الآن بالنسبة للمنتدى
+نعم، تستطيع بناءه بالكامل.
+بل يمكن أن يصبح المنتدى أحد أقوى أصول الموقع على المدى الطويل.
+تخيل:
+المستخدم يبحث في Google:
+لماذا لا يعمل WhatsApp؟
+يدخل مقالتك.
+في نهاية المقال:
+💬 هل واجهتك المشكلة؟ اسأل مجتمع الشفرة.
+ثم يجد:
+42 شخصًا ناقشوا المشكلة.
+ويستطيع:
+إضافة سؤال
+أو:
+الرد
+أو:
+إضافة حل
+أو:
+التصويت على الإجابة المفيدة.
+وهنا تبدأ قيمة ضخمة جدًا.
+
+───
+
+لكن هناك فرق بين "منتدى" و"تعليقات"
+أقترح أن نبني النظام من البداية كـ Community Engine وليس مجرد Comments.
+مثلاً:
+المقال
+text
+حل مشكلة عدم وصول رسائل WhatsApp
+
+تحته:
+المناقشات
+هل المشكلة موجودة في Android 15؟
+جربت جميع الحلول ولم تعمل.
+الحل الذي نجح معي هو...
+ثم يكون هناك:
+أفضل إجابة
+
+───
+
+وفي المنتدى نفسه
+المستخدم يستطيع إنشاء:
+سؤال
+لماذا لا يظهر لي خيار X؟
+نقاش
+أفضل أدوات الذكاء الاصطناعي المجانية؟
+مشاركة
+اكتشفت طريقة جديدة لضغط PDF.
+استطلاع
+ما أفضل متصفح للهاتف؟
+ثم يستطيع الآخرون:
+• الرد
+• التصويت
+• الإعجاب
+• المشاركة
+• حفظ المنشور
+• الإبلاغ
+• متابعة الموضوع.
+
+───
+
+وهذه نقطة SEO قوية جدًا
+إذا قام المستخدمون بإنشاء أسئلة حقيقية، فأنت لا تنتج كل المحتوى بنفسك.
+المجتمع ينتج:
+User Generated Content
+مثلاً:
+text
+المقال:
+حل مشكلة Instagram
+
+        ↓
+
+أسئلة المستخدمين:
+
+لماذا لا يظهر Repost؟
+لماذا لا تصل الرسائل؟
+لماذا لا أستطيع تغيير الاسم؟
+لماذا اختفى الخيار؟
+
+كل واحدة منها قد تكون نية بحث حقيقية.
+وبالتالي المنتدى يمكن أن يصبح مصدرًا هائلًا للأفكار والكلمات الطويلة.
+
+───
+
+لكن هناك خطر كبير
+وهذا مهم جدًا.
+لو فتحت المنتدى من اليوم الأول بدون مستخدمين:
+ستصبح الصفحة:
+0 إجابات
+ 0 تعليقات
+ 0 أعضاء
+وهذا يجعل الموقع يبدو ميتًا.
+والأسوأ:
+يمكن أن يتحول المنتدى إلى:
+• Spam
+• روابط خارجية
+• محتوى AI رديء
+• أسئلة مكررة
+• محتوى مخالف
+• صفحات منخفضة القيمة
+وهذا قد يضر جودة الموقع.
+لذلك لن أطلق المنتدى كمنتدى تقليدي من اليوم الأول.
+
+───
+
+الطريقة التي سأفعلها بها
+المرحلة 1
+الموقع يبدأ:
+محتوى + أدوات
+ثم نضيف:
+"اسأل مجتمع الشفرة"
+لكن التسجيل مطلوب.
+
+───
+
+المرحلة 2
+نضيف:
+Questions
+المستخدم يستطيع السؤال.
+ثم:
+Answers
+المستخدمون يجيبون.
+
+───
+
+المرحلة 3
+نضيف:
+Profiles
+كل مستخدم لديه:
+text
+الاسم
+الصورة
+النبذة
+الأسئلة
+الإجابات
+النقاط
+الشارات
+أفضل الإجابات
+
+
+───
+
+المرحلة 4
+نضيف نظام السمعة:
+text
+سؤال جيد       +5
+إجابة مفيدة    +10
+أفضل إجابة     +25
+تصويت إيجابي   +1
+إجابة مرفوضة   -2
+
+ثم:
+Badges
+مثلاً:
+🏅 عضو جديد
+🏅 مساهم
+🏅 خبير
+🏅 أفضل مجيب
+🏆 خبير PDF
+🏆 خبير Android
+وهكذا.
+
+───
+
+والأهم: ربط المجتمع بالمحتوى
+هذه ستكون إحدى أهم خصائص المشروع.
+مثلاً لديك مقال:
+كيفية تحويل PDF إلى Word
+أسفل المقال:
+text
+💬 أسئلة المجتمع حول PDF
+
+12 سؤالًا
+
+[هل يمكن تحويل PDF على الهاتف؟]
+[لماذا يتغير التنسيق؟]
+[ما أفضل طريقة؟]
+
++ اسأل سؤالًا
+
+ثم:
+الأداة
+تحويل PDF إلى Word
+ثم:
+مقالات ذات صلة
+ثم:
+أسئلة المجتمع
+ثم:
+أفضل إجابة
+هذا يجعل الصفحة أقوى بكثير من مجرد مقال 1000 كلمة.
+
+───
+
+ويمكن أن يحدث العكس
+المستخدم يسأل في المنتدى:
+كيف أضغط PDF بدون فقدان الجودة؟
+بعد نشر السؤال:
+نظامنا يقترح:
+🔗 لدينا دليل يشرح ذلك.
+🛠 جرّب أداة ضغط PDF.
+وهكذا:
+text
+Forum
+ ↓
+Article
+ ↓
+Tool
+ ↓
+Related Article
+ ↓
+Forum
+
+وهذا يمكن أن يرفع engagement بشكل كبير.
+
+───
+
+لكن لا أريد Index لكل شيء
+هذه نقطة تقنية مهمة جدًا.
+ليس كل محتوى المنتدى يجب أن يدخل Google.
+مثلاً:
+نسمح بالفهرسة:
+السؤال المفيد:
+كيفية استرجاع حساب Instagram بعد فقدان الرقم؟
+إذا كان له إجابات جيدة.
+لا نفهرس:
+مرحبًا شباب
+ساعدوني
+عندي مشكلة
+أول
+up
+👍
+ولا نريد مئات الصفحات منخفضة القيمة.
+يمكن أن يكون لدينا نظام:
+text
+Forum Post
+    │
+    ├── Quality Score
+    ├── Answers
+    ├── Engagement
+    ├── Moderation
+    └── Index Eligibility
+              │
+       ┌──────┴──────┐
+       │             │
+     Index        Noindex
+
+وهذا مهم جدًا للـSEO.
+
+───
+
+وهناك شيء أجمل
+يمكننا استخدام المنتدى كمحرك بحث عن المحتوى الجديد.
+مثلاً خلال أسبوع بدأ 100 شخص يسألون:
+"لماذا لا يعمل X؟"
+النظام يكتشف:
+text
+Question Cluster:
+X not working
+
+ثم يظهر في لوحة الإدارة:
+🔥 موضوع صاعد
+87 سؤالًا خلال 7 أيام.
+فتكتب أنت:
+الدليل الشامل لحل مشكلة X
+وهكذا المستخدمون أنفسهم يخبرونك:
+ماذا يريد السوق؟
+وهذه من أقوى الأفكار في المشروع كله.
+
+───
+
+والمنتدى قد يصبح أهم من المقالات مستقبلًا
+لأن المحتوى الذي تنتجه أنت:
+محتوى ثابت نسبيًا.
+أما المجتمع:
+يتجدد يوميًا.
+وهذا يعطيك:
+• عودة المستخدمين
+• صفحات جديدة
+• أسئلة جديدة
+• إجابات جديدة
+• محتوى طويل الذيل
+• إشارات تفاعل
+• أفكار مقالات
+• فرص Discover
+• فرص Search
+• بناء Brand
+لكن لا تعتمد على "تعليقات المستخدمين" وحدها كاستراتيجية SEO؛ Google تحذر من المحتوى منخفض الجودة الذي ينشأ على نطاق واسع، والمحتوى الذي ينشئه المستخدمون يحتاج إدارة ومراقبة جيدة.
+
+───
+
+كيف ستكون البنية التقنية للمنتدى؟
+Supabase مناسب جدًا هنا.
+مثلاً:
+text
+users
+profiles
+
+forum_categories
+forum_topics
+forum_posts
+forum_answers
+
+votes
+likes
+bookmarks
+follows
+
+reputation
+badges
+user_badges
+
+reports
+moderation_actions
+
+notifications
+mentions
+
+ومع:
+text
+R2
+ ↓
+صور المستخدمين
+صور المنشورات
+المرفقات
+
+و:
+text
+Supabase Auth
+ ↓
+Google Login
+Email
+etc.
+
+
+───
+
+وهناك ميزة أريدها من البداية
+Anonymous → Registered → Trusted
+في البداية:
+المستخدم يستطيع القراءة بدون حساب.
+للنشر:
+حساب مطلوب.
+لإنشاء روابط/مرفقات/ميزات معينة:
+حساب موثوق.
+وبالتالي نقلل Spam بشكل كبير.
+
+───
+
+ماذا عن الإعلانات داخل المنتدى؟
+نعم، مستقبلًا.
+لكن ليس:
+إعلان بعد كل تعليق.
+بل مثلاً:
+text
+Topic
+↓
+Post
+↓
+Post
+↓
+Ad
+↓
+Post
+↓
+Post
+
+وبشكل غير مزعج.
+والصفحات التي لا تحتوي على محتوى كافٍ يمكن ألا تعرض إعلانات أصلًا.
+
+───
+
+لذلك قراري النهائي للمشروع أصبح:
+Frontend
+Astro + React
+Styling
+Tailwind CSS
+Database
+Supabase PostgreSQL
+Authentication
+Supabase Auth
+Storage
+Cloudflare R2
+Hosting
+Cloudflare Pages
+CDN / DNS
+Cloudflare
+Search
+نبدأ بـPostgreSQL Full-Text Search، ثم إذا أصبح الحجم كبيرًا ننتقل إلى محرك بحث متخصص.
+Analytics
+Google Search Console + Google Analytics، مع نظام Analytics داخلي بسيط للأحداث المهمة.
+
+───
+
+وأهم شيء: لا نضخم المشروع في البداية
+أنا لو أنفذ alshafra.com معك سأبني الـCore Architecture من البداية بحيث تدعم كل ما خططنا له، لكن الإصدار الأول سيكون صغيرًا:
+V1
+Solutions + Guides + Tools
+مع:
+• SEO قوي
+• Search
+• Categories
+• Tags
+• Related Content
+• Internal Linking
+• R2
+• Supabase
+• Admin CMS
+• Analytics
+• Sitemap
+• Schema
+• Caching
+• User Accounts الأساسية
+ثم:
+V1.5
+Community / Q&A
+ثم:
+V2
+AI + Opportunities + Jobs + Scholarships
+ثم:
+V3
+Comparisons + Travel + Services + Marketplace-like features
+وبهذا لا ننتظر سنة كاملة حتى يصبح الموقع قابلًا للإطلاق.
+
+───
+
+الخلاصة
+نعم، أضف المنتدى.
+لكن لا تجعله "منتدى منفصلًا".
+اجعله جزءًا من محرك المعرفة الخاص بـAlshafra:
+مقال → سؤال → إجابة → أداة → دليل → سؤال آخر
+هذه الحلقة، في رأيي، أقوى بكثير من:
+مقال → إعلان → خروج.
+أما الـStack الذي سأراهن عليه للمشروع فهو:
+Astro + React + Supabase + Cloudflare R2 + Cloudflare Pages + Cloudflare CDN.
+والميزة الأهم: هذا الاختيار لا يقفلنا داخل بنية صغيرة؛ نستطيع إطلاقه مجانًا، ثم عندما يبدأ alshafra.com بتحقيق عشرات أو مئات الآلاف من الزيارات، نرقّي كل طبقة حسب الحاجة بدل إعادة بناء المشروع.
+
+رسالتي:
+حسنا انا موافق على الاقتراحات التي ذكرتها وايضا أريد إضافة ميزة إمكانية مشاركة المقالات والأخبار اي روابطها بسهولة من قبل المستخدمين ايضا اريد نظام ربط واتمتة لحسابات المنصة على جميع مواقع التواصل الإجتماعي وإمكانية النشر التلقائي للمقالات والمحتوى الجديد على حسابات مواقع التواصل الإجتماعي تلقائيا مثلا انا أنشر مقال جديد من لوحة التحكم والنظام يقوم بنشره تلقائيا على صفحة المنصة على فيسبوك وعلى قناة المنصة على تيليجرام وعلى حساب المنصة على تويتر وهكذا .
+
+رده:
+نعم، وأوافق على إضافة هذه الميزات، لكن سأصممها كجزء من الـCore Architecture منذ البداية، وليس كإضافات ملحقة لاحقًا.
+والأهم: هناك فرق بين ميزتين:
+1. مشاركة المستخدمين للمحتوى → نتحكم بها بالكامل تقريبًا.
+2. النشر التلقائي إلى المنصات الاجتماعية → يعتمد على APIs وصلاحيات كل منصة، لذلك يجب تصميمه كـSocial Publishing Engine قابل للتوسع.
+الشكل الذي أقترحه لـ Alshafra
+text
+AL SHAFRA CMS
+                              │
+                    ┌─────────┴─────────┐
+                    │                   │
+                 Publish              Schedule
+                    │                   │
+                    ▼                   ▼
+              Content Event       Publishing Queue
+                    │                   │
+                    └─────────┬─────────┘
+                              ▼
+                    Social Publishing Engine
+                              │
+          ┌───────────┬───────┼────────┬──────────┐
+          ▼           ▼       ▼        ▼          ▼
+       Facebook    Telegram    X     Instagram   YouTube
+          │           │       │        │          │
+          └───────────┴───────┴────────┴──────────┘
+                              │
+                         Logs / Retry
+
+بهذا عندما تضغط أنت:
+نشر المقال
+لا نكتب كودًا خاصًا داخل صفحة المقال يقول "انشر في فيسبوك".
+بل يحدث:
+text
+Article Published
+        ↓
+Content Event
+        ↓
+Social Publishing Queue
+        ↓
+Facebook Adapter
+Telegram Adapter
+X Adapter
+Instagram Adapter
+...
+
+وهذا سيجعل إضافة منصة جديدة مستقبلًا سهلة جدًا.
+
+───
+
+1. مشاركة المقالات من المستخدمين
+هذه أريدها في كل صفحة محتوى.
+مثلاً:
+شارك المقال
+• Facebook
+• X
+• WhatsApp
+• Telegram
+• نسخ الرابط
+• مشاركة النظام
+وعلى الهاتف نستطيع استخدام Web Share API عندما تكون متاحة، بحيث يظهر للمستخدم نظام المشاركة الأصلي للهاتف.
+وأيضًا:
+رابط مشاركة سريع
+مثل:
+text
+https://alshafra.com/share/xxxxx
+
+لكن في الغالب يمكننا الاكتفاء بالرابط الأساسي للمقال مع Open Graph ممتاز.
+
+───
+
+2. Open Graph مهم جدًا
+كل مقال سيولد تلقائيًا:
+text
+og:title
+og:description
+og:image
+og:url
+
+ومعلومات Twitter/X المناسبة.
+وبالتالي عندما يشارك شخص:
+alshafra.com/...
+تظهر:
+عنوان المقال
+وصفه
+صورته
+اسم Alshafra
+بدل رابط عشوائي.
+
+───
+
+3. النشر التلقائي
+هذه ستكون واحدة من أهم أجزاء النظام.
+من لوحة التحكم:
+text
+┌──────────────────────────────────┐
+│ عنوان المقال                     │
+│                                  │
+│ المحتوى                          │
+│                                  │
+│ [نشر]                            │
+└──────────────────────────────────┘
+
+وعند الضغط:
+الخطوة 1
+المقال يصبح:
+Published
+الخطوة 2
+النظام يولد:
+• عنوان اجتماعي
+• وصف
+• صورة
+• رابط
+• Hashtags عند الحاجة
+الخطوة 3
+يضع عمليات النشر في Queue:
+text
+Social Jobs
+
+Facebook       Pending
+Telegram       Pending
+X              Pending
+Instagram      Pending
+
+الخطوة 4
+يبدأ التنفيذ.
+مثلاً:
+text
+Facebook       ✓ Published
+Telegram       ✓ Published
+X              ✓ Published
+Instagram      ✓ Published
+
+إذا فشل:
+text
+Facebook       ✓
+Telegram       ✓
+X              ✕ Retry
+Instagram      ✓
+
+ولا يفشل نشر المقال نفسه بسبب فشل شبكة اجتماعية واحدة.
+
+───
+
+4. لا أنصح بالنشر بنفس النص لكل منصة
+هذه نقطة مهمة جدًا.
+نريد:
+Facebook
+نص أطول قليلًا:
+🔥 ميزة جديدة في واتساب...
+تعرف على...
+التفاصيل الكاملة: [الرابط]
+X
+مختصر:
+🚨 واتساب يطلق...
+إليك كل التفاصيل وما الذي تغير: [الرابط]
+Telegram
+يمكن أن يكون أطول:
+📢 جديد في Alshafra
+واتساب يطلق...
+أهم التغييرات: • ... • ...
+اقرأ التفاصيل: [الرابط]
+وهكذا.
+نحتاج:
+Social Template Engine
+text
+Article
+   │
+   ├── Facebook Template
+   ├── Telegram Template
+   ├── X Template
+   ├── Instagram Template
+   └── ...
+
+
+───
+
+5. الصور أيضًا يجب أن تكون تلقائية
+عند نشر المقال:
+text
+Article
+   ↓
+Featured Image
+   ↓
+Social Image Generator
+
+ونستطيع لاحقًا إنشاء صورة اجتماعية تلقائية تحتوي:
+عنوان المقال
+• شعار Alshafra
+• قالب موحد.
+وبالتالي لا تحتاج كل مرة إلى تصميم صورة يدويًا.
+
+───
+
+6. النشر المجدول
+لا نريد فقط:
+Publish Now
+بل:
+Publish Now
+أو:
+Schedule
+مثلاً:
+08:00 PM
+ثم النظام:
+text
+20:00
+ ↓
+Publish Website
+ ↓
+20:01 Facebook
+ ↓
+20:01 Telegram
+ ↓
+20:02 X
+
+ويمكن لاحقًا جعل كل منصة لها توقيت مختلف.
+
+───
+
+7. إعادة النشر
+ميزة مهمة جدًا لاحقًا:
+المقال القديم الذي نجح:
+50,000 زيارة
+يمكنك من لوحة التحكم:
+Re-share
+فيعيد نشره على الشبكات الاجتماعية.
+أو:
+Evergreen
+النظام يعيد مشاركته تلقائيًا وفق قواعد محددة.
+لكن سنضع حدودًا لمنع السبام.
+
+───
+
+8. إدارة الحسابات من لوحة التحكم
+أريد أن يكون لديك:
+Settings → Social Accounts
+وتظهر:
+text
+Facebook
+🟢 Connected
+
+Telegram
+🟢 Connected
+
+X
+🟢 Connected
+
+Instagram
+🟢 Connected
+
+YouTube
+⚪ Not connected
+
+وتضغط:
+Connect
+فتتم OAuth / authorization عبر المنصة المناسبة.
+لن نخزن كلمات مرور حساباتك الاجتماعية.
+نستخدم OAuth والتوكنات التي توفرها المنصة، ونخزنها بطريقة آمنة ومشفرة.
+
+───
+
+9. لكن هناك مشكلة مهمة جدًا
+لا يمكننا أن نقول:
+"سوف ننشر على جميع مواقع التواصل الاجتماعي"
+ثم نضمن أن كل منصة تسمح بنفس نوع النشر.
+كل منصة لديها API وسياسات وصلاحيات مختلفة.
+لذلك سيكون النظام:
+Provider-based
+text
+SocialProvider
+│
+├── Facebook
+├── Instagram
+├── Telegram
+├── X
+├── YouTube
+├── LinkedIn
+└── Future Providers
+
+وكل Provider يعرف:
+text
+connect()
+publish()
+schedule()
+delete()
+getStatus()
+refreshToken()
+
+بالقدر الذي تسمح به API الخاصة به.
+
+───
+
+10. Telegram سيكون سهلًا نسبيًا
+يمكننا ربط:
+Telegram Bot
+بالقناة.
+وعندما تنشر:
+text
+New Article
+      ↓
+Telegram Provider
+      ↓
+Channel
+
+ويظهر مثلاً:
+📰 عنوان المقال
+وصف مختصر...
+🔗 اقرأ المقال
+
+───
+
+11. Facebook وInstagram
+يمكننا بناء التكامل عبر APIs الرسمية الخاصة بـMeta، مع مراعاة نوع الحساب والصلاحيات المطلوبة.
+والأفضل أن يكون:
+text
+Facebook Page
+Instagram Professional Account
+
+بدل محاولة استخدام حساب شخصي.
+
+───
+
+12. X
+نضيف X كـProvider مستقل.
+وعند النشر:
+text
+Article
+ ↓
+Generate X Post
+ ↓
+X API
+ ↓
+Publish
+
+لكن يجب أن نبني النظام بحيث إذا تغيرت أسعار أو صلاحيات API لمنصة معينة، لا يتأثر الموقع نفسه.
+
+───
+
+13. والأجمل: Automation Rules
+أريد أن نضيف لاحقًا:
+Automation
+مثلاً:
+text
+WHEN:
+Article published
+
+IF:
+Category = AI
+
+THEN:
+Publish to:
+Facebook
+Telegram
+X
+
+أو:
+text
+WHEN:
+Article published
+
+IF:
+Category = Jobs
+
+THEN:
+Telegram
+Facebook
+
+أو:
+text
+WHEN:
+Article gets > 10,000 views
+
+THEN:
+Add to Social Re-share Queue
+
+أو:
+text
+WHEN:
+New Tool published
+
+THEN:
+Publish announcement
+
+وهنا يصبح النظام فعلًا Content Automation Platform وليس CMS عاديًا.
+
+───
+
+14. أريد أيضًا Social Analytics
+من لوحة التحكم:
+text
+Social Performance
+
+Facebook
+Reach:       120,000
+Clicks:       8,200
+Shares:       1,400
+
+Telegram
+Views:       35,000
+Clicks:       4,800
+
+X
+Impressions: 90,000
+Clicks:       3,100
+
+وبعد فترة نعرف:
+أي نوع محتوى يعمل أفضل على أي منصة؟
+ثم نستخدم البيانات لتحديد طريقة النشر.
+
+───
+
+15. المنتدى + المشاركة + Social يصبحون منظومة واحدة
+وهنا أعتقد أن مشروعك بدأ يأخذ شكلًا قويًا جدًا.
+مثلاً:
+text
+AL SHAFRA
+                              │
+             ┌────────────────┼────────────────┐
+             │                │                │
+          Content           Tools           Community
+             │                │                │
+             └────────────────┼────────────────┘
+                              │
+                         Distribution
+                              │
+                ┌─────────────┼─────────────┐
+                │             │             │
+              Google       Social        Direct
+                │             │             │
+            Search/        Facebook       Users
+            Discover       Telegram
+                           X
+                           Instagram
+
+والمستخدم يستطيع:
+Google → مقال → أداة → منتدى → مشاركة
+أو:
+Facebook → مقال → منتدى → تسجيل → مشاركة
+أو:
+Telegram → مقال → أداة → عودة للموقع
+وهذا هو النموذج الذي أريد أن نبنيه.
+
+───
+
+16. لكن لا نبني كل Social Integrations في V1
+هنا سأحميك من تضخم المشروع.
+V1
+نطلق:
+• مشاركة المقالات
+• Copy Link
+• WhatsApp
+• Telegram share
+• Facebook share
+• X share
+• Web Share API
+• Open Graph
+• Twitter/X Cards
+• Social image generation
+V1.5
+النشر التلقائي:
+• Facebook
+• Telegram
+• X
+V2
+• Instagram
+• LinkedIn
+• YouTube
+• المزيد من المنصات
+V3
+• Automation Rules
+• Social Analytics
+• Reposting
+• A/B Testing
+• أفضل وقت للنشر
+• AI Social Content Generation
+وهذا يجعل الإطلاق أسرع بكثير.
+
+───
+
+والقرار المعماري النهائي أصبح عندي واضحًا
+أرى أن alshafra.com يجب أن يكون:
+Frontend
+Astro + React
+CSS
+Tailwind CSS
+Database
+Supabase PostgreSQL
+Auth
+Supabase Auth
+Storage
+Cloudflare R2
+Hosting
+Cloudflare Pages
+CDN/DNS
+Cloudflare
+Content
+Custom CMS
+Community
+Q&A + Discussions
+Search
+PostgreSQL FTS في البداية
+Social
+Social Provider Architecture
+Automation
+Job Queue + Event System
+SEO
+Programmatic SEO + Structured Data + Sitemaps + Internal Linking
+Analytics
+Search Console + Analytics + Internal Events
+
+───
+
+وهناك قرار أريد أن نتخذه بعناية قبل البرمجة
+بما أن المشروع أصبح الآن منصة كاملة وليس مجرد موقع مقالات، فأنا لا أنصح بالقفز مباشرة إلى كتابة الكود.
+الأفضل أن نصمم أولًا Architecture Specification كاملة لـAlshafra تشمل:
+1. هوية الموقع.
+2. جميع أنواع المحتوى.
+3. هيكل الأقسام.
+4. نظام الأدوات.
+5. نظام المنتدى.
+6. نظام التعليقات.
+7. الحسابات والصلاحيات.
+8. CMS.
+9. SEO Architecture.
+10. Search Architecture.
+11. Recommendation Engine.
+12. Internal Linking Engine.
+13. Social Publishing Engine.
+14. Automation Engine.
+15. Notification System.
+16. Media/R2 Architecture.
+17. Supabase/PostgreSQL Schema.
+18. Caching Architecture.
+19. Analytics.
+20. Security.
+21. Moderation.
+22. Anti-spam.
+23. Sitemap/Indexing.
+24. مستقبل الـAI.
+25. خطة التوسع من 0 → 100K → 1M زيارة.
+ثم نحدد MVP صغيرًا جدًا من هذه البنية ونطلقه بسرعة، بدل أن نقضي أشهرًا في بناء كل شيء قبل أن يصل أول زائر.
+وهذا تحديدًا سيجعل هدفك الأساسي — الوصول للزيارات بسرعة مع عدم الاضطرار لإعادة بناء الموقع عندما ينجح — أكثر واقعية.
+
+رسالتي:
+حسنا انا موافق على جميع الميزات التي ذكرناها واقترحتها أنت ولكن لا اريد البدء بإصدار صغير بل اريد بناء المنصة بالكامل برمجيا وتقنيا ثم البدء بمرحلة واحدة وتفعيل بقية المراحل والميزات تدريجيا من لوحة التحكم.
+لذلك الآن أبني لي الخطة التي سوف نمشي عليها بالترتيب والتفصيل لتطوير المنصة وبرمجتها من الصفر إلى الإطلاق.
+
+رده:
+نعم. وبما أنك حسمت الآن الرؤية الكاملة للمنصة، فأنا لا أنصح بأن نتعامل معها كموقع مقالات، بل كمشروع برمجي متكامل اسمه مؤقتًا Alshafra Platform.
+وأتفق معك على المبدأ:
+نبني البنية التقنية الكاملة من البداية، لكن لا نفعّل كل شيء للمستخدم عند الإطلاق.
+أي أن جميع الأنظمة تكون موجودة وقابلة للتفعيل من لوحة التحكم، ثم نفتحها تدريجيًا حسب استراتيجية النمو والبيانات.
+سأجعل الخطة التالية هي خريطة التنفيذ الرئيسية التي نمشي عليها مرحلة بعد مرحلة.
+
+───
+
+أولًا: الصورة النهائية للمنصة
+المنصة في نسختها الكاملة ستكون:
+text
+AL SHAFRA
+                            │
+       ┌────────────────────┼────────────────────┐
+       │                    │                    │
+   Knowledge             Tools              Community
+       │                    │                    │
+       │                    │                    │
+ Articles / Guides      Calculators          Questions
+ Solutions              Converters           Answers
+ News                   PDF Tools             Discussions
+ Trends                 Image Tools           Comments
+ Comparisons            Developer Tools       Profiles
+ Opportunities          AI Tools              Reputation
+       │                    │                    │
+       └────────────────────┼────────────────────┘
+                            │
+                     Distribution Layer
+                            │
+          ┌─────────────────┼─────────────────┐
+          │                 │                 │
+        Search            Social            Direct
+          │                 │                 │
+     Google Search       Facebook          Notifications
+     Google Discover     Telegram          Email
+     Google News         X                 Returning
+                         Instagram
+                         LinkedIn
+                         YouTube
+
+وفوق كل ذلك:
+text
+CMS
+SEO Engine
+Search Engine
+Recommendation Engine
+Internal Linking
+Analytics
+Automation
+Moderation
+Notifications
+Users & Permissions
+Media
+Caching
+Security
+
+
+───
+
+المرحلة 0 — تثبيت القرارات قبل كتابة الكود
+هذه المرحلة مهمة جدًا.
+نكتب وثيقة:
+ALSHAFRA — Product & Architecture Master Specification
+وتحتوي على:
+• الرؤية.
+• الهوية.
+• أهداف المشروع.
+• الجمهور المستهدف.
+• أنواع المستخدمين.
+• أنواع المحتوى.
+• الأقسام.
+• الأدوات.
+• المنتدى.
+• التعليقات.
+• المشاركة.
+• Social Publishing.
+• Automation.
+• SEO.
+• Search.
+• Analytics.
+• Monetization.
+• Security.
+• Moderation.
+• Roadmap.
+النتيجة
+نمتلك مرجعًا واحدًا، وأي قرار برمجي لاحق يجب أن يتوافق معه.
+
+───
+
+المرحلة 1 — Architecture
+نثبت الـStack النهائي:
+Frontend
+Astro + React + TypeScript
+Styling
+Tailwind CSS
+Database
+PostgreSQL عبر Supabase
+Authentication
+Supabase Auth
+Storage
+Cloudflare R2
+Hosting
+Cloudflare Pages
+DNS/CDN
+Cloudflare
+Repository
+GitHub
+
+───
+
+Architecture Principle
+المبدأ الأساسي:
+Static-first / Cache-first / Database-second
+أي أن المحتوى الذي يمكن تقديمه بدون استعلام مباشر إلى قاعدة البيانات يتم توليده وتخزينه مؤقتًا.
+هذا مهم جدًا عندما ننتقل من:
+10 آلاف زيارة
+إلى:
+100 ألف
+ثم:
+مليون.
+
+───
+
+المرحلة 2 — Repository Architecture
+ننظم المشروع بحيث لا يصبح فوضى بعد إضافة المنتدى والأدوات.
+مثلاً:
+text
+alshafra/
+│
+├── apps/
+│   ├── web/
+│   └── admin/
+│
+├── packages/
+│   ├── ui/
+│   ├── database/
+│   ├── auth/
+│   ├── seo/
+│   ├── content/
+│   ├── search/
+│   ├── media/
+│   ├── social/
+│   ├── notifications/
+│   ├── analytics/
+│   └── config/
+│
+├── tools/
+│
+├── scripts/
+│
+├── docs/
+│
+└── tests/
+
+لكن هذه مجرد طبقة تنظيمية؛ لا نريد Microservices حقيقية من البداية.
+Modular Monolith سيكون أفضل.
+أي:
+نظام واحد + Modules واضحة.
+وليس 15 سيرفرًا.
+
+───
+
+المرحلة 3 — Design System
+قبل بناء الصفحات:
+ننشئ Design System كامل.
+يشمل:
+• الألوان.
+• Typography.
+• RTL.
+• Dark Mode.
+• Light Mode.
+• Buttons.
+• Cards.
+• Forms.
+• Tables.
+• Modals.
+• Dropdowns.
+• Alerts.
+• Breadcrumbs.
+• Pagination.
+• Tabs.
+• Article components.
+• Tool components.
+• Forum components.
+ويجب أن يكون:
+Arabic-first + RTL-first
+لكن جاهزًا للغات أخرى مستقبلًا.
+
+───
+
+المرحلة 4 — Database Architecture
+هذه من أهم المراحل.
+لا نبدأ بجدول articles فقط.
+نصمم قاعدة البيانات للمنصة المستقبلية.
+Core
+text
+users
+profiles
+roles
+permissions
+user_roles
+settings
+feature_flags
+
+Content
+text
+content
+content_versions
+content_types
+categories
+tags
+content_tags
+authors
+entities
+content_entities
+
+SEO
+text
+seo_metadata
+redirects
+canonical_urls
+indexing_rules
+
+Media
+text
+media
+media_variants
+
+Tools
+text
+tools
+tool_categories
+tool_usage
+tool_settings
+
+Community
+text
+forum_categories
+topics
+posts
+answers
+comments
+votes
+bookmarks
+follows
+reputation
+badges
+reports
+moderation_actions
+
+Social
+text
+social_accounts
+social_providers
+social_templates
+social_posts
+social_jobs
+social_job_attempts
+
+Automation
+text
+automation_rules
+automation_triggers
+automation_actions
+automation_runs
+
+Notifications
+text
+notifications
+notification_preferences
+
+Analytics
+text
+events
+content_metrics
+tool_metrics
+social_metrics
+
+
+───
+
+المرحلة 5 — نظام المستخدمين والصلاحيات
+نبدأ بـ:
+Visitor
+يقرأ ويستخدم الأدوات.
+User
+يستطيع:
+• التعليق.
+• السؤال.
+• الإجابة.
+• المشاركة.
+• الحفظ.
+Trusted User
+صلاحيات إضافية.
+Moderator
+إدارة المجتمع.
+Editor
+إدارة المحتوى.
+SEO Manager
+إدارة SEO.
+Social Manager
+إدارة الشبكات الاجتماعية.
+Admin
+إدارة النظام.
+Super Admin
+كل شيء.
+
+───
+
+المرحلة 6 — Feature Flags
+هذه مهمة جدًا لتحقيق فكرتك:
+"أبني كل شيء ثم أفعّله تدريجيًا."
+ننشئ:
+text
+feature_flags
+
+مثلاً:
+text
+community_enabled = false
+tools_enabled = true
+jobs_enabled = false
+ai_enabled = false
+social_auto_publish = false
+user_registration = false
+comments_enabled = true
+
+ومن لوحة التحكم تستطيع:
+Enable / Disable
+دون تعديل الكود.
+
+───
+
+المرحلة 7 — CMS
+نبني لوحة التحكم الأساسية.
+Dashboard
+تعرض:
+• الزيارات.
+• المقالات.
+• المستخدمين.
+• الأدوات.
+• المنتدى.
+• Social.
+• الأخطاء.
+• المحتوى الأكثر نجاحًا.
+
+───
+
+Content Editor
+يدعم:
+• Draft.
+• Review.
+• Scheduled.
+• Published.
+• Archived.
+مع:
+• عنوان.
+• Slug.
+• وصف.
+• صورة.
+• محتوى.
+• تصنيف.
+• Tags.
+• Author.
+• SEO.
+• Schema.
+• Related content.
+• Social preview.
+
+───
+
+المرحلة 8 — Content Engine
+هنا ننتقل من "Article CMS" إلى:
+Universal Content Engine
+أنواع المحتوى:
+text
+Article
+Guide
+Solution
+News
+Trend
+FAQ
+Comparison
+Opportunity
+Place
+Product
+Tool
+Question
+Discussion
+
+ويكون النظام قادرًا على إضافة Content Type جديد مستقبلًا دون إعادة بناء الـCMS.
+
+───
+
+المرحلة 9 — SEO Engine
+هذه مرحلة حرجة جدًا للمشروع.
+نبني:
+Technical SEO
+• Canonical.
+• Meta.
+• Open Graph.
+• Twitter/X Cards.
+• Sitemap.
+• Robots.
+• Breadcrumbs.
+• Structured Data.
+• Pagination.
+• Redirects.
+• Hreflang جاهز مستقبلًا.
+• Image SEO.
+Schema
+حسب نوع الصفحة:
+text
+Article
+NewsArticle
+FAQPage
+BreadcrumbList
+SoftwareApplication
+WebApplication
+HowTo
+Product
+JobPosting
+Event
+Organization
+Person
+
+ولا نستخدم Schema بشكل عشوائي؛ يجب أن يعكس المحتوى الحقيقي للصفحة.
+
+───
+
+المرحلة 10 — Internal Linking Engine
+هذه ستكون من أقوى خصائص المنصة.
+النظام يعرف:
+هذا المقال مرتبط بهذه الأداة.
+و:
+هذه الأداة مرتبطة بهذه المشكلة.
+و:
+هذا السؤال مرتبط بهذا المقال.
+مثلاً:
+text
+WhatsApp
+│
+├── Articles
+├── Solutions
+├── Guides
+├── Questions
+├── Tools
+└── Related Apps
+
+وننشئ:
+Related Content
+تلقائيًا.
+لكن مع إمكانية التحكم اليدوي من CMS.
+
+───
+
+المرحلة 11 — Search Engine
+نبدأ بـ:
+PostgreSQL Full-Text Search
+ثم نضيف:
+• Prefix search.
+• Arabic normalization.
+• Typo tolerance.
+• Synonyms.
+• Popular searches.
+• Search analytics.
+مثلاً:
+المستخدم يكتب:
+واتس
+النظام يفهم:
+WhatsApp / واتساب / واتس اب / واتسآب
+وهذه ستكون مهمة جدًا للموقع العربي.
+لاحقًا إذا أصبح حجم البحث كبيرًا، نستطيع نقل طبقة البحث إلى محرك متخصص دون تغيير الـCMS.
+
+───
+
+المرحلة 12 — أدوات المنصة
+نبني:
+Tool Engine
+بحيث إضافة أداة جديدة من لوحة التحكم تصبح سهلة.
+أنواع:
+Calculators
+• النسبة.
+• الخصم.
+• العمر.
+• الراتب.
+• القرض.
+• BMI.
+• التاريخ.
+Converters
+• العملات.
+• الوحدات.
+• الوقت.
+• الملفات.
+PDF
+• Merge.
+• Split.
+• Compress.
+• PDF → Word.
+• Word → PDF.
+Image
+• Compress.
+• Resize.
+• Convert.
+• Crop.
+Developer
+• JSON.
+• Base64.
+• UUID.
+• Regex.
+• URL Encoder.
+
+───
+
+المرحلة 13 — Media Engine
+يرتبط مباشرة بـR2.
+المسار:
+text
+Upload
+ ↓
+Validation
+ ↓
+Optimization
+ ↓
+Generate Variants
+ ↓
+R2
+ ↓
+Database Metadata
+
+وننشئ أحجامًا مختلفة:
+text
+thumbnail
+small
+medium
+large
+social
+original
+
+مع WebP/AVIF حيث يناسب.
+وهذا مهم جدًا للسرعة.
+
+───
+
+المرحلة 14 — Community Engine
+نبني المنتدى كاملًا تقنيًا.
+Questions
+Answers
+Discussions
+Comments
+Votes
+Accepted Answer
+Bookmarks
+Follow Topic
+User Profiles
+Reputation
+Badges
+Mentions
+Notifications
+Reports
+Moderation
+
+───
+
+المرحلة 15 — Community SEO
+لا نفهرس كل شيء.
+نضع نظام:
+text
+Quality Score
++
+Content Length
++
+Answers
++
+Engagement
++
+Moderation
++
+Uniqueness
+
+ثم:
+text
+Index
+Noindex
+Canonical
+
+بحسب الحالة.
+
+───
+
+المرحلة 16 — Social Sharing
+كل محتوى قابل للمشاركة.
+نضيف:
+• Facebook.
+• X.
+• Telegram.
+• WhatsApp.
+• Copy Link.
+• Native Share.
+وننشئ Open Graph ديناميكي.
+
+───
+
+المرحلة 17 — Social Publishing Engine
+هنا نبني الـAdapters.
+text
+SocialProvider
+│
+├── Facebook
+├── Telegram
+├── X
+├── Instagram
+├── LinkedIn
+└── YouTube
+
+كل Provider مستقل.
+ثم:
+text
+Content Published
+        ↓
+Event
+        ↓
+Social Queue
+        ↓
+Provider
+        ↓
+Publish
+        ↓
+Log
+
+
+───
+
+المرحلة 18 — Social Templates
+لكل منصة قالب مستقل.
+مثلاً:
+text
+Facebook:
+Title
+Description
+CTA
+Link
+Image
+
+text
+X:
+Short text
+Link
+Hashtags
+
+text
+Telegram:
+Title
+Summary
+Bullets
+Link
+Image
+
+ويستطيع المسؤول تعديل القوالب من لوحة التحكم.
+
+───
+
+المرحلة 19 — Automation Engine
+ننشئ نظام:
+Trigger → Condition → Action
+مثال:
+text
+WHEN
+Article Published
+
+IF
+Category = AI
+
+THEN
+Publish Facebook
+Publish Telegram
+Publish X
+
+مثال آخر:
+text
+WHEN
+Article reaches 10,000 views
+
+THEN
+Add to Re-share Queue
+
+مثال:
+text
+WHEN
+New Question Created
+
+IF
+Category = Android
+
+THEN
+Notify Android Experts
+
+وهنا يصبح النظام قابلًا للأتمتة بشكل هائل.
+
+───
+
+المرحلة 20 — Queue System
+لا نريد أن يؤدي نشر مقال إلى تجميد الطلب.
+لذلك:
+text
+User
+ ↓
+Publish
+ ↓
+Database
+ ↓
+Event
+ ↓
+Queue
+ ↓
+Workers
+
+والـWorkers تنفذ:
+• Social Publishing.
+• Emails.
+• Notifications.
+• Image processing.
+• Analytics processing.
+• Search indexing.
+وهذا مهم جدًا للاستقرار.
+
+───
+
+المرحلة 21 — Notification System
+ندعم:
+داخل الموقع
+🔔 Notifications.
+Email
+مستقبلًا.
+المنتدى
+شخص أجاب عن سؤالك.
+شخص رد على تعليقك.
+تم اختيار إجابتك.
+Social
+حالة النشر.
+
+───
+
+المرحلة 22 — Analytics Engine
+نحتاج نوعين:
+External
+• Google Analytics.
+• Search Console.
+Internal
+نسجل Events مثل:
+text
+page_view
+tool_used
+search
+share
+copy_link
+comment
+question_created
+answer_created
+download
+social_click
+
+ثم نعرف:
+ما الذي يفعله المستخدم؟
+وليس فقط:
+كم زار الموقع؟
+
+───
+
+المرحلة 23 — Recommendation Engine
+النظام يقترح:
+للمستخدم:
+قد يعجبك أيضًا.
+للمقال:
+مقالات ذات صلة.
+للمنتدى:
+أسئلة مشابهة.
+للأداة:
+أدوات مشابهة.
+نبدأ بقواعد بسيطة، ثم لاحقًا نطورها إلى نظام توصية يعتمد على البيانات.
+
+───
+
+المرحلة 24 — Security
+قبل الإطلاق:
+• Rate limiting.
+• CSRF protection.
+• XSS protection.
+• Input validation.
+• File validation.
+• Authentication security.
+• Authorization.
+• Secure cookies.
+• Token encryption.
+• Secrets management.
+• API protection.
+• Bot protection.
+• Spam protection.
+• Audit logs.
+خصوصًا المنتدى والـSocial OAuth.
+
+───
+
+المرحلة 25 — Anti-Spam & Moderation
+لأننا سنفتح User Generated Content.
+نحتاج:
+• CAPTCHA/Turnstile.
+• Rate limits.
+• Link restrictions.
+• Reputation.
+• New-user restrictions.
+• Report system.
+• Moderation queue.
+• Banned words.
+• Duplicate detection.
+• Suspicious behavior detection.
+Cloudflare Turnstile مناسب جدًا لهذه المنظومة.
+
+───
+
+المرحلة 26 — Performance Architecture
+نضع أهدافًا صارمة:
+HTML
+Static/Cache-first.
+Images
+R2 + optimization.
+JavaScript
+React فقط عند الحاجة.
+CSS
+Minimal.
+Fonts
+Optimized.
+Database
+Indexes.
+API
+Caching.
+CDN
+Cloudflare.
+Search
+Cache popular searches.
+والهدف:
+لا نرسل JavaScript ضخم إلى مستخدم يريد قراءة مقال.
+وهذه إحدى أهم مزايا Astro في المشروع.
+
+───
+
+المرحلة 27 — Accessibility
+نضمن:
+• Semantic HTML.
+• Keyboard navigation.
+• Screen reader support.
+• Contrast.
+• Focus states.
+• RTL.
+• Accessible forms.
+وهذا يفيد UX والـSEO أيضًا.
+
+───
+
+المرحلة 28 — Testing
+لا نطلق قبل إنشاء:
+Unit Tests
+للمنطق.
+Integration Tests
+لـDatabase/API.
+E2E
+للمستخدم الحقيقي.
+مثلاً:
+text
+Visitor
+ → Search
+ → Article
+ → Tool
+ → Register
+ → Question
+ → Answer
+ → Share
+
+ونختبر:
+Social
+text
+Publish Article
+→ Queue
+→ Telegram
+→ Facebook
+→ X
+
+
+───
+
+المرحلة 29 — SEO Testing
+نفحص آليًا:
+• Canonical.
+• Robots.
+• Sitemap.
+• Metadata.
+• Schema.
+• Internal links.
+• Broken links.
+• Duplicate URLs.
+• Redirects.
+• Image alt.
+• Mobile.
+• Indexability.
+ثم:
+Google Search Console
+ونراقب أول Crawl.
+
+───
+
+المرحلة 30 — Deployment
+ننشئ:
+Production
+alshafra.com
+Preview
+لكل Pull Request.
+Development
+محلي.
+والـEnvironment Variables:
+text
+development
+staging
+production
+
+ولا نضع أي Secrets في Git.
+
+───
+
+المرحلة 31 — إطلاق البنية الكاملة
+هنا تأتي فكرتك الأساسية.
+كل الأنظمة تكون موجودة.
+لكن Feature Flags تكون تقريبًا:
+text
+Core Content             ON
+Solutions                ON
+Guides                   ON
+Tools                    ON
+
+Community                OFF
+User Registration        OFF
+Jobs                     OFF
+Scholarships             OFF
+Travel                   OFF
+Comparisons              OFF
+
+Social Sharing           ON
+Auto Social Publishing   ON
+
+AI Features              OFF
+Advanced Automation      OFF
+
+
+───
+
+المرحلة 32 — أول محتوى
+وهنا لا نختار المجال بالحدس.
+قبل كتابة المقالات نعمل:
+Opportunity Research
+نبحث عن:
+• كلمات طويلة.
+• Search Trends.
+• أسئلة جديدة.
+• مشاكل بلا إجابات جيدة.
+• Topics ذات CPC/RPM جيد.
+• فرص Discover.
+• فرص Social.
+• فرص أدوات.
+ثم نختار:
+بوابة دخول Alshafra
+وليست هوية الموقع النهائية.
+
+───
+
+المرحلة 33 — استراتيجية أول 90 يومًا
+لا أريد:
+نشر أي شيء عشوائي.
+بل:
+Cluster 1
+موضوع رئيسي.
+Cluster 2
+موضوع قريب.
+Cluster 3
+أداة.
+Cluster 4
+حلول.
+ثم نراقب.
+بعد ظهور أول بيانات حقيقية:
+text
+Impressions
+Clicks
+CTR
+Position
+Queries
+Pages
+Countries
+Devices
+
+نحدد:
+أين نضاعف الاستثمار؟
+
+───
+
+المرحلة 34 — تفعيل المنتدى
+عندما يصبح للموقع جمهور أولي:
+text
+community_enabled = true
+
+ثم:
+• Questions.
+• Answers.
+• Comments.
+• Profiles.
+• Reputation.
+ونربطه بالمحتوى.
+
+───
+
+المرحلة 35 — تفعيل فرص العمل والمنح
+بعدها:
+text
+opportunities_enabled = true
+
+ونضيف:
+• Jobs.
+• Scholarships.
+• Training.
+• Remote Work.
+مع مصادر موثوقة.
+
+───
+
+المرحلة 36 — تفعيل AI
+بعد وجود بيانات ومحتوى:
+• AI Search.
+• AI summaries.
+• AI recommendations.
+• AI-assisted content research.
+• AI Social posts.
+• AI moderation.
+لكن AI لا يكون هو مصدر الموقع.
+يكون طبقة مساعدة فوق قاعدة المعرفة.
+
+───
+
+المرحلة 37 — التوسع إلى المجالات الأخرى
+حسب البيانات:
+Technology
+ثم:
+AI
+ثم:
+Education
+ثم:
+Opportunities
+ثم:
+Travel
+ثم:
+Comparisons
+وهكذا.
+وليس بالضرورة بهذا الترتيب؛ البيانات هي التي تقرر.
+
+───
+
+المرحلة 38 — Monetization
+بعد استقرار المحتوى:
+AdSense
+ثم:
+Affiliate
+ثم:
+Direct Ads
+ثم:
+Sponsored Content
+ثم:
+Premium Tools
+ثم:
+Pro Accounts
+ثم:
+خدمات أخرى.
+وهذا يجعل الإعلانات مصدرًا من مصادر الدخل، وليس النموذج التجاري الوحيد.
+
+───
+
+المرحلة 39 — Growth Loop
+في النهاية نريد هذا:
+text
+Google
+   ↓
+Article
+   ↓
+Tool
+   ↓
+Community
+   ↓
+User
+   ↓
+Share
+   ↓
+Social
+   ↓
+New Visitor
+   ↓
+Google
+
+ثم:
+text
+Community Questions
+        ↓
+New Search Intent
+        ↓
+New Article
+        ↓
+New Tool
+        ↓
+More Traffic
+
+هذه هي الحلقة التي يمكن أن تجعل المنصة تنمو ذاتيًا مع الوقت.
+
+───
+
+المرحلة 40 — Scaling
+عندما يبدأ الضغط الحقيقي:
+المرحلة الأولى
+Supabase Free
+ Cloudflare Free
+ R2 Free
+↓
+المرحلة الثانية
+ترقية Supabase حسب الحاجة.
+↓
+المرحلة الثالثة
+Caching أقوى.
+↓
+المرحلة الرابعة
+Search Engine متخصص إذا احتجنا.
+↓
+المرحلة الخامسة
+Workers/Queues مستقلة.
+↓
+المرحلة السادسة
+Database replicas / dedicated infrastructure إذا أصبح الحجم يستدعي ذلك.
+لا نشتري أي شيء قبل أن نعرف لماذا نحتاجه.
+
+───
+
+ترتيب التنفيذ الفعلي
+إذا بدأنا البرمجة غدًا، فلن نمشي عشوائيًا.
+سيكون الترتيب:
+text
+01. Product Specification
+02. Architecture Specification
+03. Repository
+04. Development Environment
+05. Database Schema
+06. Auth & RBAC
+07. Design System
+08. Core CMS
+09. Content Engine
+10. SEO Engine
+11. Media/R2
+12. Public Website
+13. Search
+14. Internal Linking
+15. Tools Engine
+16. Tools
+17. Community Engine
+18. Social Sharing
+19. Social Provider Engine
+20. Social Publishing
+21. Automation Engine
+22. Notifications
+23. Analytics
+24. Recommendations
+25. Moderation
+26. Security Hardening
+27. Testing
+28. Performance Optimization
+29. SEO Audit
+30. Deployment
+31. Production Verification
+32. Content Research
+33. Initial Content
+34. Controlled Feature Activation
+35. Growth & Monitoring
+36. Progressive Expansion
+
+
+───
+
+وهناك قاعدة أريد أن نلتزم بها طوال المشروع
+لا ننتقل إلى المرحلة التالية لأن الكود "يعمل".
+ننتقل عندما تكون المرحلة:
+Implemented + Tested + Integrated + Documented
+مثلاً لا نقول:
+"انتهينا من المنتدى."
+إلا إذا كان:
+• Database جاهز.
+• API جاهز.
+• UI جاهز.
+• Permissions جاهزة.
+• Moderation جاهزة.
+• SEO جاهز.
+• Notifications جاهزة.
+• Security جاهزة.
+• Tests ناجحة.
+• Integration مع المحتوى ناجح.
+
+───
+
+والأهم: لا نبني 40 مرحلة منفصلة بشكل متضخم
+هذه خريطة المشروع الكاملة، وليست 40 Sprint بالضرورة.
+سنحوّلها لاحقًا إلى Milestones تنفيذية، وكل Milestone له:
+• الهدف.
+• الملفات.
+• Database changes.
+• APIs.
+• UI.
+• Tests.
+• Acceptance Criteria.
+• Definition of Done.
+
+───
+
+الشكل النهائي الذي أريده لـAlshafra
+ليس:
+"موقع مقالات."
+وليس:
+"منتدى."
+وليس:
+"موقع أدوات."
+بل:
+Alshafra — منصة معرفة وإنجاز رقمية
+Search + Content + Tools + Community + Distribution + Automation
+وتكون البنية كاملة من اليوم الأول، بينما المحتوى والـFeatures الظاهرة تتوسع تدريجيًا.
+وهذا، في رأيي، أفضل طريقة لتحقيق هدفك: أن نستطيع إطلاق أول نسخة بسرعة نسبيًا، وفي نفس الوقت لا نضطر بعد نجاح الموقع إلى إعادة هندسة المشروع بالكامل.
+الخطوة الصحيحة التالية ليست كتابة الكود بعد. هي تحويل هذه الخطة إلى وثيقة Architecture Specification تنفيذية دقيقة جدًا تحدد الـmodules، العلاقات، تدفق البيانات، الـAPIs، قاعدة البيانات، الـroutes، الـpermissions، الـevents، الـqueues، الـfeature flags، والـdeployment architecture. بعد اعتمادها ننتقل إلى Database Specification ثم Repository/Code Implementation بالترتيب.
