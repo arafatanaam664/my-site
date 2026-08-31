@@ -17,7 +17,7 @@
 2. اضغط **Create** / **Create application**.
 3. اختر **Import a repository** / **Connect to Git**.
 4. اسمح لـ Cloudflare بالوصول إلى GitHub، ثم اختر المستودع `arafatanaam664/my-site`.
-5. في فرع الإنتاج اختر **`arena/01a04971-my-site`** وليس `main`.
+5. أثناء الإنشاء قد لا يظهر حقل الفرع؛ Cloudflare يختار `main` تلقائيًا. أكمل الربط ثم غيّر الفرع من إعدادات البناء كما في الخطوة 3ب.
 
 ## 3. أوامر البناء
 
@@ -30,6 +30,18 @@
 | Root directory | اتركه فارغًا (جذر المستودع) |
 
 إذا ظهر **Save and Deploy** قبل المفاتيح، أكمل النشر ثم أضف المفاتيح في الخطوة التالية وأعد النشر.
+
+### 3ب. اختيار الفرع بعد الإنشاء
+
+حقل «فرع الإنتاج» غالبًا لا يظهر في شاشة الربط الأولى. Cloudflare يختار `main` تلقائيًا.
+
+1. افتح الـ Worker الذي أُنشئ.
+2. اذهب إلى **Settings → Builds** (أو **Settings → Build**).
+3. ابحث عن **Git branch** أو **Branch**.
+4. غيّره إلى `arena/01a04971-my-site`.
+5. احفظ، ثم شغّل بناء جديد (**Retry deployment** أو **Save and Deploy**).
+
+بدون هذه الخطوة يُنشر الكود القديم من `main`.
 
 ## 4. مفاتيح Supabase في Cloudflare
 
