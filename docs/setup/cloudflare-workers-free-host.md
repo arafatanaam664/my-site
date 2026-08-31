@@ -26,7 +26,7 @@
 | الحقل | القيمة |
 |---|---|
 | Build command | `pnpm install && pnpm build` |
-| Deploy command | `npx wrangler deploy --config dist/server/wrangler.json` |
+| Deploy command | `npx wrangler deploy --config dist/server/wrangler.json --keep-vars` |
 | Root directory | اتركه فارغًا (جذر المستودع) |
 
 إذا ظهر **Save and Deploy** قبل المفاتيح، أكمل النشر ثم أضف المفاتيح في الخطوة التالية وأعد النشر.
@@ -47,17 +47,17 @@
 
 من صفحة الـ Worker: **Settings → Variables and Secrets**. هذه متغيرات **التشغيل** (Runtime)، وليست Build variables. لوحة الإدارة تقرأ المفاتيح عند فتح `/admin` عبر `/api/public/config`؛ إذا وضعتها فقط في إعدادات البناء فستظهر رسالة «إعداد الدخول غير متاح».
 
-أضف ثلاثة متغيرات لبيئة الإنتاج:
+أضف الثلاثة كـ **Secret** (مشفّر) حتى لا يحذفها `wrangler deploy`. أمر النشر يجب أن يشمل `--keep-vars` حتى لا تُمسح المتغيرات النصية من لوحة التحكم عند كل بناء.
 
 | الاسم | القيمة | النوع |
 |---|---|---|
-| `SUPABASE_URL` | Project URL من Supabase | نص |
-| `SUPABASE_PUBLISHABLE_KEY` | Publishable key | نص |
-| `SUPABASE_SECRET_KEY` | Secret key | **Secret** / مشفّر |
+| `SUPABASE_URL` | Project URL من Supabase | **Secret** |
+| `SUPABASE_PUBLISHABLE_KEY` | Publishable key | **Secret** |
+| `SUPABASE_SECRET_KEY` | Secret key | **Secret** |
 
 لا تضف `DEV_ADMIN_ACCESS_CODE` هنا؛ الرابط سيكون عامًا.
 
-احفظ ثم **Deploy** / **Retry deployment** إن لزم.
+احفظ. إذا كان البناء الأخير قد حذف المتغيرات، أعد إضافتها **بعد** نجاح نشر فيه `keep_vars`، ثم حدّث `/api/public/config`.
 
 ## 5. رابط الدخول في Supabase
 
@@ -85,7 +85,7 @@ https://رابط-موقعك.workers.dev/admin
 ## إن فشل البناء
 
 - تأكد أن الفرع `arena/01a04971-my-site` ثم شغّل **بناءً جديدًا** (Build now أو دفع جديد). زر Retry على نشر قديم من `main` يعيد بناء ذلك الالتزام نفسه.
-- إذا بقيت `/admin` على «إعداد الدخول غير متاح»، افتح `https://رابطك.workers.dev/api/public/config`. يجب أن يظهر JSON فيه `url` و`publishableKey`. إن كان 503 فالمفاتيح غير محفوظة كمتغيرات تشغيل أو لم يُعد النشر بعد حفظها.
+- إذا بقيت `/admin` على «إعداد الدخول غير متاح»، افتح `https://رابطك.workers.dev/api/public/config`. يجب أن يظهر JSON فيه `url` و`publishableKey`. إن كان 503 فالمفاتيح غير موجودة على Worker: `wrangler deploy` يحذف المتغيرات النصية ما لم يُستخدم `--keep-vars`. أعد إضافة المفاتيح كـ **Secret** بعد نشر فيه `keep_vars`.
 - إذا ظهر `packages field missing or empty` فقد أُصلح في الفرع؛ انتظر البناء التلقائي بعد الدفع أو أعد بناءً جديدًا لا Retry للقديم.
 - تأكد أن أوامر البناء هي الواردة في الجدول أعلاه.
 - إذا ظهر خطأ عن حاوية R2، أعد المحاولة بعد إزالة ربط R2 من `wrangler.jsonc` (هذا الإعداد الحالي للتجربة).

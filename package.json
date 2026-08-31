@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro build && wrangler dev --config dist/server/wrangler.json --ip 0.0.0.0 --port 3000 --var DEV_ADMIN_ACCESS_CODE:$DEV_ADMIN_ACCESS_CODE --var SUPABASE_URL:$SUPABASE_URL --var SUPABASE_PUBLISHABLE_KEY:$SUPABASE_PUBLISHABLE_KEY --var SUPABASE_SECRET_KEY:$SUPABASE_SECRET_KEY --var R2_ENDPOINT:$R2_ENDPOINT --var R2_ACCESS_KEY_ID:$R2_ACCESS_KEY_ID --var R2_SECRET_ACCESS_KEY:$R2_SECRET_ACCESS_KEY --var R2_BUCKET_NAME:$R2_BUCKET_NAME --var R2_PUBLIC_BASE_URL:$R2_PUBLIC_BASE_URL --var VAPID_PUBLIC_KEY:$VAPID_PUBLIC_KEY --var VAPID_PRIVATE_KEY:$VAPID_PRIVATE_KEY --var VAPID_SUBJECT:$VAPID_SUBJECT",
     "build": "astro build",
-    "deploy": "astro build && wrangler deploy --config dist/server/wrangler.json",
+    "deploy": "astro build && wrangler deploy --config dist/server/wrangler.json --keep-vars",
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run"
