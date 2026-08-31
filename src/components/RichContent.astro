@@ -1,0 +1,31 @@
+---
+import { contentBlocks } from "../lib/content-blocks";
+import { looksLikeHtml, sanitizeContentHtml } from "../lib/content-html";
+import { mediaForId, type PublicContent } from "../lib/server/public-content";
+
+interface Props { content: PublicContent }
+const { content } = Astro.props;
+const raw = content.body_html || content.body_markdown;
+const htmlMode = looksLikeHtml(raw);
+let html = htmlMode ? sanitizeContentHtml(raw) : "";
+if (htmlMode) {
+  for (const media of content.media) {
+    const token = new RegExp(`\\{\\{media:${media.id}\\}\\}`, "ig");
+    const figure = `<figure class="inline-media"><img src="/media/${media.id}?preset=standard" alt="${media.alt_text.replace(/"/g, "&quot;")}" width="${media.width}" height="${media.height}" loading="lazy" /><figcaption>${media.alt_text}</figcaption></figure>`;
+    html = html.replace(token, figure);
+  }
+  html = html.replace(/\{\{media:[0-9a-f-]{36}\}\}/gi, "");
+}
+const blocks = htmlMode ? [] : contentBlocks(content.body_markdown);
+---
+
+{htmlMode ? (
+  <div class="article-body-html" set:html={html || "<p>لم يُنشر نص هذه المادة بعد.</p>"} />
+) : blocks.length ? blocks.map((block) => {
+  if (block.type === "heading") return block.level === 3 ? <h3>{block.text}</h3> : <h2>{block.text}</h2>;
+  if (block.type === "media" && block.mediaId) {
+    const media = mediaForId(content, block.mediaId);
+    return media ? <figure class="inline-media"><img src={`/media/${media.id}?preset=standard`} srcset={`/media/${media.id}?preset=compact 480w, /media/${media.id}?preset=standard 768w`} sizes="(max-width: 640px) 100vw, 768px" alt={media.alt_text} width={media.width} height={media.height} loading="lazy" /><figcaption>{media.alt_text}</figcaption></figure> : null;
+  }
+  return <p>{block.text}</p>;
+}) : <p>لم يُنشر نص هذه المادة بعد.</p>}

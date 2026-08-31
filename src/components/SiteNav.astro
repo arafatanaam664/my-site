@@ -1,0 +1,21 @@
+---
+import type { SiteSectionNode } from "../lib/site-sections";
+interface Props { navigation: SiteSectionNode[] }
+const { navigation } = Astro.props;
+---
+
+{navigation.map((hub) => (
+  <div class="nav-hub">
+    <a class="nav-hub-link" href={hub.href}>{hub.title}</a>
+    {hub.children.length > 0 && (
+      <>
+        <button type="button" class="nav-hub-toggle" aria-expanded="false" aria-controls={`nav-${hub.slug}`} aria-label={`فتح أقسام ${hub.title}`}>
+          <span aria-hidden="true">▾</span>
+        </button>
+        <div class="nav-dropdown" id={`nav-${hub.slug}`} hidden>
+          {hub.children.map((child) => <a href={child.href}>{child.title}</a>)}
+        </div>
+      </>
+    )}
+  </div>
+))}

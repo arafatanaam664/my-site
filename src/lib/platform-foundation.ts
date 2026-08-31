@@ -18,6 +18,7 @@ export function featureForPublicSection(section: string): PlatformFeatureFlag | 
   if (section === "articles" || section === "guides" || section === "solutions" || section === "faqs" || section === "news") return "content_core";
   if (section === "tools") return "tools_core";
   if (section === "community") return "community";
+  if (section === "calendar") return null;
   return null;
 }
 

@@ -1,16 +1,50 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import HubLanding from "../components/HubLanding.astro";
 import { isPublicSection, publicSectionMap } from "../lib/content-taxonomy";
+import { collectionPageJsonLd } from "../lib/content-schema";
+import { breadcrumbListLd } from "../lib/site-schema";
 import { featureForPublicSection } from "../lib/platform-foundation";
 import { publicFeatureState } from "../lib/server/feature-gates";
-import { mediaForId, publishedContentList } from "../lib/server/public-content";
+import { loadSiteSections, visibleSectionTree } from "../lib/server/site-sections";
+import { mediaForId, publishedContentList, type PublicContentCard } from "../lib/server/public-content";
+import { contentPath } from "../lib/site-sections";
 
 export const prerender = false;
 const section = Astro.params.section ?? "";
+const features = await publicFeatureState();
+const records = await loadSiteSections();
+const hubs = visibleSectionTree(records, features);
+const hub = hubs.find((node) => node.slug === section) ?? null;
 const mapping = isPublicSection(section) ? publicSectionMap[section] : null;
-const features = await publicFeatureState(); const requiredFeature = featureForPublicSection(section); const enabled = !requiredFeature || features[requiredFeature];
-const items = mapping && enabled ? await publishedContentList(mapping.kind) : [];
-if (!mapping || !enabled) Astro.response.status = 404;
+const requiredFeature = featureForPublicSection(section);
+const kindEnabled = !requiredFeature || features[requiredFeature];
+const items = mapping && kindEnabled ? await publishedContentList(mapping.kind) : [];
+const previews: Record<string, PublicContentCard[]> = {};
+if (hub) {
+  await Promise.all(hub.children.map(async (child) => {
+    if (child.contentKind && child.contentKind !== "tool") previews[child.id] = await publishedContentList(child.contentKind, 3);
+  }));
+}
+const showHub = Boolean(hub && section !== "calendar");
+const showKind = Boolean(mapping && kindEnabled);
+if (!showHub && !showKind) Astro.response.status = 404;
+const canonical = `https://alshafra.com/${section}`;
 ---
 
-{mapping && enabled ? <BaseLayout title={mapping.title} description={mapping.description} canonical={`https://alshafra.com/${section}`} noindex={!items.length}><section class="content-index"><header class="content-index-header"><p class="eyebrow">محتوى Alshafra</p><h1>{mapping.title}</h1><p>{mapping.description}</p></header>{items.length ? <div class="content-card-grid">{items.map((item) => { const media = item.primary_media_id ? mediaForId(item, item.primary_media_id) : null; return <article class="content-card">{media && <img src={`/media/${media.id}?preset=compact`} alt={media.alt_text} width={media.width} height={media.height} loading="lazy" />}<div><span>{mapping.singular}</span><h2><a href={`/${section}/${item.slug}`}>{item.title}</a></h2><p>{item.excerpt || item.seo_description || "مادة عملية من Alshafra."}</p><a class="card-link" href={`/${section}/${item.slug}`}>قراءة {mapping.singular} <b aria-hidden="true">←</b></a></div></article>; })}</div> : <div class="content-empty"><h2>لا توجد مواد منشورة في هذا القسم بعد</h2><p>تُنشر المواد هنا بعد اكتمال مراجعتها التحريرية.</p><a class="button button-primary" href="/">استكشاف الرئيسية</a></div>}</section></BaseLayout> : <BaseLayout title="لم نعثر على هذه الصفحة" description="الصفحة المطلوبة غير متاحة حاليًا." noindex><main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>تحقق من الرابط أو عد إلى الرئيسية.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main></BaseLayout>}
+{showHub && hub ? (
+  <BaseLayout title={hub.title} description={hub.description} canonical={canonical} jsonLd={[collectionPageJsonLd(hub.title, hub.description, canonical, hub.children.map((child) => ({ name: child.title, url: `https://alshafra.com${child.href}` }))), breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: hub.title, url: canonical }])]}>
+    <HubLanding hub={hub} previews={previews} />
+  </BaseLayout>
+) : showKind && mapping ? (
+  <BaseLayout title={mapping.title} description={mapping.description} canonical={canonical} noindex={!items.length} jsonLd={[collectionPageJsonLd(mapping.title, mapping.description, canonical, items.map((item) => ({ name: item.title, url: `https://alshafra.com${contentPath(item.kind, item.slug)}` }))), breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: mapping.title, url: canonical }])]}>
+    <section class="content-index">
+      <header class="content-index-header"><p class="eyebrow">محتوى Alshafra</p><h1>{mapping.title}</h1><p>{mapping.description}</p></header>
+      {items.length ? <div class="content-card-grid">{items.map((item) => { const media = item.primary_media_id ? mediaForId(item, item.primary_media_id) : null; return <article class="content-card">{media && <img src={`/media/${media.id}?preset=compact`} alt={media.alt_text} width={media.width} height={media.height} loading="lazy" />}<div><span>{mapping.singular}</span><h2><a href={`/${section}/${item.slug}`}>{item.title}</a></h2><p>{item.excerpt || item.seo_description || "مادة عملية من Alshafra."}</p><a class="card-link" href={`/${section}/${item.slug}`}>قراءة {mapping.singular} <b aria-hidden="true">←</b></a></div></article>; })}</div> : <div class="content-empty"><h2>لا توجد مواد منشورة في هذا القسم بعد</h2><p>تُنشر المواد هنا بعد اكتمال مراجعتها التحريرية.</p><a class="button button-primary" href="/">استكشاف الرئيسية</a></div>}
+    </section>
+  </BaseLayout>
+) : (
+  <BaseLayout title="لم نعثر على هذه الصفحة" description="الصفحة المطلوبة غير متاحة حاليًا." noindex>
+    <main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>تحقق من الرابط أو عد إلى الرئيسية.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main>
+  </BaseLayout>
+)}

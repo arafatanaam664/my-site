@@ -28,8 +28,11 @@ export const POST: APIRoute = async ({ request }) => {
     const title = typeof input.title === "string" ? input.title.trim() : "";
     const excerpt = typeof input.excerpt === "string" ? input.excerpt.trim() : null;
     const bodyMarkdown = typeof input.bodyMarkdown === "string" ? input.bodyMarkdown.trim() : null;
+    const bodyHtml = typeof input.bodyHtml === "string" ? input.bodyHtml.trim() : null;
+    const hubId = typeof input.hubId === "string" && input.hubId ? input.hubId : null;
+    const sectionId = typeof input.sectionId === "string" && input.sectionId ? input.sectionId : null;
     const primaryMediaId = typeof input.primaryMediaId === "string" && input.primaryMediaId ? input.primaryMediaId : null;
-    if (!(["article", "guide", "solution", "faq", "news", "page", "tool"] as const).includes(kind as never) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || title.length < 15 || title.length > 160 || (primaryMediaId && !/^[0-9a-f-]{36}$/i.test(primaryMediaId))) return json({ error: "بيانات المسودة غير صالحة" }, 400);
+    if (!(["article", "guide", "solution", "faq", "news", "page", "tool"] as const).includes(kind as never) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || title.length < 15 || title.length > 160 || (primaryMediaId && !/^[0-9a-f-]{36}$/i.test(primaryMediaId)) || (hubId && !/^[0-9a-f-]{36}$/i.test(hubId)) || (sectionId && !/^[0-9a-f-]{36}$/i.test(sectionId))) return json({ error: "بيانات المسودة غير صالحة" }, 400);
 
     const client = adminClient();
     if (primaryMediaId) {
@@ -37,7 +40,11 @@ export const POST: APIRoute = async ({ request }) => {
       const { data: media, error: mediaError } = await mediaQuery;
       if (mediaError || !media || (editor.role !== "admin" && media.created_by !== editor.id)) return json({ error: "الصورة الرئيسية غير متاحة لهذا الحساب" }, 400);
     }
-    const { data: content, error: contentError } = await client.from("content_items").insert({ kind, slug, title, excerpt, body_markdown: bodyMarkdown, primary_media_id: primaryMediaId, created_by: editor.id, updated_by: editor.id }).select("id,kind,status,slug,title,updated_at").single();
+    if (sectionId) {
+      const { data: assigned, error: sectionError } = await client.from("site_sections").select("id,parent_id,content_kind").eq("id", sectionId).maybeSingle();
+      if (sectionError || !assigned || assigned.parent_id !== hubId || (assigned.content_kind && assigned.content_kind !== kind)) return json({ error: "ربط القسم الرئيسي والفرعي غير صالح" }, 400);
+    }
+    const { data: content, error: contentError } = await client.from("content_items").insert({ kind, slug, title, excerpt, body_markdown: bodyMarkdown, body_html: bodyHtml, hub_id: hubId, section_id: sectionId, primary_media_id: primaryMediaId, created_by: editor.id, updated_by: editor.id }).select("id,kind,status,slug,title,hub_id,section_id,updated_at").single();
     if (contentError || !content) return json({ error: "تعذر إنشاء المسودة" }, 409);
     if (primaryMediaId) {
       const { error: linkError } = await client.from("content_media").insert({ content_id: content.id, media_id: primaryMediaId, placement: "primary", position: 0 });

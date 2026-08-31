@@ -1,25 +1,40 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import HubLanding from "../../components/HubLanding.astro";
 import { breadcrumbListLd } from "../../lib/site-schema";
+import { collectionPageJsonLd } from "../../lib/content-schema";
 import { publicFeatureState } from "../../lib/server/feature-gates";
+import { publicNavigationTree } from "../../lib/server/site-sections";
+import { publishedContentList, type PublicContentCard } from "../../lib/server/public-content";
 
 export const prerender = false;
 const features = await publicFeatureState();
+const navigation = await publicNavigationTree(features);
+const hub = navigation.find((node) => node.slug === "calendar") ?? navigation[0];
 const canonical = "https://alshafra.com/calendar";
+const previews: Record<string, PublicContentCard[]> = {};
+if (hub) {
+  await Promise.all(hub.children.map(async (child) => {
+    if (child.contentKind && child.contentKind !== "tool") previews[child.id] = await publishedContentList(child.contentKind, 3);
+  }));
+}
+const jsonLd = [
+  collectionPageJsonLd("التقويم والمواعيد", "تاريخ اليوم وفق أم القرى، وتحويل التاريخ، وأقسام الأخبار والأدلة والأدوات والحلول والمقالات.", canonical, (hub?.children ?? []).map((child) => ({ name: child.title, url: `https://alshafra.com${child.href}` }))),
+  breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: "التقويم والمواعيد", url: canonical }]),
+];
 ---
 
-<BaseLayout title="التقويم والمواعيد" description="تاريخ اليوم وفق أم القرى، وتحويل التاريخ، وأدوات زمنية عملية مع مصادر وحدود معلنة." canonical={canonical} jsonLd={breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: "التقويم والمواعيد", url: canonical }])}>
-  <section class="content-index">
-    <header class="content-index-header">
-      <p class="eyebrow">التقويم والمواعيد</p>
-      <h1>التاريخ والتحويل في مكان واضح</h1>
-      <p>القسم يعرض ما هو متاح فعليًا: تاريخ أم القرى من مصدر خادمي، وتحويل حسابي بين الهجري والميلادي، وأدوات زمنية تعمل داخل المتصفح. لا نعرض مواعيد أو إجازات بلا مصدر.</p>
-    </header>
-    <div class="tool-catalog-grid">
-      <a class="tool-catalog-card" href="/calendar/umm-al-qura"><span>مصدر خادمي</span><h2>تاريخ اليوم وفق أم القرى</h2><p>عرض مستقل للتاريخ الهجري والميلادي مع المصدر ووقت التحديث.</p><small>لا يعتمد على ساعة المتصفح وحدها</small><b aria-hidden="true">←</b></a>
-      {features.tools_core && <a class="tool-catalog-card" href="/tools/hijri-converter"><span>تحويل</span><h2>تحويل التاريخ الهجري والميلادي</h2><p>تحويل حسابي جدولي فوري، مع التنبيه أنه قد يختلف عن أم القرى.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}
-      {features.tools_core && <a class="tool-catalog-card" href="/tools/date-difference"><span>حساب</span><h2>فرق الأيام بين تاريخين</h2><p>احسب الفرق العددي بين تاريخين ميلاديين دون إرسال التواريخ.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}
-      {features.tools_core && <a class="tool-catalog-card" href="/tools/countdown"><span>متابعة</span><h2>عدّاد تنازلي</h2><p>الزمن المتبقي حتى تاريخ تختاره وفق ساعة جهازك.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}
-    </div>
-  </section>
+<BaseLayout title="التقويم والمواعيد" description="تاريخ اليوم وفق أم القرى، وتحويل التاريخ، وأدوات زمنية عملية مع مصادر وحدود معلنة." canonical={canonical} jsonLd={jsonLd}>
+  {hub ? (
+    <HubLanding hub={hub} previews={previews}>
+      <div class="tool-catalog-grid hub-highlights">
+        <a class="tool-catalog-card" href="/calendar/umm-al-qura"><span>مصدر خادمي</span><h2>تاريخ اليوم وفق أم القرى</h2><p>عرض مستقل للتاريخ الهجري والميلادي مع المصدر ووقت التحديث.</p><small>لا يعتمد على ساعة المتصفح وحدها</small><b aria-hidden="true">←</b></a>
+        {features.tools_core && <a class="tool-catalog-card" href="/tools/hijri-converter"><span>تحويل</span><h2>تحويل التاريخ الهجري والميلادي</h2><p>تحويل حسابي جدولي فوري، مع التنبيه أنه قد يختلف عن أم القرى.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}
+        {features.tools_core && <a class="tool-catalog-card" href="/tools/date-difference"><span>حساب</span><h2>فرق الأيام بين تاريخين</h2><p>احسب الفرق العددي بين تاريخين ميلاديين دون إرسال التواريخ.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}
+        {features.tools_core && <a class="tool-catalog-card" href="/tools/countdown"><span>متابعة</span><h2>عدّاد تنازلي</h2><p>الزمن المتبقي حتى تاريخ تختاره وفق ساعة جهازك.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}
+      </div>
+    </HubLanding>
+  ) : (
+    <section class="content-index"><header class="content-index-header"><h1>التقويم والمواعيد</h1></header></section>
+  )}
 </BaseLayout>

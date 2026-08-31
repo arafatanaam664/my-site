@@ -1,0 +1,33 @@
+---
+import PublicContentPage from "../../../components/PublicContentPage.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { sectionForKind, type PublicSection } from "../../../lib/content-taxonomy";
+import { publicFeatureState } from "../../../lib/server/feature-gates";
+import { loadSiteSections, visibleSectionTree } from "../../../lib/server/site-sections";
+import { publishedContent } from "../../../lib/server/public-content";
+import { subsectionFeature } from "../../../lib/site-sections";
+
+export const prerender = false;
+const section = Astro.params.section ?? "";
+const subsection = Astro.params.subsection ?? "";
+const slug = Astro.params.slug ?? "";
+const features = await publicFeatureState();
+const records = await loadSiteSections();
+const hubs = visibleSectionTree(records, features);
+const hub = hubs.find((node) => node.slug === section) ?? null;
+const child = hub?.children.find((node) => node.slug === subsection) ?? null;
+const childFeature = child ? subsectionFeature(child.contentKind, child.systemKey) : null;
+const enabled = Boolean(child && (!childFeature || features[childFeature]));
+const kind = child?.contentKind;
+const content = enabled && kind && kind !== "page" ? await publishedContent(kind, slug) : null;
+if (!content) Astro.response.status = 404;
+const publicSection = (kind ? sectionForKind(kind) : null) as PublicSection | null;
+---
+
+{content && hub && child && publicSection ? (
+  <PublicContentPage content={content} section={publicSection} hub={hub} subsection={child} />
+) : (
+  <BaseLayout title="لم نعثر على هذه الصفحة" description="المادة المطلوبة غير متاحة للعامة." noindex>
+    <main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>قد يكون الرابط غير صحيح، أو أن المادة لم تعد متاحة للعامة.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main>
+  </BaseLayout>
+)}

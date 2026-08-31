@@ -25,7 +25,8 @@ type PublicationCandidate = { kind: string; title: string; body: string | null; 
 export function publicationReadiness(candidate: PublicationCandidate) {
   const issues: string[] = [];
   if (candidate.title.trim().length < 15) issues.push("العنوان يحتاج إلى صياغة أوضح");
-  if (!candidate.body || candidate.body.trim().length < 300) issues.push("النص المنشور غير كافٍ");
+  const bodyText = candidate.body ? candidate.body.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "";
+  if (bodyText.length < 300) issues.push("النص المنشور غير كافٍ");
   if (!candidate.seoDescription || candidate.seoDescription.trim().length < 70) issues.push("أضف وصفًا واضحًا لنتائج البحث");
   if (!candidate.primaryMedia) issues.push("أضف صورة رئيسية");
   else if (candidate.primaryMedia.width < 1200 || candidate.primaryMedia.width * candidate.primaryMedia.height < 300_000) issues.push("الصورة الرئيسية تحتاج إلى عرض 1200px ومساحة 300 ألف بكسل على الأقل");

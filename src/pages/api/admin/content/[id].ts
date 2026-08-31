@@ -15,7 +15,7 @@ const optionalText = (value: unknown, maximum: number) => {
 
 async function loadOwnedContent(id: string, editorId: string | null, role: string) {
   const client = adminClient();
-  const { data, error } = await client.from("content_items").select("id,kind,status,slug,title,excerpt,body_markdown,seo_title,seo_description,canonical_url,primary_media_id,created_by,updated_at,created_at").eq("id", id).maybeSingle();
+  const { data, error } = await client.from("content_items").select("id,kind,status,slug,title,excerpt,body_markdown,body_html,seo_title,seo_description,canonical_url,primary_media_id,hub_id,section_id,created_by,updated_at,created_at").eq("id", id).maybeSingle();
   if (error || !data) return { content: null, status: 404 };
   if (!canAccessEditorialContent(role as "admin" | "editor" | "author", editorId, data.created_by)) return { content: null, status: 403 };
   return { content: data, status: 200 };
@@ -49,12 +49,15 @@ export const PATCH: APIRoute = async ({ params, request }) => {
     const title = typeof input.title === "string" ? input.title.trim() : "";
     const excerpt = optionalText(input.excerpt, 320);
     const bodyMarkdown = optionalText(input.bodyMarkdown, 100_000);
+    const bodyHtml = optionalText(input.bodyHtml, 200_000);
+    const hubId = input.hubId === null || input.hubId === "" ? null : input.hubId;
+    const sectionId = input.sectionId === null || input.sectionId === "" ? null : input.sectionId;
     const seoTitle = optionalText(input.seoTitle, 60);
     const seoDescription = optionalText(input.seoDescription, 160);
     const canonicalUrl = optionalText(input.canonicalUrl, 500);
     const primaryMediaId = input.primaryMediaId === null || input.primaryMediaId === "" ? null : input.primaryMediaId;
     const note = optionalText(input.note, 500) ?? "تحديث المسودة";
-    if (title.length < 15 || title.length > 160 || [excerpt, bodyMarkdown, seoTitle, seoDescription, canonicalUrl].includes(undefined) || !(primaryMediaId === null || isUuid(primaryMediaId))) return json({ error: "بيانات المسودة غير صالحة" }, 400);
+    if (title.length < 15 || title.length > 160 || [excerpt, bodyMarkdown, seoTitle, seoDescription, canonicalUrl].includes(undefined) || !(primaryMediaId === null || isUuid(primaryMediaId)) || !(hubId === null || isUuid(hubId)) || !(sectionId === null || isUuid(sectionId))) return json({ error: "بيانات المسودة غير صالحة" }, 400);
     if (canonicalUrl) {
       try {
         const parsed = new URL(canonicalUrl);
@@ -67,7 +70,7 @@ export const PATCH: APIRoute = async ({ params, request }) => {
       const { data: media, error } = await client.from("media_assets").select("id,created_by").eq("id", primaryMediaId).maybeSingle();
       if (error || !media || (editor.role === "author" && media.created_by !== editor.id)) return json({ error: "الصورة الرئيسية غير متاحة لهذا الحساب" }, 400);
     }
-    const inlineMedia = inlineMediaReferences(bodyMarkdown ?? null);
+    const inlineMedia = inlineMediaReferences(bodyHtml ?? bodyMarkdown ?? null);
     if (inlineMedia.length) {
       const { data: mediaRows, error: inlineMediaError } = await client.from("media_assets").select("id,created_by").in("id", inlineMedia.map((entry) => entry.mediaId));
       if (inlineMediaError || !mediaRows || mediaRows.length !== inlineMedia.length || (editor.role === "author" && mediaRows.some((media) => media.created_by !== editor.id))) return json({ error: "إحدى صور النص غير متاحة لهذا الحساب" }, 400);

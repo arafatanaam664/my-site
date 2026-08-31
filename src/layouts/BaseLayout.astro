@@ -5,6 +5,8 @@ import { defaultSiteNotice } from "../lib/platform-settings";
 import { organizationJsonLd, websiteJsonLd } from "../lib/site-schema";
 import { publicFeatureState } from "../lib/server/feature-gates";
 import { publicSiteNotice } from "../lib/server/platform-settings";
+import { publicNavigationTree } from "../lib/server/site-sections";
+import SiteNav from "../components/SiteNav.astro";
 
 interface Props {
   title: string;
@@ -22,6 +24,7 @@ const schemas = [organizationJsonLd, websiteJsonLd, ...pageSchemas];
 const safeJsonLd = JSON.stringify(schemas).replace(/</g, "\\u003c");
 const siteNotice = await publicSiteNotice().catch(() => defaultSiteNotice);
 const features = await publicFeatureState();
+const navigation = await publicNavigationTree(features);
 ---
 
 <!doctype html>
@@ -49,12 +52,7 @@ const features = await publicFeatureState();
       <a class="brand" href="/" aria-label="العودة إلى الرئيسية"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a>
       <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation">القائمة</button>
       <nav id="primary-navigation" aria-label="التنقل الرئيسي">
-        <a href="/#solutions">الحلول</a>
-        {features.tools_core && <a href="/tools">الأدوات</a>}
-        {features.content_core && <a href="/guides">الأدلة</a>}
-        {features.content_core && <a href="/solutions">الحلول العملية</a>}
-        <a href="/calendar">التقويم والمواعيد</a>
-        {features.community && <a href="/community">المجتمع</a>}
+        <SiteNav navigation={navigation} />
       </nav>
       <a class="header-search" href="/search">ابحث في Alshafra <span aria-hidden="true">⌕</span></a>
     </header>
@@ -91,6 +89,30 @@ const features = await publicFeatureState();
           toggle.setAttribute("aria-expanded", String(!open));
           nav?.classList.toggle("is-open", !open);
         });
+        const closeHubs = () => {
+          document.querySelectorAll(".nav-hub-toggle").forEach((button) => {
+            button.setAttribute("aria-expanded", "false");
+            const menu = document.getElementById(button.getAttribute("aria-controls") || "");
+            if (menu) menu.hidden = true;
+          });
+        };
+        document.querySelectorAll(".nav-hub-toggle").forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const expanded = button.getAttribute("aria-expanded") === "true";
+            closeHubs();
+            if (!expanded) {
+              button.setAttribute("aria-expanded", "true");
+              const menu = document.getElementById(button.getAttribute("aria-controls") || "");
+              if (menu) menu.hidden = false;
+            }
+          });
+        });
+        document.addEventListener("click", (event) => {
+          if (!(event.target instanceof Element) || !event.target.closest(".nav-hub")) closeHubs();
+        });
+        document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeHubs(); });
         const consentKey = "alshafra_analytics_consent_v1"; const card = document.querySelector("#analytics-consent"); const article = document.querySelector("[data-analytics-content-id]"); let sent = new Set(); let started = Date.now();
         const consent = () => localStorage.getItem(consentKey); const sessionKey = "alshafra_analytics_session_v1";
         const session = () => { let id = sessionStorage.getItem(sessionKey); if (!id) { id = crypto.randomUUID(); sessionStorage.setItem(sessionKey, id); } return id; };

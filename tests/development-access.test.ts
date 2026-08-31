@@ -8,6 +8,7 @@ describe("وصول التطوير المؤقت", () => {
   it("يقبل مضيف التطوير والمعاينة فقط", () => {
     expect(isDevelopmentHost("localhost:3000")).toBe(true);
     expect(isDevelopmentHost("3000-preview.manus.computer")).toBe(true);
+    expect(isDevelopmentHost("3000-preview.e2b.app")).toBe(true);
     expect(isDevelopmentHost("alshafra.com")).toBe(false);
   });
 

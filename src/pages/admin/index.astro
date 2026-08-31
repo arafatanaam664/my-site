@@ -19,23 +19,83 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     <section class="admin-panel admin-console" id="dashboard" hidden>
       <div class="admin-console-top"><div><span class="eyebrow">غرفة العمليات</span><h2>مرحبًا بك في لوحة Alshafra</h2><p>نظرة عملية على المحتوى والقياس وإتاحة الوحدات، من دون أرقام مصطنعة أو وعود غير قابلة للتحقق.</p></div><button type="button" id="admin-logout" class="subtle-button">تسجيل الخروج</button></div>
-      <div class="admin-console-layout"><aside class="admin-sidebar" aria-label="تنقل لوحة الإدارة"><div class="admin-sidebar-label">مساحة العمل</div><button type="button" class="admin-nav-button" data-admin-nav="overview" aria-current="page"><span aria-hidden="true">◈</span> الملخص</button><button type="button" class="admin-nav-button" data-admin-nav="content"><span aria-hidden="true">✎</span> المحتوى</button><button type="button" class="admin-nav-button" data-admin-nav="analytics"><span aria-hidden="true">⌁</span> القياس</button><button type="button" class="admin-nav-button" data-admin-nav="community"><span aria-hidden="true">◌</span> المجتمع</button><button type="button" class="admin-nav-button" data-admin-nav="distribution"><span aria-hidden="true">↗</span> التوزيع</button><button type="button" class="admin-nav-button" data-admin-nav="settings" id="admin-settings-nav"><span aria-hidden="true">⚙</span> الإعدادات</button><div class="admin-sidebar-note"><strong>سير العمل</strong><span>مسودة ← مراجعة ← اعتماد ← نشر</span></div></aside><div class="admin-console-content">
+      <div class="admin-console-layout"><aside class="admin-sidebar" aria-label="تنقل لوحة الإدارة"><div class="admin-sidebar-label">مساحة العمل</div><button type="button" class="admin-nav-button" data-admin-nav="overview" aria-current="page"><span aria-hidden="true">◈</span> الملخص</button><button type="button" class="admin-nav-button" data-admin-nav="content"><span aria-hidden="true">✎</span> المحتوى</button><button type="button" class="admin-nav-button" data-admin-nav="analytics"><span aria-hidden="true">⌁</span> القياس</button><button type="button" class="admin-nav-button" data-admin-nav="community"><span aria-hidden="true">◌</span> المجتمع</button><button type="button" class="admin-nav-button" data-admin-nav="distribution"><span aria-hidden="true">↗</span> التوزيع</button><button type="button" class="admin-nav-button" data-admin-nav="settings" id="admin-settings-nav"><span aria-hidden="true">⚙</span> الإعدادات</button><button type="button" class="admin-nav-button" data-admin-nav="sections" id="admin-sections-nav"><span aria-hidden="true">▣</span> الأقسام</button><div class="admin-sidebar-note"><strong>سير العمل</strong><span>مسودة ← مراجعة ← اعتماد ← نشر</span></div></aside><div class="admin-console-content">
       <section class="admin-overview" id="admin-overview" data-admin-view="overview"><div class="admin-view-heading"><div><span class="eyebrow">الملخص</span><h3>ابدأ من خطوة واضحة</h3><p>تعرض هذه الصفحة ما يتوفر فعلًا في المنصة، وتوجّهك إلى الإجراء التالي بدل ملئها بمؤشرات افتراضية.</p></div><button type="button" id="open-draft-composer">مادة جديدة</button></div><div class="admin-overview-metrics"><article><span>مسودات قابلة للعمل</span><strong id="overview-drafts">—</strong><small>من قائمة المحتوى الحالية</small></article><article><span>مواد منشورة</span><strong id="overview-published">—</strong><small>تظهر فقط بعد النشر المعتمد</small></article><article><span>زيارات مجهّلة</span><strong id="overview-visits">—</strong><small>ضمن الفترة المختارة للقياس</small></article></div><div class="admin-next-actions"><article><span class="eyebrow">الإجراء التالي</span><h4 id="overview-next-step">أنشئ مسودة موثقة لتبدأ دورة التحرير.</h4><p>أضف النص والمصدر والصورة الرئيسية ثم مرّر المادة عبر المراجعة قبل النشر.</p><button type="button" class="subtle-button" id="open-content-queue">فتح طابور المحتوى</button></article><article><span class="eyebrow">حالة الإتاحة</span><h4>الوحدات الجديدة تبقى متوقفة</h4><p>يمكن للمدير فقط تفعيل وحدة بعد اكتمال واجهتها واختبارها؛ لا تظهر الوظائف غير الجاهزة للزائر.</p><button type="button" class="subtle-button" id="open-settings-workspace">عرض الإعدادات</button></article></div></section>
       <div class="admin-toolbar" data-admin-view="content" hidden><div><span class="eyebrow">المحتوى</span><h2>طابور التحرير</h2><p>أنشئ المواد، راجعها، ثم انشرها فقط بعد اكتمال معايير الجودة.</p></div><div class="admin-toolbar-actions"><button type="button" id="refresh-content" class="subtle-button">تحديث القائمة</button><button type="button" id="open-draft-from-toolbar">مسودة جديدة</button></div></div>
       <section class="analytics-panel" data-admin-view="analytics" hidden><div class="admin-toolbar"><div><span class="eyebrow">تحليلات خصوصية</span><h2>أداء المحتوى</h2><p>تعتمد هذه الأرقام على الزوار الذين اختاروا القياس المجهّل. لا تُعرض أي بيانات شخصية أو سجلات متخيلة.</p></div><label class="analytics-range" for="analytics-range">الفترة<select id="analytics-range"><option value="day">آخر 24 ساعة</option><option value="week">آخر 7 أيام</option><option value="month" selected>آخر 30 يومًا</option><option value="year">آخر 12 شهرًا</option></select></label></div><div class="analytics-totals" id="analytics-totals"><p>يجري تحميل التقرير…</p></div><div class="analytics-table-wrap"><table><thead><tr><th>الصفحة أو المادة</th><th>مشاهدات</th><th>زيارات مجهّلة</th><th>بلغ 50%</th><th>إكمال القراءة</th><th>متوسط القراءة</th></tr></thead><tbody id="analytics-rows"><tr><td colspan="6">لا توجد بيانات معروضة بعد.</td></tr></tbody></table></div></section>
       <section class="social-distribution-panel" data-admin-view="distribution" hidden><div class="admin-toolbar"><div><span class="eyebrow">توزيع يدوي</span><h2>مساحة النشر الاجتماعي</h2><p>جهّز نصوصًا قابلة للنسخ وسجّل الخطوة اليدوية. لا تتصل هذه المساحة بحسابات خارجية ولا تنشر تلقائيًا.</p></div></div><p class="social-distribution-notice"><strong>حد الأمان:</strong> لا تضع كلمة مرور أو رمز وصول أو مفتاح API في أي حقل هنا.</p><div class="social-distribution-forms"><form class="admin-card" id="social-account-form"><h3>حساب مرجعي</h3><label for="social-account-provider">المنصة</label><select id="social-account-provider"><option value="x">X</option><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="linkedin">LinkedIn</option><option value="telegram">Telegram</option><option value="whatsapp_channel">قناة WhatsApp</option><option value="other">أخرى</option></select><label for="social-account-name">اسم واضح للحساب</label><input id="social-account-name" minlength="2" maxlength="120" required placeholder="مثال: قناة المنصة الرسمية" /><label for="social-account-ref">معرّف عام أو رابط مختصر (اختياري)</label><input id="social-account-ref" maxlength="240" placeholder="@alshafra أو رابط عام" /><label for="social-account-status">حالة المرجع</label><select id="social-account-status"><option value="disconnected">غير متصل</option><option value="ready">جاهز يدويًا</option><option value="paused">متوقف مؤقتًا</option></select><button type="submit">حفظ الحساب المرجعي</button><p class="form-status" id="social-account-status-message" aria-live="polite"></p></form><form class="admin-card" id="social-template-form"><h3>قالب منشور</h3><label for="social-template-name">اسم القالب</label><input id="social-template-name" minlength="2" maxlength="100" required placeholder="إعلان دليل جديد" /><label for="social-template-provider">المنصة المستهدفة</label><select id="social-template-provider"><option value="">عام لجميع المنصات</option><option value="x">X</option><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="linkedin">LinkedIn</option><option value="telegram">Telegram</option><option value="whatsapp_channel">قناة WhatsApp</option><option value="other">أخرى</option></select><label for="social-template-body">النص</label><textarea id="social-template-body" minlength="20" maxlength="5000" required placeholder="استخدم {{title}} و{{excerpt}} و{{url}} عند الحاجة."></textarea><button type="submit">حفظ القالب</button><p class="form-status" id="social-template-status" aria-live="polite"></p></form><form class="admin-card" id="social-outbox-form"><h3>صندوق النسخ</h3><label for="social-outbox-account">الحساب المرجعي (اختياري)</label><select id="social-outbox-account"><option value="">دون حساب محدد</option></select><label for="social-outbox-content">مادة منشورة</label><select id="social-outbox-content"><option value="">اختر مادة منشورة</option></select><label for="social-outbox-template">قالب مفعّل</label><select id="social-outbox-template"><option value="">اختر قالبًا</option></select><button type="button" id="prepare-social-outbox" class="subtle-button">تجهيز من المادة والقالب</button><label for="social-outbox-body">أو اكتب نصًا يدويًا</label><textarea id="social-outbox-body" minlength="1" maxlength="5000" required placeholder="اكتب النص النهائي الذي ستنسخه للنشر اليدوي."></textarea><label for="social-outbox-url">رابط الوجهة HTTPS (اختياري)</label><input id="social-outbox-url" type="url" placeholder="https://alshafra.com/..." /><label for="social-outbox-status">الحالة</label><select id="social-outbox-status"><option value="draft">مسودة</option><option value="ready">جاهز للنسخ</option></select><button type="submit">إضافة إلى الصندوق</button><p class="form-status" id="social-outbox-status-message" aria-live="polite"></p></form></div><div class="social-distribution-lists"><article><h3>الحسابات المرجعية</h3><ul class="social-list" id="social-accounts-list"><li>يجري التحميل…</li></ul></article><article><h3>القوالب المحفوظة</h3><ul class="social-list" id="social-templates-list"><li>يجري التحميل…</li></ul></article><article><h3>المنشورات الجاهزة</h3><ul class="social-list" id="social-outbox-list"><li>يجري التحميل…</li></ul></article></div><section class="social-activity"><h3>سجل الخطوات اليدوية</h3><ol id="social-activity-list"><li>يجري التحميل…</li></ol></section><p class="form-status" id="social-distribution-status" aria-live="polite"></p></section>
       <section class="admin-card" id="feature-flags-panel" data-admin-view="settings" hidden><div class="admin-toolbar"><div><span class="eyebrow">إتاحة المنصة</span><h2>مفاتيح الميزات</h2><p>لا تفعّل أي وحدة قبل اكتمال واجهتها وصلاحياتها واختباراتها. لا تظهر الوحدات الموقوفة للجمهور.</p></div></div><div id="feature-flags-list" class="feature-flags-list"></div><p class="form-status" id="feature-flags-status" aria-live="polite"></p></section>
       <section class="admin-card" id="platform-settings-panel" data-admin-view="settings" hidden><div class="admin-toolbar"><div><span class="eyebrow">إعدادات المنصة</span><h2>التنبيه العام</h2><p>رسالة مؤقتة واضحة للزوار عند الحاجة. لا تستخدمها للوعود أو المعلومات الحساسة.</p></div></div><form id="site-notice-form"><label class="feature-flag-control"><input id="site-notice-enabled" type="checkbox" /><span>إظهار التنبيه للزوار</span></label><label for="site-notice-message">نص التنبيه</label><textarea id="site-notice-message" maxlength="240" placeholder="مثال: قد تتأخر بعض التحديثات المؤقتة اليوم."></textarea><button type="submit">حفظ التنبيه</button></form><p class="form-status" id="platform-settings-status" aria-live="polite"></p></section>
+      <section class="admin-card" id="site-sections-panel" data-admin-view="sections" hidden>
+        <div class="admin-toolbar"><div><span class="eyebrow">هيكل المنصة</span><h2>الأقسام الرئيسية والفرعية</h2><p>أضف قسمًا رئيسيًا يظهر في التنقل، ثم أضف أقسامًا فرعية داخله. النقر على اسم القسم يفتح صفحته، والسهم يفتح القائمة المنسدلة.</p></div></div>
+        <form id="site-section-form">
+          <label for="section-parent">القسم الرئيسي (اتركه فارغًا لقسم رئيسي جديد)</label>
+          <select id="section-parent"><option value="">قسم رئيسي جديد</option></select>
+          <label for="section-title">العنوان</label>
+          <input id="section-title" minlength="2" maxlength="100" required placeholder="مثال: الأخبار" />
+          <label for="section-slug">المسار الإنجليزي</label>
+          <input id="section-slug" pattern="[a-z][a-z0-9-]{1,47}" required placeholder="news" />
+          <label for="section-kind">نوع المحتوى للقسم الفرعي</label>
+          <select id="section-kind"><option value="">بدون نوع (للقسم الرئيسي)</option><option value="news">خبر</option><option value="guide">دليل</option><option value="tool">أداة</option><option value="solution">حل</option><option value="article">مقال</option><option value="faq">سؤال شائع</option><option value="page">صفحة</option></select>
+          <label for="section-description">وصف القسم</label>
+          <textarea id="section-description" maxlength="320" placeholder="يظهر في صفحة القسم ونتائج البحث."></textarea>
+          <label class="feature-flag-control"><input id="section-enabled" type="checkbox" /><span>إظهار في التنقل بعد التفعيل</span></label>
+          <button type="submit">حفظ القسم</button>
+        </form>
+        <div id="site-sections-tree" class="site-sections-tree"></div>
+        <p class="form-status" id="site-sections-status" aria-live="polite"></p>
+      </section>
       <div class="admin-grid" data-admin-view="content" hidden>
-        <form id="new-draft-form" class="admin-card"><h3>مسودة جديدة</h3><label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="solution">حل</option><option value="faq">سؤال شائع</option><option value="news">خبر</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><fieldset class="media-fieldset"><legend>الصورة الرئيسية (اختياري)</legend><label for="primary-image">ملف الصورة</label><input id="primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="primary-image-alt">وصف بديل للصورة</label><input id="primary-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><p class="field-note">JPEG أو PNG أو WebP أو AVIF، حتى 10MB. لا تُستخدم الصورة إلا بعد ربطها بالمادة.</p></fieldset><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
+        <form id="new-draft-form" class="admin-card"><h3>مسودة جديدة</h3><label for="draft-hub">القسم الرئيسي</label><select id="draft-hub" required><option value="">اختر قسمًا رئيسيًا</option></select>
+          <label for="draft-section">القسم الفرعي</label><select id="draft-section" required><option value="">اختر قسمًا فرعيًا</option></select>
+          <label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="solution">حل</option><option value="faq">سؤال شائع</option><option value="news">خبر</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><fieldset class="media-fieldset"><legend>الصورة الرئيسية (اختياري)</legend><label for="primary-image">ملف الصورة</label><input id="primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="primary-image-alt">وصف بديل للصورة</label><input id="primary-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><p class="field-note">JPEG أو PNG أو WebP أو AVIF، حتى 10MB. لا تُستخدم الصورة إلا بعد ربطها بالمادة.</p></fieldset><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
         <div class="admin-card"><h3>آخر المواد</h3><ul id="content-list" class="content-list"><li>يجري تحميل المحتوى…</li></ul></div>
       </div>
 
 	      <section class="admin-editor" id="editor-panel" data-admin-view="content" hidden>
         <div class="admin-toolbar"><div><span class="eyebrow">تحرير</span><h2 id="editor-heading">المسودة</h2></div><p class="status-pill" id="workflow-status">مسودة</p></div>
         <form id="edit-draft-form" class="editor-form">
-          <div class="editor-main"><label for="edit-title">العنوان</label><input id="edit-title" minlength="15" maxlength="160" required /><label for="edit-excerpt">الوصف المختصر</label><textarea id="edit-excerpt" maxlength="320"></textarea><label for="edit-body">نص المادة</label><textarea id="edit-body" class="content-textarea" maxlength="100000" placeholder="اكتب المحتوى بصيغة Markdown. استخدم زر الصورة لإدراجها في موضع المؤشر."></textarea><fieldset class="media-fieldset"><legend>صورة داخل النص</legend><label for="inline-image">ملف الصورة</label><input id="inline-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="inline-image-alt">وصف بديل للصورة</label><input id="inline-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><button type="button" class="inline-media-button" id="insert-inline-image">رفع وإدراج عند موضع المؤشر</button><p class="field-note" id="inline-image-status" aria-live="polite">احفظ المسودة بعد الإدراج لتربط الصورة بالمادة.</p></fieldset><fieldset class="media-fieldset"><legend>استبدال الصورة الرئيسية</legend><label for="edit-primary-image">ملف الصورة</label><input id="edit-primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="edit-primary-image-alt">وصف بديل للصورة الجديدة</label><input id="edit-primary-image-alt" minlength="5" maxlength="180" placeholder="اكتب هذا الوصف فقط عند اختيار ملف جديد" /></fieldset></div>
-          <aside class="editor-side"><h3>إعدادات الظهور</h3><label for="edit-seo-title">عنوان نتائج البحث</label><input id="edit-seo-title" maxlength="60" /><label for="edit-seo-description">وصف نتائج البحث</label><textarea id="edit-seo-description" maxlength="160"></textarea><label for="edit-canonical">الرابط القانوني</label><input id="edit-canonical" type="url" placeholder="https://alshafra.com/..." /><label for="edit-note">ملاحظة المراجعة</label><textarea id="edit-note" maxlength="500" placeholder="تلخيص ما تغير في هذه النسخة"></textarea><button type="submit">حفظ المسودة وسجل المراجعة</button><p class="form-status" id="edit-status" aria-live="polite"></p></aside>
+          <div class="editor-main"><label for="edit-title">العنوان</label><input id="edit-title" minlength="15" maxlength="160" required /><label for="edit-excerpt">الوصف المختصر</label><textarea id="edit-excerpt" maxlength="320"></textarea><label for="rich-editor-surface">نص المادة</label>
+            <div class="rich-editor" id="rich-editor-shell">
+              <div class="rich-editor-toolbar" id="rich-editor-toolbar">
+                <button type="button" data-editor-command="undo" title="تراجع">تراجع</button>
+                <button type="button" data-editor-command="redo" title="إعادة">إعادة</button>
+                <span class="rich-editor-sep" aria-hidden="true"></span>
+                <button type="button" data-editor-command="formatBlock" data-editor-value="p">فقرة</button>
+                <button type="button" data-editor-command="formatBlock" data-editor-value="h2">عنوان 2</button>
+                <button type="button" data-editor-command="formatBlock" data-editor-value="h3">عنوان 3</button>
+                <button type="button" data-editor-command="formatBlock" data-editor-value="h4">عنوان 4</button>
+                <span class="rich-editor-sep" aria-hidden="true"></span>
+                <button type="button" data-editor-command="bold"><strong>عريض</strong></button>
+                <button type="button" data-editor-command="italic"><em>مائل</em></button>
+                <button type="button" data-editor-command="underline"><u>تسطير</u></button>
+                <button type="button" data-editor-command="strikeThrough"><s>شطب</s></button>
+                <button type="button" data-editor-command="subscript">منخفض</button>
+                <button type="button" data-editor-command="superscript">مرتفع</button>
+                <label class="rich-editor-color">لون النص<input type="color" id="editor-forecolor" value="#10262a" /></label>
+                <label class="rich-editor-color">تظليل<input type="color" id="editor-backcolor" value="#e8f7f1" /></label>
+                <span class="rich-editor-sep" aria-hidden="true"></span>
+                <button type="button" data-editor-command="justifyRight">يمين</button>
+                <button type="button" data-editor-command="justifyCenter">وسط</button>
+                <button type="button" data-editor-command="justifyLeft">يسار</button>
+                <button type="button" data-editor-command="insertUnorderedList">قائمة</button>
+                <button type="button" data-editor-command="insertOrderedList">ترقيم</button>
+                <button type="button" data-editor-command="formatBlock" data-editor-value="blockquote">اقتباس</button>
+                <button type="button" data-editor-command="formatBlock" data-editor-value="pre">شفرة</button>
+                <button type="button" data-editor-command="createLink">رابط</button>
+                <button type="button" data-editor-command="unlink">إزالة الرابط</button>
+                <button type="button" data-editor-command="insertHorizontalRule">خط</button>
+                <button type="button" data-editor-command="insertTable">جدول</button>
+                <button type="button" data-editor-command="removeFormat">مسح التنسيق</button>
+              </div>
+              <div class="rich-editor-surface" id="rich-editor-surface"></div>
+              <p class="rich-editor-meta"><span id="rich-editor-count">0</span> حرفًا ظاهرًا في النص</p>
+            </div>
+            <textarea id="edit-body" class="content-textarea" maxlength="200000" hidden></textarea><fieldset class="media-fieldset"><legend>صورة داخل النص</legend><label for="inline-image">ملف الصورة</label><input id="inline-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="inline-image-alt">وصف بديل للصورة</label><input id="inline-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><button type="button" class="inline-media-button" id="insert-inline-image">رفع وإدراج عند موضع المؤشر</button><p class="field-note" id="inline-image-status" aria-live="polite">احفظ المسودة بعد الإدراج لتربط الصورة بالمادة.</p></fieldset><fieldset class="media-fieldset"><legend>استبدال الصورة الرئيسية</legend><label for="edit-primary-image">ملف الصورة</label><input id="edit-primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="edit-primary-image-alt">وصف بديل للصورة الجديدة</label><input id="edit-primary-image-alt" minlength="5" maxlength="180" placeholder="اكتب هذا الوصف فقط عند اختيار ملف جديد" /></fieldset></div>
+          <aside class="editor-side"><h3>إعدادات الظهور</h3>
+            <label for="edit-hub">القسم الرئيسي</label><select id="edit-hub"></select>
+            <label for="edit-section">القسم الفرعي</label><select id="edit-section"></select>
+<label for="edit-seo-title">عنوان نتائج البحث</label><input id="edit-seo-title" maxlength="60" /><label for="edit-seo-description">وصف نتائج البحث</label><textarea id="edit-seo-description" maxlength="160"></textarea><label for="edit-canonical">الرابط القانوني</label><input id="edit-canonical" type="url" placeholder="https://alshafra.com/..." /><label for="edit-note">ملاحظة المراجعة</label><textarea id="edit-note" maxlength="500" placeholder="تلخيص ما تغير في هذه النسخة"></textarea><button type="submit">حفظ المسودة وسجل المراجعة</button><p class="form-status" id="edit-status" aria-live="polite"></p></aside>
         </form>
         <div class="workflow-actions" id="workflow-actions" hidden><p>انتقال الحالة:</p><button type="button" class="subtle-button" id="workflow-next"></button><p class="form-status" id="workflow-message" aria-live="polite"></p></div>
         <section class="source-manager"><div class="admin-toolbar"><div><span class="eyebrow">التوثيق</span><h3>مصادر المادة</h3></div><button type="button" class="subtle-button" id="add-source">إضافة مصدر</button></div><div id="source-list" class="source-list"></div><button type="button" id="save-sources" class="source-save">حفظ المصادر</button><p class="form-status" id="source-status" aria-live="polite"></p></section>
@@ -49,6 +109,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 <script>
   import { createClient } from "@supabase/supabase-js";
+  import { applyEditorCommand, mountRichEditor, type RichEditorHandle } from "../../lib/admin-rich-editor";
+  import { htmlToPlainText, markdownToEditorHtml, sanitizeContentHtml } from "../../lib/content-html";
   type ContentSummary = { id: string; title: string; slug: string; status: string; kind: string };
   type ContentDraft = { id: string; title: string; slug: string; status: string; excerpt: string | null; body_markdown: string | null; seo_title: string | null; seo_description: string | null; canonical_url: string | null; primary_media_id: string | null };
   type SourceDraft = { title: string; url: string; kind: "official" | "primary" | "secondary"; publisher: string; publishedAt: string; note: string; accessedAt?: string };
@@ -101,6 +163,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   let developmentAccessAvailable = false;
   let usingDevelopmentAccess = false;
   let activeAdminView = "overview";
+  const developmentTokenKey = "alshafra_dev_admin_token";
+  const developmentToken = () => sessionStorage.getItem(developmentTokenKey);
+  type SiteSection = { id: string; slug: string; title: string; description: string; parentId: string | null; contentKind: string | null; navOrder: number; enabled: boolean; publicVisible: boolean; systemKey: string | null; destinationPath: string | null };
+  let siteSections: SiteSection[] = [];
+  let richEditor: RichEditorHandle | null = null;
+  const siteSectionsStatus = document.querySelector<HTMLElement>("#site-sections-status")!;
+  const siteSectionsTree = document.querySelector<HTMLElement>("#site-sections-tree")!;
+
 
   const field = <T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(selector: string) => document.querySelector<T>(selector)!;
   const statusLabels: Record<string, string> = { draft: "مسودة", in_review: "قيد المراجعة", approved: "معتمدة", published: "منشورة", archived: "مؤرشفة" };
@@ -113,8 +183,97 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     if (view === "content") { editorPanel.hidden = currentDraft === null; }
   }
 
+  function sectionChildren(parentId: string | null) { return siteSections.filter((section) => section.parentId === parentId).sort((a, b) => a.navOrder - b.navOrder); }
+  function fillSectionSelect(select: HTMLSelectElement, parentId: string | null, selected = "", emptyLabel = "اختر قسمًا") {
+    select.replaceChildren();
+    const empty = document.createElement("option"); empty.value = ""; empty.textContent = emptyLabel; select.append(empty);
+    for (const section of sectionChildren(parentId)) { const option = document.createElement("option"); option.value = section.id; option.textContent = section.title; option.selected = section.id === selected; select.append(option); }
+  }
+  function syncKindFromSection(sectionId: string, kindSelect: HTMLSelectElement) {
+    const section = siteSections.find((item) => item.id === sectionId);
+    if (section?.contentKind) kindSelect.value = section.contentKind;
+  }
+  function renderSiteSections() {
+    siteSectionsTree.replaceChildren();
+    const hubs = sectionChildren(null);
+    if (!hubs.length) { const empty = document.createElement("p"); empty.textContent = "لا توجد أقسام بعد."; siteSectionsTree.append(empty); return; }
+    for (const hub of hubs) {
+      const article = document.createElement("article"); article.className = "site-section-hub";
+      const heading = document.createElement("h3"); heading.textContent = `${hub.title} · /${hub.slug}`;
+      const meta = document.createElement("p"); meta.textContent = `${hub.enabled ? "ظاهر في التنقل" : "مخفي"} · ${hub.description || "بدون وصف"}`;
+      const children = document.createElement("ul");
+      for (const child of sectionChildren(hub.id)) {
+        const item = document.createElement("li");
+        item.textContent = `${child.title} · /${hub.slug}/${child.slug} · ${child.contentKind ?? "بدون نوع"} · ${child.enabled ? "ظاهر" : "مخفي"}`;
+        const toggle = document.createElement("button"); toggle.type = "button"; toggle.className = "subtle-button"; toggle.textContent = child.enabled ? "إخفاء" : "إظهار";
+        toggle.addEventListener("click", () => void patchSiteSection(child.id, { enabled: !child.enabled }));
+        item.append(toggle); children.append(item);
+      }
+      const hubToggle = document.createElement("button"); hubToggle.type = "button"; hubToggle.className = "subtle-button"; hubToggle.textContent = hub.enabled ? "إخفاء القسم الرئيسي" : "إظهار القسم الرئيسي";
+      hubToggle.addEventListener("click", () => void patchSiteSection(hub.id, { enabled: !hub.enabled }));
+      article.append(heading, meta, children, hubToggle); siteSectionsTree.append(article);
+    }
+    fillSectionSelect(field<HTMLSelectElement>("#section-parent"), null, field<HTMLSelectElement>("#section-parent").value, "قسم رئيسي جديد");
+    fillSectionSelect(field<HTMLSelectElement>("#draft-hub"), null, field<HTMLSelectElement>("#draft-hub").value, "اختر قسمًا رئيسيًا");
+    fillSectionSelect(field<HTMLSelectElement>("#edit-hub"), null, field<HTMLSelectElement>("#edit-hub").value, "اختر قسمًا رئيسيًا");
+    syncSubsectionSelects();
+  }
+  function syncSubsectionSelects() {
+    fillSectionSelect(field<HTMLSelectElement>("#draft-section"), field<HTMLSelectElement>("#draft-hub").value || null, field<HTMLSelectElement>("#draft-section").value, "اختر قسمًا فرعيًا");
+    fillSectionSelect(field<HTMLSelectElement>("#edit-section"), field<HTMLSelectElement>("#edit-hub").value || null, field<HTMLSelectElement>("#edit-section").value, "اختر قسمًا فرعيًا");
+    syncKindFromSection(field<HTMLSelectElement>("#draft-section").value, field<HTMLSelectElement>("#draft-kind"));
+  }
+  async function loadSiteSectionRecords() {
+    const headers = await authHeaders(); if (!headers) return;
+    const response = await fetch("/api/admin/platform/sections", { headers });
+    const result = await response.json();
+    if (response.status === 403) { document.querySelector<HTMLElement>("#site-sections-panel")!.hidden = true; return; }
+    if (!response.ok) { siteSectionsStatus.textContent = result.error ?? "تعذر تحميل الأقسام."; return; }
+    siteSections = ((result.data ?? []) as Array<Record<string, unknown>>).map((row) => ({
+      id: String(row.id), slug: String(row.slug), title: String(row.title), description: typeof row.description === "string" ? row.description : "",
+      parentId: typeof row.parentId === "string" ? row.parentId : typeof row.parent_id === "string" ? row.parent_id : null,
+      contentKind: typeof row.contentKind === "string" ? row.contentKind : typeof row.content_kind === "string" ? row.content_kind : null,
+      navOrder: typeof row.navOrder === "number" ? row.navOrder : typeof row.nav_order === "number" ? row.nav_order : 100,
+      enabled: row.enabled !== false, publicVisible: row.publicVisible !== false && row.public_visible !== false,
+      systemKey: typeof row.systemKey === "string" ? row.systemKey : typeof row.system_key === "string" ? row.system_key : null,
+      destinationPath: typeof row.destinationPath === "string" ? row.destinationPath : typeof row.destination_path === "string" ? row.destination_path : null,
+    }));
+    renderSiteSections();
+  }
+  async function patchSiteSection(id: string, payload: Record<string, unknown>) {
+    const headers = await authHeaders(); if (!headers) return;
+    siteSectionsStatus.textContent = "يجري حفظ القسم…";
+    const response = await fetch("/api/admin/platform/sections", { method: "PATCH", headers, body: JSON.stringify({ id, ...payload }) });
+    const result = await response.json();
+    siteSectionsStatus.textContent = response.ok ? "تم حفظ القسم." : result.error ?? "تعذر حفظ القسم.";
+    if (response.ok) await loadSiteSectionRecords();
+  }
+  function ensureRichEditor() {
+    if (richEditor) return richEditor;
+    const surface = document.querySelector<HTMLElement>("#rich-editor-surface")!;
+    richEditor = mountRichEditor(surface, { onChange: () => {
+      const html = sanitizeContentHtml(surface.innerHTML);
+      field<HTMLTextAreaElement>("#edit-body").value = html;
+      document.querySelector<HTMLElement>("#rich-editor-count")!.textContent = String(htmlToPlainText(html).length);
+    } });
+    document.querySelector<HTMLElement>("#rich-editor-toolbar")!.addEventListener("mousedown", (event) => event.preventDefault());
+    document.querySelector<HTMLElement>("#rich-editor-toolbar")!.addEventListener("click", (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-editor-command]");
+      if (!button) return;
+      applyEditorCommand(button.dataset.editorCommand ?? "", button.dataset.editorValue);
+      richEditor?.focus();
+    });
+    document.querySelector<HTMLInputElement>("#editor-forecolor")!.addEventListener("input", (event) => applyEditorCommand("foreColor", (event.currentTarget as HTMLInputElement).value));
+    document.querySelector<HTMLInputElement>("#editor-backcolor")!.addEventListener("input", (event) => applyEditorCommand("hiliteColor", (event.currentTarget as HTMLInputElement).value));
+    return richEditor;
+  }
+
   async function authHeaders(): Promise<Record<string, string> | null> {
-    if (usingDevelopmentAccess) return { "content-type": "application/json" };
+    const token = developmentToken();
+    if (usingDevelopmentAccess || token) {
+      usingDevelopmentAccess = true;
+      return token ? { "content-type": "application/json", "x-alshafra-dev-admin": token } : { "content-type": "application/json" };
+    }
     if (!supabase) return null;
     const { data } = await supabase.auth.getSession();
     if (!data.session) return null;
@@ -212,7 +371,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     const file = fileInput.files?.[0]; if (!file) return null;
     if (!altInput.value.trim()) throw new Error("أدخل وصفًا بديلًا دقيقًا للصورة.");
     const formData = new FormData(); formData.set("file", file); formData.set("altText", altInput.value);
-    const response = await fetch("/api/admin/media", { method: "POST", headers: { Authorization: headers.Authorization }, body: formData }); const result = await response.json();
+    const mediaHeaders: Record<string, string> = {};
+    if (headers.Authorization) mediaHeaders.Authorization = headers.Authorization;
+    if (headers["x-alshafra-dev-admin"]) mediaHeaders["x-alshafra-dev-admin"] = headers["x-alshafra-dev-admin"];
+    const response = await fetch("/api/admin/media", { method: "POST", headers: mediaHeaders, body: formData }); const result = await response.json();
     if (!response.ok || !result.data?.id) throw new Error(result.error ?? "تعذر رفع الصورة.");
     return result.data.id as string;
   }
@@ -283,7 +445,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     currentDraft = result.data as ContentDraft; editorHeading.textContent = currentDraft.title;
     field<HTMLInputElement>("#edit-title").value = currentDraft.title;
     field<HTMLTextAreaElement>("#edit-excerpt").value = currentDraft.excerpt ?? "";
-    field<HTMLTextAreaElement>("#edit-body").value = currentDraft.body_markdown ?? "";
+    field<HTMLTextAreaElement>("#edit-body").value = (currentDraft as ContentDraft & { body_html?: string | null }).body_html ?? currentDraft.body_markdown ?? ""; ensureRichEditor().setHtml(markdownToEditorHtml((currentDraft as ContentDraft & { body_html?: string | null }).body_html ?? currentDraft.body_markdown)); const draftHub = (currentDraft as ContentDraft & { hub_id?: string | null }).hub_id ?? ""; const draftSection = (currentDraft as ContentDraft & { section_id?: string | null }).section_id ?? ""; fillSectionSelect(field<HTMLSelectElement>("#edit-hub"), null, draftHub, "اختر قسمًا رئيسيًا"); fillSectionSelect(field<HTMLSelectElement>("#edit-section"), draftHub || null, draftSection, "اختر قسمًا فرعيًا");
     field<HTMLInputElement>("#edit-seo-title").value = currentDraft.seo_title ?? "";
     field<HTMLTextAreaElement>("#edit-seo-description").value = currentDraft.seo_description ?? "";
     field<HTMLInputElement>("#edit-canonical").value = currentDraft.canonical_url ?? "";
@@ -293,8 +455,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   }
 
   async function establishSession() {
-    if (!supabase) return; const developmentResponse = await fetch("/api/admin/development-access"); const development = developmentResponse.ok ? await developmentResponse.json() as { data: { authenticated: boolean } } : { data: { authenticated: false } }; const { data } = await supabase.auth.getSession(); usingDevelopmentAccess = development.data.authenticated; if (!data.session && !usingDevelopmentAccess) return;
-    authCard.hidden = true; dashboard.hidden = false; activateAdminView("overview"); await Promise.all([loadContent(), loadAnalytics(), loadFeatureFlags(), loadPlatformSettings(), loadSocialDistribution(), loadCommunityModeration()]);
+    const token = developmentToken();
+    const developmentResponse = await fetch("/api/admin/development-access", { headers: token ? { "x-alshafra-dev-admin": token } : {} });
+    const development = developmentResponse.ok ? await developmentResponse.json() as { data: { authenticated: boolean } } : { data: { authenticated: false } };
+    const { data } = supabase ? await supabase.auth.getSession() : { data: { session: null } };
+    usingDevelopmentAccess = development.data.authenticated || Boolean(token) || usingDevelopmentAccess;
+    if (!data.session && !usingDevelopmentAccess) return;
+    authCard.hidden = true; dashboard.hidden = false; activateAdminView("overview");
+    ensureRichEditor(); await Promise.all([loadContent(), loadAnalytics(), loadFeatureFlags(), loadPlatformSettings(), loadSocialDistribution(), loadCommunityModeration(), loadSiteSectionRecords()]).catch(() => {});
   }
 
   document.querySelector<HTMLFormElement>("#magic-link-form")!.addEventListener("submit", async (event) => {
@@ -309,9 +477,16 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   document.querySelector<HTMLFormElement>("#development-access-form")!.addEventListener("submit", async (event) => {
     event.preventDefault(); const form = event.currentTarget as HTMLFormElement; if (!developmentAccessAvailable) return; const submit = form.querySelector<HTMLButtonElement>("button[type=submit]")!; const code = field<HTMLInputElement>("#development-access-code").value; submit.disabled = true; form.setAttribute("aria-busy", "true"); developmentAccessStatus.textContent = "يجري فتح جلسة التطوير…";
     try {
-      const response = await fetch("/api/admin/development-access", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code }) }); const result = await response.json();
+      const response = await fetch("/api/admin/development-access", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code }) }); const result = await response.json() as { error?: string; data?: { token?: string } };
       if (!response.ok) { developmentAccessStatus.textContent = result.error ?? "تعذر فتح جلسة التطوير."; return; }
-      field<HTMLInputElement>("#development-access-code").value = ""; developmentAccessStatus.textContent = "تم فتح جلسة التطوير."; await establishSession();
+      if (typeof result.data?.token === "string") sessionStorage.setItem(developmentTokenKey, result.data.token);
+      usingDevelopmentAccess = true;
+      field<HTMLInputElement>("#development-access-code").value = "";
+      developmentAccessStatus.textContent = "تم فتح جلسة التطوير.";
+      authCard.hidden = true;
+      dashboard.hidden = false;
+      activateAdminView("overview");
+      await establishSession();
     } finally { submit.disabled = false; form.removeAttribute("aria-busy"); }
   });
   document.querySelector<HTMLFormElement>("#site-notice-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; platformSettingsStatus.textContent = "يجري حفظ التنبيه…"; const value = { enabled: field<HTMLInputElement>("#site-notice-enabled").checked, message: field<HTMLTextAreaElement>("#site-notice-message").value }; const response = await fetch("/api/admin/platform/settings", { method: "PATCH", headers, body: JSON.stringify({ settingKey: "site_notice", value }) }); const result = await response.json(); platformSettingsStatus.textContent = response.ok ? "تم حفظ التنبيه العام." : result.error ?? "تعذر حفظ التنبيه."; });
@@ -324,7 +499,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     event.preventDefault(); const headers = await authHeaders(); if (!headers) return; draftStatus.textContent = "يجري حفظ المسودة…";
     try {
       const primaryMediaId = await uploadImage(field<HTMLInputElement>("#primary-image"), field<HTMLInputElement>("#primary-image-alt"), headers);
-      const payload = { kind: field<HTMLSelectElement>("#draft-kind").value, title: field<HTMLInputElement>("#draft-title").value, slug: field<HTMLInputElement>("#draft-slug").value, excerpt: field<HTMLTextAreaElement>("#draft-excerpt").value, primaryMediaId };
+      const payload = { kind: field<HTMLSelectElement>("#draft-kind").value, title: field<HTMLInputElement>("#draft-title").value, slug: field<HTMLInputElement>("#draft-slug").value, excerpt: field<HTMLTextAreaElement>("#draft-excerpt").value, primaryMediaId, hubId: field<HTMLSelectElement>("#draft-hub").value || null, sectionId: field<HTMLSelectElement>("#draft-section").value || null };
       const response = await fetch("/api/admin/content", { method: "POST", headers, body: JSON.stringify(payload) }); const result = await response.json();
       draftStatus.textContent = response.ok ? "تم إنشاء المسودة وسجل المراجعة الأولي." : result.error ?? "تعذر إنشاء المسودة.";
       if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadContent(); await openDraft(result.data.id); }
@@ -335,7 +510,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     event.preventDefault(); const headers = await authHeaders(); if (!headers || !currentDraft) return; editStatus.textContent = "يجري حفظ التعديلات…";
     try {
       const replacement = await uploadImage(field<HTMLInputElement>("#edit-primary-image"), field<HTMLInputElement>("#edit-primary-image-alt"), headers);
-      const payload = { title: field<HTMLInputElement>("#edit-title").value, excerpt: field<HTMLTextAreaElement>("#edit-excerpt").value, bodyMarkdown: field<HTMLTextAreaElement>("#edit-body").value, seoTitle: field<HTMLInputElement>("#edit-seo-title").value, seoDescription: field<HTMLTextAreaElement>("#edit-seo-description").value, canonicalUrl: field<HTMLInputElement>("#edit-canonical").value, primaryMediaId: replacement ?? currentDraft.primary_media_id, note: field<HTMLTextAreaElement>("#edit-note").value };
+      const bodyHtml = sanitizeContentHtml(ensureRichEditor().getHtml()); field<HTMLTextAreaElement>("#edit-body").value = bodyHtml; const payload = { title: field<HTMLInputElement>("#edit-title").value, excerpt: field<HTMLTextAreaElement>("#edit-excerpt").value, bodyMarkdown: htmlToPlainText(bodyHtml), bodyHtml, seoTitle: field<HTMLInputElement>("#edit-seo-title").value, seoDescription: field<HTMLTextAreaElement>("#edit-seo-description").value, canonicalUrl: field<HTMLInputElement>("#edit-canonical").value, primaryMediaId: replacement ?? currentDraft.primary_media_id, note: field<HTMLTextAreaElement>("#edit-note").value, hubId: field<HTMLSelectElement>("#edit-hub").value || null, sectionId: field<HTMLSelectElement>("#edit-section").value || null };
       const response = await fetch(`/api/admin/content/${currentDraft.id}`, { method: "PATCH", headers, body: JSON.stringify(payload) }); const result = await response.json();
       if (!response.ok) { editStatus.textContent = result.error ?? "تعذر حفظ التعديلات."; return; }
       const savedDraft = { ...currentDraft, ...result.data }; currentDraft = savedDraft; editorHeading.textContent = savedDraft.title; editStatus.textContent = "تم حفظ المسودة وسجل المراجعة."; await Promise.all([loadContent(), loadHistory()]);
@@ -348,8 +523,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     try {
       const mediaId = await uploadImage(field<HTMLInputElement>("#inline-image"), field<HTMLInputElement>("#inline-image-alt"), headers);
       if (!mediaId) { inlineImageStatus.textContent = "اختر ملف الصورة أولاً."; return; }
-      const body = field<HTMLTextAreaElement>("#edit-body"); const token = `\n\n{{media:${mediaId}}}\n\n`;
-      body.setRangeText(token, body.selectionStart, body.selectionEnd, "end"); body.focus();
+      ensureRichEditor().insertHtml(`<figure data-media-id="${mediaId}"><img src="/media/${mediaId}?preset=standard" alt="" /></figure>`);
       field<HTMLInputElement>("#inline-image").value = ""; field<HTMLInputElement>("#inline-image-alt").value = "";
       inlineImageStatus.textContent = "أُدرجت الصورة. احفظ المسودة لتثبيت ربطها بالمادة.";
     } catch (error) { inlineImageStatus.textContent = error instanceof Error ? error.message : "تعذر رفع الصورة."; }
@@ -378,7 +552,20 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   document.querySelector<HTMLButtonElement>("#open-draft-from-toolbar")!.addEventListener("click", openDraftComposer);
   document.querySelector<HTMLButtonElement>("#open-content-queue")!.addEventListener("click", () => activateAdminView("content"));
   document.querySelector<HTMLButtonElement>("#open-settings-workspace")!.addEventListener("click", () => activateAdminView("settings"));
-  document.querySelector<HTMLButtonElement>("#admin-logout")!.addEventListener("click", async () => { await fetch("/api/admin/development-access", { method: "DELETE" }); await supabase?.auth.signOut(); window.location.reload(); });
+  document.querySelector<HTMLButtonElement>("#admin-logout")!.addEventListener("click", async () => { sessionStorage.removeItem(developmentTokenKey); await fetch("/api/admin/development-access", { method: "DELETE" }); await supabase?.auth.signOut(); window.location.reload(); });
   field<HTMLSelectElement>("#analytics-range").addEventListener("change", () => void loadAnalytics());
-  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } const config = await response.json(); magicLinkRedirectUrl = config.authRedirectUrl; developmentAccessAvailable = config.developmentAccessEnabled === true; developmentAccessCard.hidden = !developmentAccessAvailable; supabase = createClient(config.url, config.publishableKey); await establishSession(); })();
+  field<HTMLSelectElement>("#draft-hub").addEventListener("change", syncSubsectionSelects);
+  field<HTMLSelectElement>("#edit-hub").addEventListener("change", syncSubsectionSelects);
+  field<HTMLSelectElement>("#draft-section").addEventListener("change", () => syncKindFromSection(field<HTMLSelectElement>("#draft-section").value, field<HTMLSelectElement>("#draft-kind")));
+  document.querySelector<HTMLFormElement>("#site-section-form")!.addEventListener("submit", async (event) => {
+    event.preventDefault(); const headers = await authHeaders(); if (!headers) return;
+    siteSectionsStatus.textContent = "يجري حفظ القسم…";
+    const parentId = field<HTMLSelectElement>("#section-parent").value || null;
+    const payload = { parentId, title: field<HTMLInputElement>("#section-title").value, slug: field<HTMLInputElement>("#section-slug").value, contentKind: field<HTMLSelectElement>("#section-kind").value || null, description: field<HTMLTextAreaElement>("#section-description").value, enabled: document.querySelector<HTMLInputElement>("#section-enabled")!.checked, publicVisible: true };
+    const response = await fetch("/api/admin/platform/sections", { method: "POST", headers, body: JSON.stringify(payload) });
+    const result = await response.json();
+    siteSectionsStatus.textContent = response.ok ? "تم إنشاء القسم. سيظهر في التنقل بعد تفعيله." : result.error ?? "تعذر إنشاء القسم.";
+    if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSiteSectionRecords(); }
+  });
+  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } const config = await response.json(); magicLinkRedirectUrl = config.authRedirectUrl; developmentAccessAvailable = config.developmentAccessEnabled === true; developmentAccessCard.hidden = !developmentAccessAvailable; if (config.url && config.publishableKey) supabase = createClient(config.url, config.publishableKey); else if (!developmentAccessAvailable) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } await establishSession(); })();
 </script>
