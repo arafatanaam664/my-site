@@ -23,15 +23,42 @@ export type MediaRuntimeSecrets = {
   R2_PUBLIC_BASE_URL?: string;
 };
 
+const runtimeKeys = [
+  "SUPABASE_URL",
+  "SUPABASE_PUBLISHABLE_KEY",
+  "SUPABASE_SECRET_KEY",
+  "R2_ENDPOINT",
+  "R2_ACCESS_KEY_ID",
+  "R2_SECRET_ACCESS_KEY",
+  "R2_BUCKET_NAME",
+  "R2_PUBLIC_BASE_URL",
+  "VAPID_PUBLIC_KEY",
+  "VAPID_PRIVATE_KEY",
+  "VAPID_SUBJECT",
+  "DEV_ADMIN_ACCESS_CODE",
+] as const;
+
+function readBinding(source: unknown, key: string) {
+  if (!source || typeof source !== "object") return undefined;
+  try {
+    const value = (source as Record<string, unknown>)[key];
+    return typeof value === "string" && value.trim() ? value.trim() : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function environmentValues(): Partial<RequiredRuntimeSecrets> {
-  const local = typeof process !== "undefined" ? (process.env as Partial<RequiredRuntimeSecrets>) : {};
+  const values: Partial<RequiredRuntimeSecrets> = {};
   const buildPublic = import.meta.env as Record<string, string | undefined>;
-  const publicValues: Partial<RequiredRuntimeSecrets> = {
-    SUPABASE_URL: buildPublic.VITE_SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY: buildPublic.VITE_SUPABASE_PUBLISHABLE_KEY,
-  };
-  const workerValues = Object.fromEntries(Object.entries(env as unknown as Record<string, string | undefined>).filter(([, value]) => Boolean(value))) as Partial<RequiredRuntimeSecrets>;
-  return { ...publicValues, ...local, ...workerValues };
+  if (buildPublic.VITE_SUPABASE_URL) values.SUPABASE_URL = buildPublic.VITE_SUPABASE_URL;
+  if (buildPublic.VITE_SUPABASE_PUBLISHABLE_KEY) values.SUPABASE_PUBLISHABLE_KEY = buildPublic.VITE_SUPABASE_PUBLISHABLE_KEY;
+  const processEnv = typeof process !== "undefined" ? process.env : undefined;
+  for (const key of runtimeKeys) {
+    const value = readBinding(env, key) ?? readBinding(processEnv, key);
+    if (value) values[key] = value;
+  }
+  return values;
 }
 
 export async function timedFetch(input: RequestInfo | URL, init?: RequestInit) {

@@ -468,7 +468,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   document.querySelector<HTMLFormElement>("#magic-link-form")!.addEventListener("submit", async (event) => {
     event.preventDefault(); const form = event.currentTarget as HTMLFormElement; const submit = form.querySelector<HTMLButtonElement>("button[type=submit]")!; const email = field<HTMLInputElement>("#editor-email").value; submit.disabled = true; form.setAttribute("aria-busy", "true"); authStatus.textContent = "يجري إرسال الرابط…";
     try {
-      if (!supabase) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; }
+      if (!supabase) { authStatus.textContent = "إعداد الدخول غير متاح: أضف مفاتيح Supabase في Cloudflare ثم أعد النشر."; return; }
       if (!magicLinkRedirectUrl) { authStatus.textContent = "تعذر تحديد رابط العودة الآمن لهذه المعاينة."; return; }
       const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: magicLinkRedirectUrl } }); authStatus.textContent = error ? loginErrorMessage(error) : "تم طلب رابط الدخول. تحقق من صندوق الوارد والبريد غير المرغوب فيه، ثم افتح الرابط وعد إلى هذه الصفحة.";
     } finally { submit.disabled = false; form.removeAttribute("aria-busy"); }
@@ -567,5 +567,5 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     siteSectionsStatus.textContent = response.ok ? "تم إنشاء القسم. سيظهر في التنقل بعد تفعيله." : result.error ?? "تعذر إنشاء القسم.";
     if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSiteSectionRecords(); }
   });
-  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } const config = await response.json(); magicLinkRedirectUrl = config.authRedirectUrl; developmentAccessAvailable = config.developmentAccessEnabled === true; developmentAccessCard.hidden = !developmentAccessAvailable; if (config.url && config.publishableKey) supabase = createClient(config.url, config.publishableKey); else if (!developmentAccessAvailable) { authStatus.textContent = "إعداد الدخول غير متاح في هذه البيئة بعد."; return; } await establishSession(); })();
+  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح: أضف SUPABASE_URL وSUPABASE_PUBLISHABLE_KEY في Cloudflare → Settings → Variables and Secrets ثم أعد النشر."; return; } const config = await response.json(); magicLinkRedirectUrl = config.authRedirectUrl; developmentAccessAvailable = config.developmentAccessEnabled === true; developmentAccessCard.hidden = !developmentAccessAvailable; if (config.url && config.publishableKey) supabase = createClient(config.url, config.publishableKey); else if (!developmentAccessAvailable) { authStatus.textContent = "إعداد الدخول غير متاح: أضف مفاتيح Supabase في متغيرات تشغيل Cloudflare ثم أعد النشر."; return; } await establishSession(); })();
 </script>

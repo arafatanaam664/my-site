@@ -10,6 +10,8 @@ describe("اتصال المعاينة بـ Supabase دون صور", () => {
     expect(source).toContain('const required = ["SUPABASE_URL", "SUPABASE_PUBLISHABLE_KEY", "SUPABASE_SECRET_KEY"]');
     expect(source).toContain("export function requireMediaSecrets()");
     expect(source).toContain("export async function timedFetch");
+    expect(source).toContain("readBinding(env, key)");
+    expect(source).not.toContain("Object.entries(env");
   });
 
   it("يحمّل معاينة Worker مفاتيح Supabase من ملف البيئة المحلي", async () => {
