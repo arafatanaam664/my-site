@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const requireEditor = vi.fn();
 const adminClient = vi.fn();
 vi.mock("../src/lib/server/admin", () => ({ requireEditor, adminClient }));
-vi.mock("../src/lib/server/runtime", () => ({ runtimeSecrets: vi.fn() }));
+vi.mock("../src/lib/server/runtime", () => ({ runtimeSecrets: vi.fn(), requireMediaSecrets: vi.fn(), timedFetch: fetch }));
 
 const { POST } = await import("../src/pages/api/admin/media");
 

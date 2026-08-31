@@ -7,4 +7,6 @@ dist/
 .env
 .env.*
 !.env.example
+.dev.vars
+.preview.env
 .project-config.json

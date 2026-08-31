@@ -5,6 +5,7 @@ const createClient = vi.fn();
 vi.mock("@supabase/supabase-js", () => ({ createClient }));
 vi.mock("../src/lib/server/runtime", () => ({
   environmentValues: () => ({}),
+  timedFetch: fetch,
   runtimeSecrets: () => ({
     SUPABASE_URL: "https://example.supabase.co",
     SUPABASE_PUBLISHABLE_KEY: "publishable-test-key",

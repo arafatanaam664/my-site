@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { createClient } from "@supabase/supabase-js";
 import { parseMediaPreset, transformForPreset } from "../../lib/server/media-preset";
-import { runtimeSecrets } from "../../lib/server/runtime";
+import { requireMediaSecrets, runtimeSecrets, timedFetch } from "../../lib/server/runtime";
 
 export const prerender = false;
 
@@ -31,7 +31,7 @@ export const GET: APIRoute = async ({ params, request }) => {
     }
 
     const secrets = runtimeSecrets();
-    const secureClient = createClient(secrets.SUPABASE_URL, secrets.SUPABASE_SECRET_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
+    const secureClient = createClient(secrets.SUPABASE_URL, secrets.SUPABASE_SECRET_KEY, { auth: { persistSession: false, autoRefreshToken: false }, global: { fetch: timedFetch } });
     const { data: links, error: linksError } = await secureClient.from("content_media").select("content_id").eq("media_id", params.id);
     if (linksError || !links?.length) return new Response("Not found", { status: 404 });
     const { data: publishedContent, error: contentError } = await secureClient.from("content_items").select("id").in("id", links.map((link) => link.content_id)).eq("status", "published").lte("published_at", new Date().toISOString()).limit(1);
@@ -51,12 +51,13 @@ export const GET: APIRoute = async ({ params, request }) => {
       if (!object.ok || !object.body) return new Response("Not found", { status: 404 });
       return new Response(object.body, { headers: cacheHeaders(media.mime_type, media.checksum_sha256) });
     }
+    const mediaStore = requireMediaSecrets();
     const r2 = new S3Client({
       region: "auto",
-      endpoint: secrets.R2_ENDPOINT,
-      credentials: { accessKeyId: secrets.R2_ACCESS_KEY_ID, secretAccessKey: secrets.R2_SECRET_ACCESS_KEY },
+      endpoint: mediaStore.R2_ENDPOINT,
+      credentials: { accessKeyId: mediaStore.R2_ACCESS_KEY_ID, secretAccessKey: mediaStore.R2_SECRET_ACCESS_KEY },
     });
-    const output = await r2.send(new GetObjectCommand({ Bucket: secrets.R2_BUCKET_NAME, Key: media.storage_key }));
+    const output = await r2.send(new GetObjectCommand({ Bucket: mediaStore.R2_BUCKET_NAME, Key: media.storage_key }));
     if (!output.Body) return new Response("Not found", { status: 404 });
     return new Response(output.Body as unknown as BodyInit, { headers: cacheHeaders(media.mime_type, media.checksum_sha256) });
   } catch {

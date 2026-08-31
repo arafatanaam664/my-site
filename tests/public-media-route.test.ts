@@ -4,7 +4,7 @@ const from = vi.fn();
 const createClient = vi.fn(() => ({ from }));
 const runtimeSecrets = vi.fn(() => ({ SUPABASE_URL: "https://example.test", SUPABASE_SECRET_KEY: "secret", R2_ENDPOINT: "https://r2.example.test", R2_ACCESS_KEY_ID: "key", R2_SECRET_ACCESS_KEY: "secret", R2_BUCKET_NAME: "bucket" }));
 vi.mock("@supabase/supabase-js", () => ({ createClient }));
-vi.mock("../src/lib/server/runtime", () => ({ runtimeSecrets }));
+vi.mock("../src/lib/server/runtime", () => ({ runtimeSecrets, timedFetch: fetch, requireMediaSecrets: runtimeSecrets }));
 
 const { GET } = await import("../src/pages/media/[id]");
 
