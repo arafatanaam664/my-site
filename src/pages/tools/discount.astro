@@ -13,7 +13,7 @@ const description = "أدخل السعر الأصلي ونسبة الخصم لم
 {features.tools_core ? <BaseLayout title={title} description={description} canonical={canonical} jsonLd={[toolWebApplicationLd(title, description, canonical), breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: "الأدوات", url: "https://alshafra.com/tools" }, { name: title, url: canonical }])]}>
   <section class="tool-page">
     <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href="/tools">الأدوات</a><span aria-hidden="true">/</span><span>حاسبة الخصم</span></nav>
-    <header><p class="eyebrow">أداة عملية</p><h1>{title}</h1><p>أدخل السعر ونسبة الخصم. لا نرسل الأرقام إلى الخادم.</p></header>
+    <header><p class="eyebrow">حاسبة الخصم</p><h1>{title}</h1><p>أدخل السعر ونسبة الخصم لمعرفة التوفير والسعر النهائي.</p></header>
     <form class="date-difference-form" id="discount-form">
       <label for="discount-price">السعر الأصلي<input id="discount-price" type="number" min="0" step="any" required /></label>
       <label for="discount-percent">نسبة الخصم %<input id="discount-percent" type="number" min="0" max="100" step="any" required /></label>

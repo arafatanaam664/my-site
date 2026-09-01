@@ -9,7 +9,7 @@ const { navigation } = Astro.props;
     <a class="nav-hub-link" href={hub.href}>{hub.title}</a>
     {hub.children.length > 0 && (
       <>
-        <button type="button" class="nav-hub-toggle" aria-expanded="false" aria-controls={`nav-${hub.slug}`} aria-label={`فتح أقسام ${hub.title}`}>
+        <button type="button" class="nav-hub-toggle" aria-expanded="false" aria-controls={`nav-${hub.slug}`} aria-label={`عرض ${hub.title}`}>
           <span aria-hidden="true">▾</span>
         </button>
         <div class="nav-dropdown" id={`nav-${hub.slug}`} hidden>

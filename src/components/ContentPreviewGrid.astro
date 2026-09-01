@@ -2,6 +2,7 @@
 import { builtInToolCatalog } from "../lib/tool-catalog";
 import { mediaForId, mediaSrc, type PublicContentCard } from "../lib/server/public-content";
 import { contentPath } from "../lib/site-sections";
+import { publicExcerpt, readMoreLabel } from "../lib/public-copy";
 
 interface Props {
   items: PublicContentCard[];
@@ -26,7 +27,6 @@ const hasEditorial = items.length > 0;
         <span>{tool.category}</span>
         <h2>{tool.title}</h2>
         <p>{tool.description}</p>
-        <small>{tool.mode === "client" ? "يعمل داخل متصفحك" : "يعتمد على خدمة خادمية"}</small>
         <b aria-hidden="true">←</b>
       </a>
     ))}
@@ -40,15 +40,16 @@ const hasEditorial = items.length > 0;
       const href = contentPath(item.kind, item.slug, hubSlug, childSlug);
       const featured = item.kind === "news" && Boolean(media) && index === 0;
       const date = new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle: "medium" }).format(new Date(item.published_at));
+      const excerpt = publicExcerpt(item.excerpt, item.seo_description);
       return (
         <article class:list={["content-card", featured && "content-card-hero"]}>
           {media && <img src={mediaSrc(media.id, featured ? "hero" : "standard")} alt={media.alt_text} width={media.width} height={media.height} loading={featured ? "eager" : "lazy"} />}
           <div>
             <span>{kicker}</span>
             <h2><a href={href}>{item.title}</a></h2>
-            <p>{item.excerpt || item.seo_description || "مادة عملية من Alshafra."}</p>
+            {excerpt && <p>{excerpt}</p>}
             <time datetime={item.published_at}>{date}</time>
-            <a class="card-link" href={href}>قراءة المادة <b aria-hidden="true">←</b></a>
+            <a class="card-link" href={href}>{readMoreLabel(item.kind)} <b aria-hidden="true">←</b></a>
           </div>
         </article>
       );

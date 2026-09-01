@@ -8,6 +8,7 @@ import { contentPath } from "../lib/site-sections";
 import { publicFeatureState } from "../lib/server/feature-gates";
 import { mediaAbsoluteSrc, mediaForId, mediaSrc, relatedPublishedContent, type PublicContent } from "../lib/server/public-content";
 import { builtInToolCatalog } from "../lib/tool-catalog";
+import { defaultPublicDescription, publicExcerpt, relatedHeading } from "../lib/public-copy";
 import type { SiteSectionNode } from "../lib/site-sections";
 
 interface Props { content: PublicContent; section: PublicSection; hub?: SiteSectionNode | null; subsection?: SiteSectionNode | null }
@@ -15,7 +16,7 @@ const { content, section, hub = null, subsection = null } = Astro.props;
 const nestedPath = hub && subsection ? contentPath(content.kind, content.slug, hub.slug, subsection.slug) : `/${section}/${content.slug}`;
 const canonical = content.canonical_url || `https://alshafra.com${nestedPath}`;
 const title = content.seo_title || content.title;
-const description = content.seo_description || content.excerpt || "مادة عملية من Alshafra.";
+const description = content.seo_description || publicExcerpt(content.excerpt) || defaultPublicDescription(content.kind);
 const primaryMedia = content.primary_media_id ? mediaForId(content, content.primary_media_id) : null;
 const image = primaryMedia ? mediaAbsoluteSrc(primaryMedia.id, primaryMedia.width >= 1200 ? "hero" : "og") : undefined;
 const publishedDate = new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle: "long" }).format(new Date(content.published_at));
@@ -55,7 +56,7 @@ const jsonLd = contentPageJsonLd({
     <header class="article-header">
       <p class="eyebrow">{subsection?.title || labelForKind(content.kind)}</p>
       <h1>{content.title}</h1>
-      {content.excerpt && <p class="article-excerpt">{content.excerpt}</p>}
+      {publicExcerpt(content.excerpt) && <p class="article-excerpt">{publicExcerpt(content.excerpt)}</p>}
       <div class="article-dates"><span>نُشر في {publishedDate}</span><span>آخر تحديث {updatedDate}</span></div>
       {features.social_sharing && <ShareActions title={content.title} url={canonical} />}
     </header>
@@ -63,11 +64,11 @@ const jsonLd = contentPageJsonLd({
     <div class="article-layout">
       <div class="article-body">
         <RichContent content={content} />
-        {related.length > 0 && <section class="related-content"><p class="eyebrow">تابع القراءة</p><h2>مواد ذات صلة</h2><div>{related.map((item) => { const itemSection = sectionForKind(item.kind) ?? section; return <a href={`/${itemSection}/${item.slug}`}><span>{labelForKind(item.kind)}</span><strong>{item.title}</strong><b aria-hidden="true">←</b></a>; })}</div></section>}
-        {features.tools_core && tools.length > 0 && <section class="related-content"><p class="eyebrow">أدوات</p><h2>جرّب أداة مرتبطة</h2><div>{tools.map((tool) => <a href={tool.href}><span>أداة</span><strong>{tool.title}</strong><b aria-hidden="true">←</b></a>)}</div></section>}
+        {related.length > 0 && <section class="related-content"><p class="eyebrow">تاريخ وحساب</p><h2>{relatedHeading(content.kind)}</h2><div>{related.map((item) => { const itemSection = sectionForKind(item.kind) ?? section; return <a href={`/${itemSection}/${item.slug}`}><span>{labelForKind(item.kind)}</span><strong>{item.title}</strong><b aria-hidden="true">←</b></a>; })}</div></section>}
+        {features.tools_core && tools.length > 0 && <section class="related-content"><p class="eyebrow">تحويل التاريخ والحساب</p><h2>حوّل التاريخ أو احسب النسبة والعمر</h2><div>{tools.map((tool) => <a href={tool.href}><span>{tool.category}</span><strong>{tool.title}</strong><b aria-hidden="true">←</b></a>)}</div></section>}
       </div>
       <aside class="article-aside">
-        <div><p class="eyebrow">معلومات المادة</p><p>هذه المادة منشورة بعد مراجعة تحريرية. راجع المصادر قبل الاعتماد على المعلومات الحساسة.</p></div>
+        <div><p class="eyebrow">المواعيد الرسمية</p><p>للمواقيت والإجازات الرسمية راجع الجهة المختصة. تحويل التاريخ الحسابي قد يختلف عن أم القرى.</p></div>
         {content.sources.length > 0 && <div><h2>المصادر</h2><ol class="source-citations">{content.sources.map((source) => <li><a href={source.url} rel="noopener noreferrer" target="_blank">{source.title}</a>{source.publisher && <span>{source.publisher}</span>}</li>)}</ol></div>}
       </aside>
     </div>

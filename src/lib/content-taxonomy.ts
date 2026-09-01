@@ -4,12 +4,12 @@ export const editorialContentKinds = ["article", "guide", "solution", "faq", "ne
 export type EditorialContentKind = (typeof editorialContentKinds)[number];
 
 export const publicSectionMap = {
-  articles: { kind: "article", title: "مقالات عملية موثقة", description: "مقالات عربية منظمة تشرح الموضوع وتعرض مصادره وخطواته بوضوح.", singular: "مقال", label: "مقال" },
-  guides: { kind: "guide", title: "أدلة عملية خطوة بخطوة", description: "أدلة تساعدك على تنفيذ المهمة وفهم ما تحتاجه قبل أن تبدأ.", singular: "دليل", label: "دليل" },
-  solutions: { kind: "solution", title: "حلول لمسائل متكررة", description: "صفحات حلول عملية تبدأ من مشكلة واضحة وتصل إلى خطوة يمكن تنفيذها.", singular: "حل", label: "حل" },
-  faqs: { kind: "faq", title: "أسئلة شائعة", description: "إجابات موجزة لأسئلة متكررة، مع إحالة إلى الدليل أو الأداة عند الحاجة.", singular: "سؤال شائع", label: "سؤال شائع" },
-  news: { kind: "news", title: "أخبار موثقة", description: "أخبار قصيرة ذات مصدر واضح، تُنشر فقط عند وجود مادة مراجعة.", singular: "خبر", label: "خبر" },
-  tools: { kind: "tool", title: "أدوات Alshafra العملية", description: "صفحات أدوات وشروحات تساعدك على الوصول إلى نتيجة قابلة للاستخدام.", singular: "أداة", label: "أداة" },
+  articles: { kind: "article", title: "مقالات التقويم والتاريخ الهجري", description: "مقالات عربية عن تحويل التاريخ والتقويم الهجري والحساب اليومي.", singular: "مقال", label: "مقال" },
+  guides: { kind: "guide", title: "أدلة تحويل التاريخ وحساب المواعيد", description: "كيف تحوّل التاريخ الهجري وتحسب العمر وفرق الأيام خطوة بخطوة.", singular: "دليل", label: "دليل" },
+  solutions: { kind: "solution", title: "حلول تحويل التاريخ والحساب", description: "حلول لمسائل تحويل التاريخ الهجري وحساب النسبة والعمر والخصم.", singular: "حل", label: "حل" },
+  faqs: { kind: "faq", title: "أسئلة شائعة عن التاريخ والحساب", description: "إجابات عن تحويل التاريخ الهجري والنسبة والخصم وحاسبة العمر.", singular: "سؤال شائع", label: "سؤال شائع" },
+  news: { kind: "news", title: "أخبار التقويم والمواعيد", description: "أخبار التاريخ الهجري والميلادي والمواعيد بعد المراجعة.", singular: "خبر", label: "خبر" },
+  tools: { kind: "tool", title: "أدوات تحويل التاريخ والحساب", description: "تحويل التاريخ الهجري، حاسبة العمر، النسبة المئوية، الخصم، وفرق الأيام.", singular: "أداة", label: "أداة" },
 } as const;
 
 export type PublicSection = keyof typeof publicSectionMap;

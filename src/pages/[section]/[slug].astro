@@ -36,7 +36,7 @@ const subsectionCanonical = child ? `https://alshafra.com${child.href}` : "";
     <section class="content-index">
       <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href={hub.href}>{hub.title}</a><span aria-hidden="true">/</span><span>{child.title}</span></nav>
       <header class="content-index-header"><p class="eyebrow">{hub.title}</p><h1>{child.title}</h1><p>{child.description}</p></header>
-      <ContentPreviewGrid items={childItems} kicker={child.title} hubSlug={hub.slug} childSlug={child.slug} kind={child.contentKind} includeBuiltInTools={features.tools_core && child.contentKind === "tool"} emptyTitle="لا توجد مواد منشورة في هذا القسم بعد" emptyBody="اربط المادة من لوحة التحكم بهذا القسم الفرعي ثم انشرها بعد المراجعة." />
+      <ContentPreviewGrid items={childItems} kicker={child.title} hubSlug={hub.slug} childSlug={child.slug} kind={child.contentKind} includeBuiltInTools={features.tools_core && child.contentKind === "tool"} emptyTitle={`لا توجد ${child.title} بعد`} emptyBody="حوّل التاريخ الهجري أو احسب العمر والنسبة من الأدوات، ثم عد لاحقًا." />
     </section>
   </BaseLayout>
 ) : content && mapping && isPublicSection(section) ? (

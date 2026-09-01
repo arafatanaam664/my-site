@@ -321,14 +321,22 @@ create table if not exists public.site_sections (
   updated_at timestamptz not null default now()
 );
 insert into public.site_sections (id, slug, title, description, parent_id, content_kind, nav_order, enabled, public_visible, system_key, destination_path) values
-  ('a1c4e000-0000-4000-8000-000000000001', 'calendar', 'التقويم والمواعيد', 'التاريخ والتحويل والمحتوى المرتبط بالمواعيد.', null, null, 10, true, true, 'calendar', '/calendar'),
-  ('a1c4e000-0000-4000-8000-000000000101', 'news', 'الأخبار', 'أخبار قصيرة موثقة.', 'a1c4e000-0000-4000-8000-000000000001', 'news', 11, true, true, 'calendar-news', null),
-  ('a1c4e000-0000-4000-8000-000000000102', 'guides', 'الأدلة', 'أدلة عملية خطوة بخطوة.', 'a1c4e000-0000-4000-8000-000000000001', 'guide', 12, true, true, 'calendar-guides', null),
-  ('a1c4e000-0000-4000-8000-000000000103', 'tools', 'الأدوات', 'أدوات حساب وتحويل.', 'a1c4e000-0000-4000-8000-000000000001', 'tool', 13, true, true, 'calendar-tools', null),
-  ('a1c4e000-0000-4000-8000-000000000104', 'solutions', 'الحلول', 'حلول لمسائل متكررة.', 'a1c4e000-0000-4000-8000-000000000001', 'solution', 14, true, true, 'calendar-solutions', null),
-  ('a1c4e000-0000-4000-8000-000000000105', 'articles', 'المقالات', 'مقالات عربية منظمة.', 'a1c4e000-0000-4000-8000-000000000001', 'article', 15, true, true, 'calendar-articles', null),
-  ('a1c4e000-0000-4000-8000-000000000002', 'community', 'المجتمع', 'أسئلة ونقاش يُفتح بعد التفعيل.', null, null, 80, false, true, 'community', '/community')
+  ('a1c4e000-0000-4000-8000-000000000001', 'calendar', 'التقويم والمواعيد', 'تاريخ اليوم الهجري وفق أم القرى، وتحويل التاريخ الهجري والميلادي، وحساب العمر وفرق الأيام.', null, null, 10, true, true, 'calendar', '/calendar'),
+  ('a1c4e000-0000-4000-8000-000000000101', 'news', 'أخبار التقويم والمواعيد', 'أخبار التاريخ الهجري والميلادي والمواعيد بعد المراجعة.', 'a1c4e000-0000-4000-8000-000000000001', 'news', 11, true, true, 'calendar-news', null),
+  ('a1c4e000-0000-4000-8000-000000000102', 'guides', 'أدلة تحويل التاريخ', 'كيف تحوّل التاريخ الهجري وتحسب المواعيد خطوة بخطوة.', 'a1c4e000-0000-4000-8000-000000000001', 'guide', 12, true, true, 'calendar-guides', null),
+  ('a1c4e000-0000-4000-8000-000000000103', 'tools', 'أدوات الحساب والتقويم', 'تحويل التاريخ الهجري، حاسبة العمر، النسبة المئوية، الخصم، وفرق الأيام.', 'a1c4e000-0000-4000-8000-000000000001', 'tool', 13, true, true, 'calendar-tools', null),
+  ('a1c4e000-0000-4000-8000-000000000104', 'solutions', 'حلول مسائل التاريخ والحساب', 'حلول لتحويل التاريخ وحساب النسبة والعمر والخصم.', 'a1c4e000-0000-4000-8000-000000000001', 'solution', 14, true, true, 'calendar-solutions', null),
+  ('a1c4e000-0000-4000-8000-000000000105', 'articles', 'مقالات التقويم والتاريخ الهجري', 'مقالات تشرح التقويم الهجري والتاريخ والحساب اليومي.', 'a1c4e000-0000-4000-8000-000000000001', 'article', 15, true, true, 'calendar-articles', null),
+  ('a1c4e000-0000-4000-8000-000000000002', 'community', 'أسئلة التاريخ والأدوات', 'أسئلة عن تحويل التاريخ والحساب بعد المراجعة.', null, null, 80, false, true, 'community', '/community')
 on conflict (id) do nothing;
+
+update public.site_sections set title = 'التقويم والمواعيد', description = 'تاريخ اليوم الهجري وفق أم القرى، وتحويل التاريخ الهجري والميلادي، وحساب العمر وفرق الأيام.' where id = 'a1c4e000-0000-4000-8000-000000000001';
+update public.site_sections set title = 'أخبار التقويم والمواعيد', description = 'أخبار التاريخ الهجري والميلادي والمواعيد بعد المراجعة.' where id = 'a1c4e000-0000-4000-8000-000000000101';
+update public.site_sections set title = 'أدلة تحويل التاريخ', description = 'كيف تحوّل التاريخ الهجري وتحسب المواعيد خطوة بخطوة.' where id = 'a1c4e000-0000-4000-8000-000000000102';
+update public.site_sections set title = 'أدوات الحساب والتقويم', description = 'تحويل التاريخ الهجري، حاسبة العمر، النسبة المئوية، الخصم، وفرق الأيام.' where id = 'a1c4e000-0000-4000-8000-000000000103';
+update public.site_sections set title = 'حلول مسائل التاريخ والحساب', description = 'حلول لتحويل التاريخ وحساب النسبة والعمر والخصم.' where id = 'a1c4e000-0000-4000-8000-000000000104';
+update public.site_sections set title = 'مقالات التقويم والتاريخ الهجري', description = 'مقالات تشرح التقويم الهجري والتاريخ والحساب اليومي.' where id = 'a1c4e000-0000-4000-8000-000000000105';
+update public.site_sections set title = 'أسئلة التاريخ والأدوات', description = 'أسئلة عن تحويل التاريخ والحساب بعد المراجعة.' where id = 'a1c4e000-0000-4000-8000-000000000002';
 
 create table if not exists public.member_profiles (
   id uuid primary key references public.profiles(id) on delete cascade,

@@ -15,10 +15,10 @@ const canonical = question ? `https://alshafra.com/community/${question.slug}` :
 {question ? <BaseLayout title={question.title} description={question.body_markdown.slice(0, 150)} canonical={canonical}>
   <article class="public-article">
     <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href="/community">المجتمع</a><span aria-hidden="true">/</span><span>{question.title}</span></nav>
-    <header class="article-header"><p class="eyebrow">سؤال منشور</p><h1>{question.title}</h1><p class="article-excerpt">{question.body_markdown}</p></header>
+    <header class="article-header"><p class="eyebrow">تحويل التاريخ والحساب</p><h1>{question.title}</h1><p class="article-excerpt">{question.body_markdown}</p></header>
     <section class="related-content">
       <p class="eyebrow">الإجابات</p>
-      <h2>{answers.length ? "إجابات مراجعة" : "لا توجد إجابات منشورة بعد"}</h2>
+      <h2>{answers.length ? "إجابات عن التاريخ والحساب" : "لا توجد إجابات بعد"}</h2>
       {answers.map((answer) => <div class="content-empty"><p>{answer.body_markdown}</p></div>)}
     </section>
   </article>

@@ -62,18 +62,18 @@ const navigation = await publicNavigationTree(features);
       <nav id="primary-navigation" aria-label="التنقل الرئيسي">
         <SiteNav navigation={navigation} />
       </nav>
-      <a class="header-search" href="/search">ابحث في Alshafra <span aria-hidden="true">⌕</span></a>
+      <a class="header-search" href="/search">تحويل التاريخ أو النسبة <span aria-hidden="true">⌕</span></a>
     </header>
     {siteNotice.enabled && siteNotice.message && <aside class="site-notice" aria-label="تنبيه من المنصة"><p>{siteNotice.message}</p></aside>}
     <main id="main-content" tabindex="-1"><slot /></main>
     <footer class="site-footer">
-      <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a><p>منصة عربية للمعرفة والإنجاز: بحث، محتوى، أدوات، ومجتمع يُفتح عند جاهزيته.</p></div>
+      <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ش</span><span>Alshafra</span></a><p>تحويل التاريخ الهجري، تاريخ اليوم وفق أم القرى، وحاسبة العمر والنسبة والخصم بالعربية.</p></div>
       <div class="footer-links">
-        {features.tools_core && <a href="/tools">الأدوات</a>}
-        {features.content_core && <a href="/guides">الأدلة</a>}
-        {features.content_core && <a href="/solutions">الحلول</a>}
-        <a href="/calendar">التقويم والمواعيد</a>
-        {features.community && <a href="/community">المجتمع</a>}
+        {features.tools_core && <a href="/tools">تحويل التاريخ والحساب</a>}
+        {features.content_core && <a href="/guides">أدلة تحويل التاريخ</a>}
+        {features.content_core && <a href="/solutions">حلول الحساب</a>}
+        <a href="/calendar">التقويم الهجري</a>
+        {features.community && <a href="/community">أسئلة التاريخ</a>}
       </div>
       <div class="footer-links footer-trust">
         <a href="/legal/about">من نحن</a>

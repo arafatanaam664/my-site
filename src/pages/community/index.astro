@@ -9,13 +9,13 @@ if (!features.community) Astro.response.status = 404;
 const questions = features.community ? await publishedQuestions() : [];
 ---
 
-{features.community ? <BaseLayout title="مجتمع Alshafra" description="أسئلة وإجابات مراجعة ترتبط بالمحتوى والأدوات. لا تظهر إلا المواد المنشورة بعد الإشراف." canonical="https://alshafra.com/community" noindex={!questions.length}>
+{features.community ? <BaseLayout title="أسئلة تحويل التاريخ الهجري والحساب" description="أسئلة عن تحويل التاريخ الهجري، حاسبة العمر، النسبة المئوية، والخصم." canonical="https://alshafra.com/community" noindex={!questions.length}>
   <section class="content-index">
     <header class="content-index-header">
-      <p class="eyebrow">المجتمع</p>
-      <h1>أسئلة وإجابات بعد المراجعة</h1>
-      <p>يظهر هنا فقط ما اجتاز الإشراف ونُشر. لا نفتح التعليق أو إنشاء سؤال للزائر المجهول في هذه المرحلة.</p>
+      <p class="eyebrow">تحويل التاريخ والحساب</p>
+      <h1>أسئلة عن تحويل التاريخ والنسبة والعمر</h1>
+      <p>اطلع على أسئلة تحويل التاريخ الهجري والحساب اليومي. لا نفتح التعليق أو إنشاء سؤال للزائر المجهول في هذه المرحلة.</p>
     </header>
-    {questions.length ? <ol class="search-results">{questions.map((question) => <li><span>سؤال</span><h2><a href={`/community/${question.slug}`}>{question.title}</a></h2><p>{question.body_markdown.slice(0, 180)}</p></li>)}</ol> : <div class="content-empty"><h2>لا توجد أسئلة منشورة بعد</h2><p>يبقى المجتمع مغلقًا عن الإدخال العام حتى تتوفر حماية كافية ومراجعة مستمرة. يمكنك استخدام الأدوات والأدلة الآن.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></div>}
+    {questions.length ? <ol class="search-results">{questions.map((question) => <li><span>سؤال</span><h2><a href={`/community/${question.slug}`}>{question.title}</a></h2><p>{question.body_markdown.slice(0, 180)}</p></li>)}</ol> : <div class="content-empty"><h2>لا توجد أسئلة عن التاريخ والحساب بعد</h2><p>حوّل التاريخ الهجري أو احسب العمر والنسبة من الأدوات، ثم عد لاحقًا.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></div>}
   </section>
-</BaseLayout> : <BaseLayout title="لم نعثر على هذه الصفحة" description="المجتمع غير متاح حاليًا." noindex><main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>قسم المجتمع غير مفتوح للعامة في هذه المرحلة.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main></BaseLayout>}
+</BaseLayout> : <BaseLayout title="لم نعثر على هذه الصفحة" description="صفحة الأسئلة غير متاحة حاليًا." noindex><main class="not-found-page"><h1>لم نعثر على هذه الصفحة</h1><p>حوّل التاريخ الهجري أو احسب النسبة من الأدوات.</p><a class="button button-primary" href="/">العودة إلى الرئيسية</a></main></BaseLayout>}

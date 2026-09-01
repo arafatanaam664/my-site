@@ -40,8 +40,8 @@ const canonical = `https://alshafra.com/${section}`;
 ) : showKind && mapping ? (
   <BaseLayout title={mapping.title} description={mapping.description} canonical={canonical} noindex={!items.length} jsonLd={[collectionPageJsonLd(mapping.title, mapping.description, canonical, items.map((item) => ({ name: item.title, url: `https://alshafra.com${contentPath(item.kind, item.slug)}` }))), breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: mapping.title, url: canonical }])]}>
     <section class="content-index">
-      <header class="content-index-header"><p class="eyebrow">محتوى Alshafra</p><h1>{mapping.title}</h1><p>{mapping.description}</p></header>
-      <ContentPreviewGrid items={items} kicker={mapping.singular} kind={mapping.kind} emptyTitle="لا توجد مواد منشورة في هذا القسم بعد" emptyBody="تُنشر المواد هنا بعد اكتمال مراجعتها التحريرية وربطها بالقسم المناسب." />
+      <header class="content-index-header"><h1>{mapping.title}</h1><p>{mapping.description}</p></header>
+      <ContentPreviewGrid items={items} kicker={mapping.singular} kind={mapping.kind} emptyTitle={`لا توجد ${mapping.title} بعد`} emptyBody="حوّل التاريخ الهجري أو احسب العمر والنسبة من الأدوات، ثم عد لاحقًا." />
     </section>
   </BaseLayout>
 ) : (

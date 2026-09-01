@@ -14,30 +14,31 @@ await Promise.all(hubs.flatMap((hub) => hub.children.map(async (child) => {
   previews[child.id] = await publishedContentForSection(child.id, 4);
 })));
 const jsonLd = collectionPageJsonLd(
-  "Alshafra",
-  "أقسام المنصة الرئيسية وما يتبعها من أخبار ومقالات وأدوات ومحتوى منشور.",
+  "تحويل التاريخ الهجري وأدوات الحساب اليومية",
+  "حوّل التاريخ الهجري والميلادي، اعرف تاريخ اليوم وفق أم القرى، واحسب العمر والنسبة والخصم وفرق الأيام بالعربية.",
   "https://alshafra.com/",
   hubs.flatMap((hub) => [{ name: hub.title, url: `https://alshafra.com${hub.href}` }, ...hub.children.map((child) => ({ name: child.title, url: `https://alshafra.com${child.href}` }))]),
 );
 ---
 
-<BaseLayout title="Alshafra | أدوات وحلول ومعلومات عملية بالعربية" description="اكتشف أدوات عملية وأدلة واضحة ومعلومات موثوقة تساعدك على إنجاز ما تحتاجه بالعربية." canonical="https://alshafra.com/" jsonLd={jsonLd}>
+<BaseLayout title="تحويل التاريخ الهجري | حاسبة العمر والنسبة والخصم | Alshafra" description="حوّل التاريخ الهجري والميلادي، اعرف تاريخ اليوم وفق أم القرى، واحسب العمر والنسبة المئوية والخصم وفرق الأيام بالعربية." canonical="https://alshafra.com/" jsonLd={jsonLd}>
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">معلومة موثوقة، وخطوة عملية</p>
-      <h1>اعثر على ما تحتاجه، <em>ثم أنجزه.</em></h1>
-      <p class="hero-description">Alshafra منصة عربية تجمع البحث والمحتوى والأدوات في مسار واحد: افهم المسألة، استخدم أداة، ثم انتقل إلى الخطوة التالية بثقة.</p>
+      <p class="eyebrow">تاريخ هجري وحساب يومي</p>
+      <h1>تحويل التاريخ الهجري وأدوات الحساب اليومية</h1>
+      <p class="hero-description">حوّل بين الهجري والميلادي، اعرف تاريخ اليوم وفق أم القرى، واحسب العمر والنسبة والخصم وفرق الأيام بخطوات واضحة.</p>
       <div class="hero-actions">
-        {features.tools_core && <a class="button button-primary" href="/tools">استكشف الأدوات</a>}
-        {features.content_core && <a class="button button-secondary" href="/guides">تصفح الأدلة</a>}
-        <a class="button button-secondary" href="/calendar">التقويم</a>
+        {features.tools_core && <a class="button button-primary" href="/tools/hijri-converter">تحويل التاريخ الهجري</a>}
+        {features.tools_core && <a class="button button-secondary" href="/tools/percentage">حاسبة النسبة المئوية</a>}
+        {features.content_core && <a class="button button-secondary" href="/guides">أدلة تحويل التاريخ</a>}
+        <a class="button button-secondary" href="/calendar/umm-al-qura">تاريخ اليوم وفق أم القرى</a>
       </div>
     </div>
-    <aside class="hero-paths" aria-label="مسارات الاستخدام">
-      <p>ابدأ بما تريد إنجازه</p>
-      {hubs.slice(0, 3).map((hub, index) => (
-        <a href={hub.href}><span>{String(index + 1).padStart(2, "0")}</span><strong>{hub.title}</strong><b aria-hidden="true">←</b></a>
-      ))}
+    <aside class="hero-paths" aria-label="أكثر ما يُبحث عنه">
+      <p>ابدأ بما تبحث عنه</p>
+      {features.tools_core && <a href="/tools/hijri-converter"><span>01</span><strong>تحويل التاريخ الهجري إلى الميلادي</strong><b aria-hidden="true">←</b></a>}
+      {features.tools_core && <a href="/tools/age-calculator"><span>02</span><strong>حاسبة العمر بالسنوات والأشهر</strong><b aria-hidden="true">←</b></a>}
+      <a href="/calendar/umm-al-qura"><span>03</span><strong>تاريخ اليوم الهجري وفق أم القرى</strong><b aria-hidden="true">←</b></a>
     </aside>
   </section>
 
@@ -46,11 +47,11 @@ const jsonLd = collectionPageJsonLd(
   ) : (
     <section class="section">
       <div class="content-empty">
-        <h2>لا توجد أقسام ظاهرة بعد</h2>
-        <p>عندما تضيف قسمًا رئيسيًا وأقسامًا فرعية من لوحة التحكم وتنشر محتواها، تظهر هنا تلقائيًا.</p>
+        <h2>تحويل التاريخ الهجري وحساب النسبة والخصم</h2>
+        <p>ابدأ بتحويل التاريخ أو حاسبة العمر، أو اعرف تاريخ اليوم وفق أم القرى.</p>
       </div>
     </section>
   )}
 
-  <section id="search" class="search-section"><p class="eyebrow">ابدأ من حاجتك</p><h2>ما الذي تريد إنجازه اليوم؟</h2><form action="/search" role="search"><label class="sr-only" for="query">ابحث في المنصة</label><input id="query" name="q" placeholder="مثال: تحويل التاريخ الهجري أو حساب الخصم" /><button type="submit">بحث</button></form></section>
+  <section id="search" class="search-section"><p class="eyebrow">بحث في التاريخ والحساب</p><h2>ابحث عن تحويل التاريخ أو حاسبة العمر والخصم</h2><form action="/search" role="search"><label class="sr-only" for="query">ابحث عن تحويل التاريخ أو النسبة</label><input id="query" name="q" placeholder="مثال: تحويل التاريخ الهجري أو حساب الخصم" /><button type="submit">بحث</button></form></section>
 </BaseLayout>

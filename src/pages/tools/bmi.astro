@@ -13,7 +13,7 @@ const description = "احسب مؤشر كتلة الجسم من الوزن وا�
 {features.tools_core ? <BaseLayout title={title} description={description} canonical={canonical} jsonLd={[toolWebApplicationLd(title, description, canonical), breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: "الأدوات", url: "https://alshafra.com/tools" }, { name: title, url: canonical }])]}>
   <section class="tool-page">
     <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href="/tools">الأدوات</a><span aria-hidden="true">/</span><span>مؤشر كتلة الجسم</span></nav>
-    <header><p class="eyebrow">أداة عملية</p><h1>{title}</h1><p>أدخل الوزن بالكيلوغرام والطول بالسنتيمتر. النتيجة تقديرية وليست تشخيصًا طبيًا.</p></header>
+    <header><p class="eyebrow">حاسبة مؤشر كتلة الجسم</p><h1>{title}</h1><p>أدخل الوزن بالكيلوغرام والطول بالسنتيمتر. النتيجة تقديرية وليست تشخيصًا طبيًا.</p></header>
     <form class="date-difference-form" id="bmi-form">
       <label for="bmi-weight">الوزن (كغ)<input id="bmi-weight" type="number" min="1" max="400" step="any" required /></label>
       <label for="bmi-height">الطول (سم)<input id="bmi-height" type="number" min="50" max="250" step="any" required /></label>

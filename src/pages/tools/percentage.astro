@@ -13,7 +13,7 @@ const description = "احسب قيمة النسبة المئوية أو النس
 {features.tools_core ? <BaseLayout title={title} description={description} canonical={canonical} jsonLd={[toolWebApplicationLd(title, description, canonical), breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: "الأدوات", url: "https://alshafra.com/tools" }, { name: title, url: canonical }])]}>
   <section class="tool-page">
     <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href="/tools">الأدوات</a><span aria-hidden="true">/</span><span>النسبة المئوية</span></nav>
-    <header><p class="eyebrow">أداة عملية</p><h1>{title}</h1><p>اختر العملية ثم أدخل الأرقام. الحساب يتم داخل متصفحك.</p></header>
+    <header><p class="eyebrow">حاسبة النسبة المئوية</p><h1>{title}</h1><p>اختر العملية ثم أدخل الأرقام لمعرفة قيمة النسبة أو نسبة التغير.</p></header>
     <form class="date-offset-form" id="percentage-form">
       <label for="percentage-mode">العملية<select id="percentage-mode"><option value="of">ما قيمة النسبة من رقم؟</option><option value="ratio">كم تبلغ النسبة بين رقمين؟</option><option value="change">ما نسبة التغير؟</option></select></label>
       <label for="percentage-a">الرقم الأول<input id="percentage-a" type="number" step="any" required /></label>

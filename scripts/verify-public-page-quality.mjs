@@ -2,9 +2,9 @@ const origin = (process.env.PUBLIC_QA_ORIGIN ?? "http://127.0.0.1:3000").replace
 
 const pages = [
   { path: "/", required: ["<html lang=\"ar\" dir=\"rtl\"", "<main id=\"main-content\""], canonical: true },
-  { path: "/tools", required: ["كتالوج الأدوات"], canonical: true },
+  { path: "/tools", required: ["تحويل التاريخ الهجري"], canonical: true },
   { path: "/tools/weekday-calculator", required: ["معرفة يوم الأسبوع"], canonical: true },
-  { path: "/articles", required: ["مقالات عملية موثقة"], canonical: true },
+  { path: "/articles", required: ["مقالات التقويم والتاريخ الهجري"], canonical: true },
   { path: "/articles/calculate-days-between-two-dates", required: ["كيف تحسب فرق الأيام بين تاريخين بدقة؟", "المرصد البحري الأمريكي", "المعهد الوطني الأمريكي للمعايير"], canonical: true },
   { path: "/calendar/umm-al-qura", required: ["تقويم أم القرى"], canonical: true },
   { path: "/guides/umm-al-qura-calendar-guide", required: ["تقويم أم القرى", "<meta name=\"description\""], canonical: true },

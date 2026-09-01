@@ -19,19 +19,19 @@ if (hub) {
   }));
 }
 const jsonLd = [
-  collectionPageJsonLd("التقويم والمواعيد", "تاريخ اليوم وفق أم القرى، وتحويل التاريخ، وأقسام الأخبار والأدلة والأدوات والحلول والمقالات.", canonical, (hub?.children ?? []).map((child) => ({ name: child.title, url: `https://alshafra.com${child.href}` }))),
+  collectionPageJsonLd("التقويم والمواعيد", "تاريخ اليوم الهجري وفق أم القرى، وتحويل التاريخ الهجري والميلادي، وحساب العمر وفرق الأيام.", canonical, (hub?.children ?? []).map((child) => ({ name: child.title, url: `https://alshafra.com${child.href}` }))),
   breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: "التقويم والمواعيد", url: canonical }]),
 ];
 ---
 
-<BaseLayout title="التقويم والمواعيد" description="تاريخ اليوم وفق أم القرى، وتحويل التاريخ، وأدوات زمنية عملية مع مصادر وحدود معلنة." canonical={canonical} jsonLd={jsonLd}>
+<BaseLayout title="التقويم الهجري وتاريخ اليوم وفق أم القرى" description="اعرف تاريخ اليوم الهجري والميلادي وفق أم القرى، وحوّل التاريخ واحسب العمر وفرق الأيام." canonical={canonical} jsonLd={jsonLd}>
   {hub ? (
     <HubLanding hub={hub} previews={previews} toolsEnabled={features.tools_core}>
       <div class="tool-catalog-grid hub-highlights">
-        <a class="tool-catalog-card" href="/calendar/umm-al-qura"><span>مصدر خادمي</span><h2>تاريخ اليوم وفق أم القرى</h2><p>عرض مستقل للتاريخ الهجري والميلادي مع المصدر ووقت التحديث.</p><small>لا يعتمد على ساعة المتصفح وحدها</small><b aria-hidden="true">←</b></a>
-        {features.tools_core && <a class="tool-catalog-card" href="/tools/hijri-converter"><span>تحويل</span><h2>تحويل التاريخ الهجري والميلادي</h2><p>تحويل حسابي جدولي فوري، مع التنبيه أنه قد يختلف عن أم القرى.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}
-        {features.tools_core && <a class="tool-catalog-card" href="/tools/date-difference"><span>حساب</span><h2>فرق الأيام بين تاريخين</h2><p>احسب الفرق العددي بين تاريخين ميلاديين دون إرسال التواريخ.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}
-        {features.tools_core && <a class="tool-catalog-card" href="/tools/countdown"><span>متابعة</span><h2>عدّاد تنازلي</h2><p>الزمن المتبقي حتى تاريخ تختاره وفق ساعة جهازك.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}
+        <a class="tool-catalog-card" href="/calendar/umm-al-qura"><span>تقويم أم القرى</span><h2>تاريخ اليوم الهجري وفق أم القرى</h2><p>التاريخ الهجري والميلادي اليوم مع وقت التحديث.</p><b aria-hidden="true">←</b></a>
+        {features.tools_core && <a class="tool-catalog-card" href="/tools/hijri-converter"><span>تحويل التاريخ</span><h2>تحويل التاريخ الهجري إلى الميلادي</h2><p>حوّل بين الهجري والميلادي، مع التنبيه أن النتيجة قد تختلف عن أم القرى.</p><b aria-hidden="true">←</b></a>}
+        {features.tools_core && <a class="tool-catalog-card" href="/tools/date-difference"><span>فرق الأيام</span><h2>حاسبة فرق الأيام بين تاريخين</h2><p>احسب عدد الأيام بين تاريخين ميلاديين.</p><b aria-hidden="true">←</b></a>}
+        {features.tools_core && <a class="tool-catalog-card" href="/tools/countdown"><span>عدّاد تنازلي</span><h2>عدّاد تنازلي لتاريخ مستهدف</h2><p>الزمن المتبقي حتى تاريخ تختاره بالأيام والساعات.</p><b aria-hidden="true">←</b></a>}
       </div>
     </HubLanding>
   ) : (

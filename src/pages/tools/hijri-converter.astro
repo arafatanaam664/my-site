@@ -12,7 +12,7 @@ const title = "تحويل التاريخ الهجري إلى الميلادي";
 const description = "حوّل بين التاريخ الهجري والميلادي بسرعة. النتيجة حسابية وفق التقويم المدني الجدولي، وليست إعلان أم القرى الرسمي.";
 const faqs = [
   { question: "هل التحويل مطابق لتقويم أم القرى؟", answer: "لا. هذه الأداة تستخدم تقويمًا هجريًا مدنيًا جدوليًا للحساب الفوري داخل المتصفح. التواريخ الرسمية في السعودية تتبع أم القرى وقد تختلف يومًا." },
-  { question: "أين أتحقق من تاريخ اليوم الرسمي؟", answer: "استخدم صفحة تقويم أم القرى في Alshafra، فهي تجلب التاريخ من مصدر خادمي معلن بطريقة HJCoSA." },
+  { question: "أين أتحقق من تاريخ اليوم الرسمي؟", answer: "استخدم صفحة تاريخ اليوم وفق أم القرى، فهي تعرض التاريخ الهجري والميلادي بتوقيت الرياض بطريقة HJCoSA." },
   { question: "هل تُرسل التواريخ إلى الخادم؟", answer: "لا. التحويل الجدولي يتم داخل متصفحك ولا نرسل التاريخ الذي تدخله إلى الخادم." },
 ];
 const jsonLd = [toolWebApplicationLd(title, description, canonical), breadcrumbListLd([{ name: "الرئيسية", url: "https://alshafra.com/" }, { name: "الأدوات", url: "https://alshafra.com/tools" }, { name: title, url: canonical }]), faqPageLd(faqs)];
@@ -21,7 +21,7 @@ const jsonLd = [toolWebApplicationLd(title, description, canonical), breadcrumbL
 {features.tools_core ? <BaseLayout title={title} description={description} canonical={canonical} jsonLd={jsonLd}>
   <section class="tool-page">
     <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href="/tools">الأدوات</a><span aria-hidden="true">/</span><span>تحويل التاريخ</span></nav>
-    <header><p class="eyebrow">أداة عملية</p><h1>{title}</h1><p>أدخل تاريخًا ميلاديًا أو هجريًا للحصول على المقابل الحسابي. للمواعيد الرسمية استخدم <a href="/calendar/umm-al-qura">تقويم أم القرى</a>.</p></header>
+    <header><p class="eyebrow">تحويل التاريخ الهجري</p><h1>{title}</h1><p>أدخل تاريخًا ميلاديًا أو هجريًا للحصول على المقابل الحسابي. للمواعيد الرسمية استخدم <a href="/calendar/umm-al-qura">تاريخ اليوم وفق أم القرى</a>.</p></header>
     <div class="tool-dual">
       <form class="date-offset-form" id="gregorian-to-hijri-form">
         <label for="gregorian-date">التاريخ الميلادي<input id="gregorian-date" type="date" required /></label>
