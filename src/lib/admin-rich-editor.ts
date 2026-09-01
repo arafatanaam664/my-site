@@ -14,7 +14,7 @@ function currentSelectionInside(root: HTMLElement) {
 
 function exec(command: string, value?: string) {
   const editor = document as unknown as { execCommand: (commandId: string, showUI?: boolean, commandValue?: string) => boolean };
-  editor.execCommand(command, false, value);
+  return editor.execCommand(command, false, value);
 }
 
 export function mountRichEditor(surface: HTMLElement, options: { onChange?: () => void } = {}): RichEditorHandle {
@@ -65,6 +65,11 @@ export function applyEditorCommand(command: string, value?: string) {
   }
   if (command === "insertTable") {
     exec("insertHTML", "<table><thead><tr><th>عنوان</th><th>عنوان</th></tr></thead><tbody><tr><td>خلية</td><td>خلية</td></tr></tbody></table>");
+    return;
+  }
+  if (command === "formatBlock") {
+    const tag = (value ?? "p").replace(/[<>]/g, "").toLowerCase() || "p";
+    if (!exec("formatBlock", `<${tag}>`)) exec("formatBlock", tag);
     return;
   }
   exec(command, value);

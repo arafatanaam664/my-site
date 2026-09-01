@@ -460,7 +460,9 @@ a:hover { opacity: .82; }
 .rich-editor-color { display: inline-flex; align-items: center; gap: .3rem; }
 .rich-editor-color input { width: 28px; height: 22px; border: 0; background: transparent; padding: 0; }
 .rich-editor-style { display: inline-flex; }
-.rich-editor-style select { min-width: 210px; }
+.rich-editor-style select { width: auto; min-width: 210px; }
+.rich-editor-toolbar .heading-tool { background: #12332f; color: #fff; border-color: #12332f; font-family: "DM Sans", Alexandria, sans-serif; letter-spacing: .01em; }
+.rich-editor-toolbar .heading-tool:hover { background: #1b4a44; color: #fff; border-color: #1b4a44; }
 .rich-editor-sep { width: 1px; align-self: stretch; background: #d5e5df; margin: 0 .15rem; }
 .rich-editor-surface { min-height: 440px; padding: 1.1rem 1.2rem; line-height: 1.95; outline: 0; }
 .rich-editor-surface:focus { box-shadow: inset 0 0 0 2px #cfe4dc; }

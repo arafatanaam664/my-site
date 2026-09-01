@@ -69,6 +69,9 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
                     <option value="h4" data-editor-value="h4">عنوان صغير</option>
                   </select>
                 </label>
+                <button type="button" class="heading-tool" data-editor-command="formatBlock" data-editor-value="h2" title="حوّل الفقرة المحددة إلى عنوان رئيسي كبير داخل الخبر">H2 عنوان رئيسي</button>
+                <button type="button" class="heading-tool" data-editor-command="formatBlock" data-editor-value="h3" title="حوّل الفقرة المحددة إلى عنوان فرعي داخل الخبر">H3 عنوان فرعي</button>
+                <button type="button" class="heading-tool" data-editor-command="formatBlock" data-editor-value="h4" title="حوّل الفقرة المحددة إلى عنوان أصغر داخل الخبر">H4 عنوان أصغر</button>
                 <span class="rich-editor-sep" aria-hidden="true"></span>
                 <button type="button" data-editor-command="bold" title="عريض: يجعل النص المحدد أثقل"><strong>عريض</strong></button>
                 <button type="button" data-editor-command="italic" title="مائل: يميل النص المحدد"><em>مائل</em></button>
@@ -188,6 +191,19 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 
 
   const field = <T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(selector: string) => document.querySelector<T>(selector)!;
+  async function readJson<T = { error?: string; data?: unknown }>(response: Response): Promise<T> {
+    const payload = await response.text();
+    try {
+      return (payload ? JSON.parse(payload) : {}) as T;
+    } catch {
+      const fallback = response.status === 401
+        ? "انتهت الجلسة أو غير مصرح. اطلب رابط دخول جديد."
+        : response.status === 403
+          ? "هذا الحساب بلا صلاحية تحرير. عيّن دوره editor أو admin في جدول profiles."
+          : (payload.trim().slice(0, 160) || "تعذر قراءة رد الخادم.");
+      return { error: fallback } as T;
+    }
+  }
   const statusLabels: Record<string, string> = { draft: "مسودة", in_review: "قيد المراجعة", approved: "معتمدة", published: "منشورة", archived: "مؤرشفة" };
   const nextStatus: Record<string, { status: string; label: string } | undefined> = { draft: { status: "in_review", label: "إرسال للمراجعة" }, in_review: { status: "approved", label: "اعتماد المادة" }, approved: { status: "published", label: "نشر المادة" }, published: { status: "archived", label: "أرشفة المادة" } };
 
@@ -241,7 +257,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
   async function loadSiteSectionRecords() {
     const headers = await authHeaders(); if (!headers) return;
     const response = await fetch("/api/admin/platform/sections", { headers });
-    const result = await response.json();
+    const result = await readJson(response);
     if (response.status === 403) { document.querySelector<HTMLElement>("#site-sections-panel")!.hidden = true; return; }
     if (!response.ok) { siteSectionsStatus.textContent = result.error ?? "تعذر تحميل الأقسام."; return; }
     siteSections = ((result.data ?? []) as Array<Record<string, unknown>>).map((row) => ({
@@ -259,7 +275,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
     const headers = await authHeaders(); if (!headers) return;
     siteSectionsStatus.textContent = "يجري حفظ القسم…";
     const response = await fetch("/api/admin/platform/sections", { method: "PATCH", headers, body: JSON.stringify({ id, ...payload }) });
-    const result = await response.json();
+    const result = await readJson(response);
     siteSectionsStatus.textContent = response.ok ? "تم حفظ القسم." : result.error ?? "تعذر حفظ القسم.";
     if (response.ok) await loadSiteSectionRecords();
   }
@@ -271,7 +287,11 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
       field<HTMLTextAreaElement>("#edit-body").value = html;
       document.querySelector<HTMLElement>("#rich-editor-count")!.textContent = String(htmlToPlainText(html).length);
     } });
-    document.querySelector<HTMLElement>("#rich-editor-toolbar")!.addEventListener("mousedown", (event) => event.preventDefault());
+    document.querySelector<HTMLElement>("#rich-editor-toolbar")!.addEventListener("mousedown", (event) => {
+      const target = event.target as HTMLElement;
+      if (target.closest("select, input, textarea, label.rich-editor-style, label.rich-editor-color")) return;
+      event.preventDefault();
+    });
     document.querySelector<HTMLElement>("#rich-editor-toolbar")!.addEventListener("click", (event) => {
       const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-editor-command]");
       if (!button) return;
@@ -330,7 +350,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
     overviewVisits.textContent = arabicNumber(report.total.visits); analyticsTotals.replaceChildren(); for (const [label, value] of [["مشاهدات", arabicNumber(report.total.pageViews)], ["زيارات مجهّلة", arabicNumber(report.total.visits)], ["قراءات مكتملة", arabicNumber(report.total.completedReads)], ["استخدام أدوات", arabicNumber(report.total.toolUses)], ["مشاركات محتوى", arabicNumber(report.total.contentShares)], ["متوسط القراءة", readTime(report.total.averageReadSeconds)]]) { const card = document.createElement("div"); const title = document.createElement("span"); title.textContent = label; const number = document.createElement("strong"); number.textContent = value; card.append(title, number); analyticsTotals.append(card); }
     analyticsRows.replaceChildren(); if (!report.pages.length) { const row = document.createElement("tr"); const cell = document.createElement("td"); cell.colSpan = 6; cell.textContent = "لا توجد أحداث مقاسة في هذه الفترة حتى الآن."; row.append(cell); analyticsRows.append(row); return; } for (const page of report.pages) { const row = document.createElement("tr"); for (const value of [page.title || page.path, arabicNumber(page.pageViews), arabicNumber(page.visits), arabicNumber(page.read50), `${arabicNumber(page.completionRate)}%`, readTime(page.averageReadSeconds)]) { const cell = document.createElement("td"); cell.textContent = value; row.append(cell); } analyticsRows.append(row); }
   }
-  async function loadAnalytics() { const headers = await authHeaders(); if (!headers) return; analyticsTotals.textContent = "يجري تحميل التقرير…"; const range = field<HTMLSelectElement>("#analytics-range").value; const response = await fetch(`/api/admin/analytics?range=${range}`, { headers }); const result = await response.json(); if (!response.ok) { analyticsTotals.textContent = result.error ?? "تعذر تحميل التقرير."; return; } renderAnalytics(result.data); }
+  async function loadAnalytics() { const headers = await authHeaders(); if (!headers) return; analyticsTotals.textContent = "يجري تحميل التقرير…"; const range = field<HTMLSelectElement>("#analytics-range").value; const response = await fetch(`/api/admin/analytics?range=${range}`, { headers }); const result = await readJson(response); if (!response.ok) { analyticsTotals.textContent = result.error ?? "تعذر تحميل التقرير."; return; } renderAnalytics(result.data); }
 
   function renderFeatureFlags(flags: Array<{ flag: string; label: string; enabled: boolean; public_visible: boolean }>) {
     featureFlagsList.replaceChildren();
@@ -338,13 +358,13 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
       const row = document.createElement("div"); row.className = "feature-flag-row";
       const details = document.createElement("div"); const title = document.createElement("strong"); title.textContent = feature.label; const hint = document.createElement("small"); hint.textContent = feature.enabled ? "مفعّلة" : "موقوفة"; details.append(title, hint);
       const control = document.createElement("label"); control.className = "feature-flag-control"; const toggle = document.createElement("input"); toggle.type = "checkbox"; toggle.checked = feature.enabled; const label = document.createElement("span"); label.textContent = "تفعيل"; control.append(toggle, label);
-      toggle.addEventListener("change", async () => { const headers = await authHeaders(); if (!headers) return; toggle.disabled = true; featureFlagsStatus.textContent = "يجري حفظ حالة الميزة…"; const response = await fetch("/api/admin/platform/features", { method: "PATCH", headers, body: JSON.stringify({ flag: feature.flag, enabled: toggle.checked, note: "تحديث من لوحة الإدارة" }) }); const result = await response.json(); if (!response.ok) { toggle.checked = !toggle.checked; featureFlagsStatus.textContent = result.error ?? "تعذر حفظ حالة الميزة."; toggle.disabled = false; return; } featureFlagsStatus.textContent = "تم حفظ الحالة وسجل التغيير."; await loadFeatureFlags(); });
+      toggle.addEventListener("change", async () => { const headers = await authHeaders(); if (!headers) return; toggle.disabled = true; featureFlagsStatus.textContent = "يجري حفظ حالة الميزة…"; const response = await fetch("/api/admin/platform/features", { method: "PATCH", headers, body: JSON.stringify({ flag: feature.flag, enabled: toggle.checked, note: "تحديث من لوحة الإدارة" }) }); const result = await readJson(response); if (!response.ok) { toggle.checked = !toggle.checked; featureFlagsStatus.textContent = result.error ?? "تعذر حفظ حالة الميزة."; toggle.disabled = false; return; } featureFlagsStatus.textContent = "تم حفظ الحالة وسجل التغيير."; await loadFeatureFlags(); });
       row.append(details, control); featureFlagsList.append(row);
     }
   }
 
-  async function loadFeatureFlags() { const headers = await authHeaders(); if (!headers) return; const response = await fetch("/api/admin/platform/features", { headers }); if (response.status === 403) { featureFlagsPanel.hidden = true; return; } const result = await response.json(); if (!response.ok) { featureFlagsPanel.hidden = activeAdminView !== "settings"; featureFlagsStatus.textContent = result.error ?? "تعذر تحميل مفاتيح الميزات."; return; } featureFlagsPanel.hidden = activeAdminView !== "settings"; renderFeatureFlags(result.data); }
-  async function loadPlatformSettings() { const headers = await authHeaders(); if (!headers) return; const response = await fetch("/api/admin/platform/settings", { headers }); if (response.status === 403) { platformSettingsPanel.hidden = true; return; } const result = await response.json(); if (!response.ok) { platformSettingsPanel.hidden = activeAdminView !== "settings"; platformSettingsStatus.textContent = result.error ?? "تعذر تحميل إعدادات المنصة."; return; } const notice = (result.data as Array<{ setting_key: string; value: { enabled?: boolean; message?: string } }>).find((setting) => setting.setting_key === "site_notice"); field<HTMLInputElement>("#site-notice-enabled").checked = notice?.value.enabled === true; field<HTMLTextAreaElement>("#site-notice-message").value = typeof notice?.value.message === "string" ? notice.value.message : ""; platformSettingsPanel.hidden = activeAdminView !== "settings"; }
+  async function loadFeatureFlags() { const headers = await authHeaders(); if (!headers) return; const response = await fetch("/api/admin/platform/features", { headers }); if (response.status === 403) { featureFlagsPanel.hidden = true; return; } const result = await readJson(response); if (!response.ok) { featureFlagsPanel.hidden = activeAdminView !== "settings"; featureFlagsStatus.textContent = result.error ?? "تعذر تحميل مفاتيح الميزات."; return; } featureFlagsPanel.hidden = activeAdminView !== "settings"; renderFeatureFlags(result.data); }
+  async function loadPlatformSettings() { const headers = await authHeaders(); if (!headers) return; const response = await fetch("/api/admin/platform/settings", { headers }); if (response.status === 403) { platformSettingsPanel.hidden = true; return; } const result = await readJson(response); if (!response.ok) { platformSettingsPanel.hidden = activeAdminView !== "settings"; platformSettingsStatus.textContent = result.error ?? "تعذر تحميل إعدادات المنصة."; return; } const notice = (result.data as Array<{ setting_key: string; value: { enabled?: boolean; message?: string } }>).find((setting) => setting.setting_key === "site_notice"); field<HTMLInputElement>("#site-notice-enabled").checked = notice?.value.enabled === true; field<HTMLTextAreaElement>("#site-notice-message").value = typeof notice?.value.message === "string" ? notice.value.message : ""; platformSettingsPanel.hidden = activeAdminView !== "settings"; }
   const socialProviderLabels: Record<string, string> = { x: "X", facebook: "Facebook", instagram: "Instagram", linkedin: "LinkedIn", telegram: "Telegram", whatsapp_channel: "قناة WhatsApp", other: "أخرى" };
   const socialStatusLabels: Record<string, string> = { disconnected: "غير متصل", ready: "جاهز يدويًا", paused: "متوقف مؤقتًا", draft: "مسودة", copied: "نُسخ يدويًا", cancelled: "ملغى", created: "أُضيف إلى الصندوق", copied_for_manual_publish: "تم النسخ للنشر اليدوي", marked_published: "تم توثيق النشر يدويًا", failed: "فشلت خطوة يدوية" };
   const socialDate = (value: string) => new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
@@ -366,8 +386,8 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
     if (!data.activity.length) listEmpty(socialActivityList, "لا توجد خطوات مسجلة بعد.");
     for (const activity of data.activity) { const item = document.createElement("li"); item.textContent = `${socialStatusLabels[activity.action] ?? activity.action} · ${socialDate(activity.created_at)}${activity.note ? ` · ${activity.note}` : ""}`; socialActivityList.append(item); }
   }
-  async function loadSocialDistribution() { const headers = await authHeaders(); if (!headers) return; socialDistributionStatus.textContent = "يجري تحميل مساحة التوزيع…"; const response = await fetch("/api/admin/social/distribution", { headers }); const result = await response.json(); if (response.status === 403) { socialDistributionPanel.hidden = true; return; } if (!response.ok) { socialDistributionStatus.textContent = result.error ?? "تعذر تحميل مساحة التوزيع."; return; } socialDistributionStatus.textContent = ""; renderSocialDistribution(result.data as SocialDistribution); }
-  async function markSocialOutboxCopied(outboxId: string, button: HTMLButtonElement) { const headers = await authHeaders(); if (!headers) return; button.disabled = true; socialDistributionStatus.textContent = "يجري توثيق النسخ اليدوي…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "mark_copied", outboxId }) }); const result = await response.json(); socialDistributionStatus.textContent = response.ok ? "تم تسجيل النسخ اليدوي؛ لم يحدث نشر تلقائي." : result.error ?? "تعذر تحديث الحالة."; if (response.ok) await loadSocialDistribution(); else button.disabled = false; }
+  async function loadSocialDistribution() { const headers = await authHeaders(); if (!headers) return; socialDistributionStatus.textContent = "يجري تحميل مساحة التوزيع…"; const response = await fetch("/api/admin/social/distribution", { headers }); const result = await readJson(response); if (response.status === 403) { socialDistributionPanel.hidden = true; return; } if (!response.ok) { socialDistributionStatus.textContent = result.error ?? "تعذر تحميل مساحة التوزيع."; return; } socialDistributionStatus.textContent = ""; renderSocialDistribution(result.data as SocialDistribution); }
+  async function markSocialOutboxCopied(outboxId: string, button: HTMLButtonElement) { const headers = await authHeaders(); if (!headers) return; button.disabled = true; socialDistributionStatus.textContent = "يجري توثيق النسخ اليدوي…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "mark_copied", outboxId }) }); const result = await readJson(response); socialDistributionStatus.textContent = response.ok ? "تم تسجيل النسخ اليدوي؛ لم يحدث نشر تلقائي." : result.error ?? "تعذر تحديث الحالة."; if (response.ok) await loadSocialDistribution(); else button.disabled = false; }
   const communityActionLabels: Record<string, string> = { publish: "نشر", hide: "إخفاء", lock: "قفل", archive: "أرشفة", restore: "إعادة إلى المراجعة", resolve_report: "حل البلاغ", dismiss_report: "رفض البلاغ" };
   function moderationButtons(targetType: "question" | "answer" | "report", targetId: string, actions: string[]) { const wrapper = document.createElement("div"); wrapper.className = "moderation-actions"; for (const action of actions) { const button = document.createElement("button"); button.type = "button"; button.className = action === "publish" || action === "resolve_report" ? "moderation-primary" : "subtle-button"; button.textContent = communityActionLabels[action] ?? action; button.addEventListener("click", () => void decideCommunityModeration(targetType, targetId, action, button)); wrapper.append(button); } return wrapper; }
   function renderCommunityModeration(data: CommunityModeration) {
@@ -381,12 +401,12 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
     if (!data.actions.length) listEmpty(communityActionsList, "لا توجد قرارات مسجلة بعد.");
     for (const action of data.actions) { const item = document.createElement("li"); item.textContent = `${communityActionLabels[action.action] ?? action.action} · ${action.target_type} · ${socialDate(action.created_at)}${action.note ? ` · ${action.note}` : ""}`; communityActionsList.append(item); }
   }
-  async function loadCommunityModeration() { const headers = await authHeaders(); if (!headers) return; communityModerationStatus.textContent = "يجري تحميل طابور الإشراف…"; const response = await fetch("/api/admin/community/moderation", { headers }); const result = await response.json(); if (response.status === 403) { communityModerationPanel.hidden = true; return; } if (!response.ok) { communityModerationStatus.textContent = result.error ?? "تعذر تحميل طابور الإشراف."; return; } communityModerationStatus.textContent = ""; renderCommunityModeration(result.data as CommunityModeration); }
-  async function decideCommunityModeration(targetType: "question" | "answer" | "report", targetId: string, action: string, button: HTMLButtonElement) { const headers = await authHeaders(); if (!headers) return; button.disabled = true; communityModerationStatus.textContent = "يجري حفظ قرار الإشراف…"; const note = field<HTMLTextAreaElement>("#community-moderation-note").value; const response = await fetch("/api/admin/community/moderation", { method: "POST", headers, body: JSON.stringify({ targetType, targetId, action, note }) }); const result = await response.json(); communityModerationStatus.textContent = response.ok ? "تم حفظ القرار في سجل الإشراف. لا يغير ذلك حالة إتاحة المجتمع للعامة." : result.error ?? "تعذر حفظ القرار."; if (response.ok) await loadCommunityModeration(); else button.disabled = false; }
+  async function loadCommunityModeration() { const headers = await authHeaders(); if (!headers) return; communityModerationStatus.textContent = "يجري تحميل طابور الإشراف…"; const response = await fetch("/api/admin/community/moderation", { headers }); const result = await readJson(response); if (response.status === 403) { communityModerationPanel.hidden = true; return; } if (!response.ok) { communityModerationStatus.textContent = result.error ?? "تعذر تحميل طابور الإشراف."; return; } communityModerationStatus.textContent = ""; renderCommunityModeration(result.data as CommunityModeration); }
+  async function decideCommunityModeration(targetType: "question" | "answer" | "report", targetId: string, action: string, button: HTMLButtonElement) { const headers = await authHeaders(); if (!headers) return; button.disabled = true; communityModerationStatus.textContent = "يجري حفظ قرار الإشراف…"; const note = field<HTMLTextAreaElement>("#community-moderation-note").value; const response = await fetch("/api/admin/community/moderation", { method: "POST", headers, body: JSON.stringify({ targetType, targetId, action, note }) }); const result = await readJson(response); communityModerationStatus.textContent = response.ok ? "تم حفظ القرار في سجل الإشراف. لا يغير ذلك حالة إتاحة المجتمع للعامة." : result.error ?? "تعذر حفظ القرار."; if (response.ok) await loadCommunityModeration(); else button.disabled = false; }
 
   async function loadContent() {
     const headers = await authHeaders(); if (!headers) return;
-    const response = await fetch("/api/admin/content", { headers }); const result = await response.json();
+    const response = await fetch("/api/admin/content", { headers }); const result = await readJson(response);
     if (!response.ok) { contentList.replaceChildren(); const li = document.createElement("li"); li.textContent = result.error ?? "تعذر تحميل المحتوى"; contentList.append(li); return; }
     renderContentList(result.data as ContentSummary[]);
   }
@@ -398,7 +418,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
     const mediaHeaders: Record<string, string> = {};
     if (headers.Authorization) mediaHeaders.Authorization = headers.Authorization;
     if (headers["x-alshafra-dev-admin"]) mediaHeaders["x-alshafra-dev-admin"] = headers["x-alshafra-dev-admin"];
-    const response = await fetch("/api/admin/media", { method: "POST", headers: mediaHeaders, body: formData }); const result = await response.json();
+    const response = await fetch("/api/admin/media", { method: "POST", headers: mediaHeaders, body: formData }); const result = await readJson(response);
     if (!response.ok || !result.data?.id) throw new Error(result.error ?? "تعذر رفع الصورة.");
     return result.data.id as string;
   }
@@ -432,7 +452,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 
   async function loadSources() {
     const headers = await authHeaders(); if (!headers || !currentDraft) return;
-    const response = await fetch(`/api/admin/content/${currentDraft.id}/sources`, { headers }); const result = await response.json();
+    const response = await fetch(`/api/admin/content/${currentDraft.id}/sources`, { headers }); const result = await readJson(response);
     sourceList.replaceChildren();
     if (!response.ok) { sourceStatus.textContent = result.error ?? "تعذر تحميل المصادر."; return; }
     for (const entry of result.data as Array<{ note: string | null; sources: { title: string; url: string; kind: SourceDraft["kind"]; publisher: string | null; published_at: string | null; accessed_at: string } }>) addSourceRow({ title: entry.sources.title, url: entry.sources.url, kind: entry.sources.kind, publisher: entry.sources.publisher ?? "", publishedAt: entry.sources.published_at ?? "", note: entry.note ?? "", accessedAt: entry.sources.accessed_at });
@@ -446,7 +466,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 
   async function loadHistory() {
     const headers = await authHeaders(); if (!headers || !currentDraft) return;
-    const response = await fetch(`/api/admin/content/${currentDraft.id}/history`, { headers }); const result = await response.json(); historyList.replaceChildren();
+    const response = await fetch(`/api/admin/content/${currentDraft.id}/history`, { headers }); const result = await readJson(response); historyList.replaceChildren();
     if (!response.ok) { const item = document.createElement("li"); item.textContent = result.error ?? "تعذر تحميل سجل المراجعة."; historyList.append(item); return; }
     const entries: Array<{ label: string; createdAt: string }> = [];
     for (const revision of result.data.revisions as Array<{ status: string; note: string | null; created_at: string }>) entries.push({ label: revision.note || `حفظ نسخة بحالة ${statusLabels[revision.status] ?? revision.status}`, createdAt: revision.created_at });
@@ -464,7 +484,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 
   async function openDraft(id: string) {
     const headers = await authHeaders(); if (!headers) return;
-    const response = await fetch(`/api/admin/content/${id}`, { headers }); const result = await response.json();
+    const response = await fetch(`/api/admin/content/${id}`, { headers }); const result = await readJson(response);
     if (!response.ok) { editStatus.textContent = result.error ?? "تعذر تحميل المسودة."; return; }
     currentDraft = result.data as ContentDraft; editorHeading.textContent = currentDraft.title;
     field<HTMLInputElement>("#edit-title").value = currentDraft.title;
@@ -501,7 +521,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
   document.querySelector<HTMLFormElement>("#development-access-form")!.addEventListener("submit", async (event) => {
     event.preventDefault(); const form = event.currentTarget as HTMLFormElement; if (!developmentAccessAvailable) return; const submit = form.querySelector<HTMLButtonElement>("button[type=submit]")!; const code = field<HTMLInputElement>("#development-access-code").value; submit.disabled = true; form.setAttribute("aria-busy", "true"); developmentAccessStatus.textContent = "يجري فتح جلسة التطوير…";
     try {
-      const response = await fetch("/api/admin/development-access", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code }) }); const result = await response.json() as { error?: string; data?: { token?: string } };
+      const response = await fetch("/api/admin/development-access", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code }) }); const result = await readJson(response) as { error?: string; data?: { token?: string } };
       if (!response.ok) { developmentAccessStatus.textContent = result.error ?? "تعذر فتح جلسة التطوير."; return; }
       if (typeof result.data?.token === "string") sessionStorage.setItem(developmentTokenKey, result.data.token);
       usingDevelopmentAccess = true;
@@ -513,18 +533,18 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
       await establishSession();
     } finally { submit.disabled = false; form.removeAttribute("aria-busy"); }
   });
-  document.querySelector<HTMLFormElement>("#site-notice-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; platformSettingsStatus.textContent = "يجري حفظ التنبيه…"; const value = { enabled: field<HTMLInputElement>("#site-notice-enabled").checked, message: field<HTMLTextAreaElement>("#site-notice-message").value }; const response = await fetch("/api/admin/platform/settings", { method: "PATCH", headers, body: JSON.stringify({ settingKey: "site_notice", value }) }); const result = await response.json(); platformSettingsStatus.textContent = response.ok ? "تم حفظ التنبيه العام." : result.error ?? "تعذر حفظ التنبيه."; });
-  document.querySelector<HTMLFormElement>("#social-account-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; const message = document.querySelector<HTMLElement>("#social-account-status-message")!; message.textContent = "يجري حفظ الحساب المرجعي…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "create_account", provider: field<HTMLSelectElement>("#social-account-provider").value, displayName: field<HTMLInputElement>("#social-account-name").value, externalAccountRef: field<HTMLInputElement>("#social-account-ref").value, connectionStatus: field<HTMLSelectElement>("#social-account-status").value }) }); const result = await response.json(); message.textContent = response.ok ? "تم حفظ المرجع من دون أي سر أو اتصال خارجي." : result.error ?? "تعذر حفظ الحساب المرجعي."; if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSocialDistribution(); } });
-  document.querySelector<HTMLFormElement>("#social-template-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; const message = document.querySelector<HTMLElement>("#social-template-status")!; message.textContent = "يجري حفظ القالب…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "create_template", name: field<HTMLInputElement>("#social-template-name").value, provider: field<HTMLSelectElement>("#social-template-provider").value, bodyTemplate: field<HTMLTextAreaElement>("#social-template-body").value }) }); const result = await response.json(); message.textContent = response.ok ? "تم حفظ القالب." : result.error ?? "تعذر حفظ القالب."; if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSocialDistribution(); } });
-  document.querySelector<HTMLFormElement>("#social-outbox-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; const message = document.querySelector<HTMLElement>("#social-outbox-status-message")!; message.textContent = "يجري تجهيز المنشور…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "create_outbox", bodySnapshot: field<HTMLTextAreaElement>("#social-outbox-body").value, destinationUrl: field<HTMLInputElement>("#social-outbox-url").value, status: field<HTMLSelectElement>("#social-outbox-status").value, accountId: field<HTMLSelectElement>("#social-outbox-account").value || null }) }); const result = await response.json(); message.textContent = response.ok ? "أُضيف المنشور إلى صندوق النسخ اليدوي." : result.error ?? "تعذر إضافة المنشور."; if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSocialDistribution(); } });
-  document.querySelector<HTMLButtonElement>("#prepare-social-outbox")!.addEventListener("click", async () => { const headers = await authHeaders(); if (!headers) return; const message = document.querySelector<HTMLElement>("#social-outbox-status-message")!; const contentId = field<HTMLSelectElement>("#social-outbox-content").value; const templateId = field<HTMLSelectElement>("#social-outbox-template").value; if (!contentId || !templateId) { message.textContent = "اختر مادة منشورة وقالبًا مفعّلًا أولًا."; return; } message.textContent = "يجري تجهيز النص من المادة والقالب…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "create_outbox_from_template", contentId, templateId, accountId: field<HTMLSelectElement>("#social-outbox-account").value || null }) }); const result = await response.json(); message.textContent = response.ok ? "جُهز المنشور للنشر اليدوي؛ راجعه ثم انسخه بنفسك." : result.error ?? "تعذر تجهيز المنشور من القالب."; if (response.ok) await loadSocialDistribution(); });
+  document.querySelector<HTMLFormElement>("#site-notice-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; platformSettingsStatus.textContent = "يجري حفظ التنبيه…"; const value = { enabled: field<HTMLInputElement>("#site-notice-enabled").checked, message: field<HTMLTextAreaElement>("#site-notice-message").value }; const response = await fetch("/api/admin/platform/settings", { method: "PATCH", headers, body: JSON.stringify({ settingKey: "site_notice", value }) }); const result = await readJson(response); platformSettingsStatus.textContent = response.ok ? "تم حفظ التنبيه العام." : result.error ?? "تعذر حفظ التنبيه."; });
+  document.querySelector<HTMLFormElement>("#social-account-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; const message = document.querySelector<HTMLElement>("#social-account-status-message")!; message.textContent = "يجري حفظ الحساب المرجعي…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "create_account", provider: field<HTMLSelectElement>("#social-account-provider").value, displayName: field<HTMLInputElement>("#social-account-name").value, externalAccountRef: field<HTMLInputElement>("#social-account-ref").value, connectionStatus: field<HTMLSelectElement>("#social-account-status").value }) }); const result = await readJson(response); message.textContent = response.ok ? "تم حفظ المرجع من دون أي سر أو اتصال خارجي." : result.error ?? "تعذر حفظ الحساب المرجعي."; if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSocialDistribution(); } });
+  document.querySelector<HTMLFormElement>("#social-template-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; const message = document.querySelector<HTMLElement>("#social-template-status")!; message.textContent = "يجري حفظ القالب…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "create_template", name: field<HTMLInputElement>("#social-template-name").value, provider: field<HTMLSelectElement>("#social-template-provider").value, bodyTemplate: field<HTMLTextAreaElement>("#social-template-body").value }) }); const result = await readJson(response); message.textContent = response.ok ? "تم حفظ القالب." : result.error ?? "تعذر حفظ القالب."; if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSocialDistribution(); } });
+  document.querySelector<HTMLFormElement>("#social-outbox-form")!.addEventListener("submit", async (event) => { event.preventDefault(); const headers = await authHeaders(); if (!headers) return; const message = document.querySelector<HTMLElement>("#social-outbox-status-message")!; message.textContent = "يجري تجهيز المنشور…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "create_outbox", bodySnapshot: field<HTMLTextAreaElement>("#social-outbox-body").value, destinationUrl: field<HTMLInputElement>("#social-outbox-url").value, status: field<HTMLSelectElement>("#social-outbox-status").value, accountId: field<HTMLSelectElement>("#social-outbox-account").value || null }) }); const result = await readJson(response); message.textContent = response.ok ? "أُضيف المنشور إلى صندوق النسخ اليدوي." : result.error ?? "تعذر إضافة المنشور."; if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSocialDistribution(); } });
+  document.querySelector<HTMLButtonElement>("#prepare-social-outbox")!.addEventListener("click", async () => { const headers = await authHeaders(); if (!headers) return; const message = document.querySelector<HTMLElement>("#social-outbox-status-message")!; const contentId = field<HTMLSelectElement>("#social-outbox-content").value; const templateId = field<HTMLSelectElement>("#social-outbox-template").value; if (!contentId || !templateId) { message.textContent = "اختر مادة منشورة وقالبًا مفعّلًا أولًا."; return; } message.textContent = "يجري تجهيز النص من المادة والقالب…"; const response = await fetch("/api/admin/social/distribution", { method: "POST", headers, body: JSON.stringify({ action: "create_outbox_from_template", contentId, templateId, accountId: field<HTMLSelectElement>("#social-outbox-account").value || null }) }); const result = await readJson(response); message.textContent = response.ok ? "جُهز المنشور للنشر اليدوي؛ راجعه ثم انسخه بنفسك." : result.error ?? "تعذر تجهيز المنشور من القالب."; if (response.ok) await loadSocialDistribution(); });
 
   document.querySelector<HTMLFormElement>("#new-draft-form")!.addEventListener("submit", async (event) => {
     event.preventDefault(); const headers = await authHeaders(); if (!headers) return; draftStatus.textContent = "يجري حفظ المسودة…";
     try {
       const primaryMediaId = await uploadImage(field<HTMLInputElement>("#primary-image"), field<HTMLInputElement>("#primary-image-alt"), headers);
       const payload = { kind: field<HTMLSelectElement>("#draft-kind").value, title: field<HTMLInputElement>("#draft-title").value, slug: field<HTMLInputElement>("#draft-slug").value, excerpt: field<HTMLTextAreaElement>("#draft-excerpt").value, primaryMediaId, hubId: field<HTMLSelectElement>("#draft-hub").value || null, sectionId: field<HTMLSelectElement>("#draft-section").value || null };
-      const response = await fetch("/api/admin/content", { method: "POST", headers, body: JSON.stringify(payload) }); const result = await response.json();
+      const response = await fetch("/api/admin/content", { method: "POST", headers, body: JSON.stringify(payload) }); const result = await readJson(response);
       draftStatus.textContent = response.ok ? "تم إنشاء المسودة وسجل المراجعة الأولي." : result.error ?? "تعذر إنشاء المسودة.";
       if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadContent(); await openDraft(result.data.id); }
     } catch (error) { draftStatus.textContent = error instanceof Error ? error.message : "تعذر حفظ المسودة."; }
@@ -535,7 +555,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
     try {
       const replacement = await uploadImage(field<HTMLInputElement>("#edit-primary-image"), field<HTMLInputElement>("#edit-primary-image-alt"), headers);
       const bodyHtml = sanitizeContentHtml(ensureRichEditor().getHtml()); field<HTMLTextAreaElement>("#edit-body").value = bodyHtml; const payload = { title: field<HTMLInputElement>("#edit-title").value, excerpt: field<HTMLTextAreaElement>("#edit-excerpt").value, bodyMarkdown: htmlToPlainText(bodyHtml), bodyHtml, seoTitle: field<HTMLInputElement>("#edit-seo-title").value, seoDescription: field<HTMLTextAreaElement>("#edit-seo-description").value, canonicalUrl: field<HTMLInputElement>("#edit-canonical").value, primaryMediaId: replacement ?? currentDraft.primary_media_id, note: field<HTMLTextAreaElement>("#edit-note").value, hubId: field<HTMLSelectElement>("#edit-hub").value || null, sectionId: field<HTMLSelectElement>("#edit-section").value || null };
-      const response = await fetch(`/api/admin/content/${currentDraft.id}`, { method: "PATCH", headers, body: JSON.stringify(payload) }); const result = await response.json();
+      const response = await fetch(`/api/admin/content/${currentDraft.id}`, { method: "PATCH", headers, body: JSON.stringify(payload) }); const result = await readJson(response);
       if (!response.ok) { editStatus.textContent = result.error ?? "تعذر حفظ التعديلات."; return; }
       const savedDraft = { ...currentDraft, ...result.data }; currentDraft = savedDraft; editorHeading.textContent = savedDraft.title; editStatus.textContent = "تم حفظ المسودة وسجل المراجعة."; await Promise.all([loadContent(), loadHistory()]);
     } catch (error) { editStatus.textContent = error instanceof Error ? error.message : "تعذر حفظ التعديلات."; }
@@ -557,13 +577,13 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
   document.querySelector<HTMLButtonElement>("#save-sources")!.addEventListener("click", async () => {
     const headers = await authHeaders(); if (!headers || !currentDraft) return;
     sourceStatus.textContent = "يجري حفظ المصادر…";
-    const response = await fetch(`/api/admin/content/${currentDraft.id}/sources`, { method: "PUT", headers, body: JSON.stringify({ sources: readSourceRows() }) }); const result = await response.json();
+    const response = await fetch(`/api/admin/content/${currentDraft.id}/sources`, { method: "PUT", headers, body: JSON.stringify({ sources: readSourceRows() }) }); const result = await readJson(response);
     sourceStatus.textContent = response.ok ? "تم حفظ مصادر المادة." : result.error ?? "تعذر حفظ المصادر.";
   });
 
   workflowNext.addEventListener("click", async () => {
     const headers = await authHeaders(); const next = currentDraft ? nextStatus[currentDraft.status] : undefined; if (!headers || !currentDraft || !next) return;
-    workflowMessage.textContent = "يجري تحديث الحالة…"; const response = await fetch(`/api/admin/content/${currentDraft.id}/transition`, { method: "POST", headers, body: JSON.stringify({ status: next.status, note: field<HTMLTextAreaElement>("#edit-note").value }) }); const result = await response.json();
+    workflowMessage.textContent = "يجري تحديث الحالة…"; const response = await fetch(`/api/admin/content/${currentDraft.id}/transition`, { method: "POST", headers, body: JSON.stringify({ status: next.status, note: field<HTMLTextAreaElement>("#edit-note").value }) }); const result = await readJson(response);
     workflowMessage.textContent = response.ok ? "تم تحديث الحالة وحفظ سجلها." : result.error ?? "تعذر تحديث الحالة.";
     if (response.ok) { currentDraft = { ...currentDraft, ...result.data }; renderWorkflow(); await Promise.all([loadContent(), loadHistory()]); }
   });
@@ -587,9 +607,9 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
     const parentId = field<HTMLSelectElement>("#section-parent").value || null;
     const payload = { parentId, title: field<HTMLInputElement>("#section-title").value, slug: field<HTMLInputElement>("#section-slug").value, contentKind: field<HTMLSelectElement>("#section-kind").value || null, description: field<HTMLTextAreaElement>("#section-description").value, enabled: document.querySelector<HTMLInputElement>("#section-enabled")!.checked, publicVisible: true };
     const response = await fetch("/api/admin/platform/sections", { method: "POST", headers, body: JSON.stringify(payload) });
-    const result = await response.json();
+    const result = await readJson(response);
     siteSectionsStatus.textContent = response.ok ? "تم إنشاء القسم. سيظهر في التنقل بعد تفعيله." : result.error ?? "تعذر إنشاء القسم.";
     if (response.ok) { (event.currentTarget as HTMLFormElement).reset(); await loadSiteSectionRecords(); }
   });
-  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح: أضف SUPABASE_URL وSUPABASE_PUBLISHABLE_KEY في Cloudflare → Settings → Variables and Secrets ثم أعد النشر."; return; } const config = await response.json(); magicLinkRedirectUrl = config.authRedirectUrl; developmentAccessAvailable = config.developmentAccessEnabled === true; developmentAccessCard.hidden = !developmentAccessAvailable; if (config.url && config.publishableKey) supabase = createClient(config.url, config.publishableKey); else if (!developmentAccessAvailable) { authStatus.textContent = "إعداد الدخول غير متاح: أضف مفاتيح Supabase في متغيرات تشغيل Cloudflare ثم أعد النشر."; return; } await establishSession(); })();
+  void (async () => { const response = await fetch("/api/public/config"); if (!response.ok) { authStatus.textContent = "إعداد الدخول غير متاح: أضف SUPABASE_URL وSUPABASE_PUBLISHABLE_KEY في Cloudflare → Settings → Variables and Secrets ثم أعد النشر."; return; } const config = await readJson(response); magicLinkRedirectUrl = config.authRedirectUrl; developmentAccessAvailable = config.developmentAccessEnabled === true; developmentAccessCard.hidden = !developmentAccessAvailable; if (config.url && config.publishableKey) supabase = createClient(config.url, config.publishableKey); else if (!developmentAccessAvailable) { authStatus.textContent = "إعداد الدخول غير متاح: أضف مفاتيح Supabase في متغيرات تشغيل Cloudflare ثم أعد النشر."; return; } await establishSession(); })();
 </script>

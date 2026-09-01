@@ -11,6 +11,7 @@ describe("مساحة لوحة التحكم المنفصلة عن الموقع", 
     expect(page).not.toContain("BaseLayout");
     expect(page).not.toContain("عنوان 2");
     expect(page).toContain("عنوان رئيسي داخل الخبر");
+    expect(page).toContain("H2 عنوان رئيسي");
     expect(page).toContain("كيف تضع صورة داخل الخبر");
     expect(page).toContain("إدراج الصورة في النص");
     expect(page).toContain('id="open-inline-image"');
