@@ -15,6 +15,8 @@ describe("لوحة الأقسام والمحرر", () => {
     const page = await readFile(new URL("../src/pages/admin/index.astro", import.meta.url), "utf8");
     expect(page).toContain("id=\"rich-editor-surface\"");
     expect(page).toContain('data-editor-value="h2"');
+    expect(page).toContain("عنوان رئيسي داخل الخبر");
+    expect(page).not.toContain("عنوان 2");
     expect(page).toContain("foreColor");
     expect(page).toContain("insertTable");
     expect(page).toContain("mountRichEditor");

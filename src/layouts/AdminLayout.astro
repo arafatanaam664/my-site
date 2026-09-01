@@ -1,0 +1,27 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>{title}</title>
+  </head>
+  <body class="admin-app">
+    <a class="skip-link" href="#admin-main">تخطَّ إلى لوحة التحكم</a>
+    <div class="admin-app-shell" id="admin-main" tabindex="-1">
+      <slot />
+    </div>
+  </body>
+</html>

@@ -1,16 +1,16 @@
 ---
 export const prerender = false;
 
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminLayout from "../../layouts/AdminLayout.astro";
 ---
 
-<BaseLayout title="إدارة Alshafra" description="لوحة إدارة المحتوى لمنصة Alshafra." canonical="https://alshafra.com/admin">
+<AdminLayout title="لوحة التحكم | Alshafra" description="لوحة إدارة المحتوى لمنصة Alshafra.">
   <section class="admin-shell">
-    <div class="admin-heading"><p class="eyebrow">مساحة المحرر</p><h1>إدارة المحتوى</h1><p>أنشئ المواد، راجعها، وانشرها عبر تسلسل واضح. لا تُعرض أي مادة للعامة إلا بعد اعتمادها ونشرها.</p></div>
-
-    <section class="admin-card" id="auth-card">
-      <h2>الدخول إلى مساحة التحرير</h2>
+    <section class="admin-login admin-card" id="auth-card">
+      <p class="admin-login-brand"><span class="brand-mark" aria-hidden="true">ش</span> Alshafra · لوحة التحكم</p>
+      <h1>دخول المحرر</h1>
       <p>أدخل بريدك المعتمد. سنرسل رابط دخول آمن بدل كلمة مرور.</p>
+      <p class="admin-login-note">أنشئ المواد، راجعها، وانشرها عبر تسلسل واضح. لا تُعرض أي مادة للعامة إلا بعد اعتمادها ونشرها.</p>
       <form id="magic-link-form"><label for="editor-email">البريد الإلكتروني</label><input id="editor-email" type="email" autocomplete="email" required placeholder="name@example.com" /><button type="submit">إرسال رابط الدخول</button></form>
       <section id="development-access-card" class="development-access-card" hidden><p><strong>دخول التطوير المؤقت</strong> متاح لهذه المعاينة فقط. أدخل رمز الوصول المحفوظ بأمان؛ لا يعمل على النطاق النهائي.</p><form id="development-access-form"><label for="development-access-code">رمز وصول التطوير</label><input id="development-access-code" type="password" autocomplete="current-password" minlength="16" required /><button type="submit">فتح جلسة تطوير</button></form><p class="form-status" id="development-access-status" aria-live="polite"></p></section>
       <p class="form-status" id="auth-status" aria-live="polite"></p>
@@ -18,8 +18,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     </section>
 
     <section class="admin-panel admin-console" id="dashboard" hidden>
-      <div class="admin-console-top"><div><span class="eyebrow">غرفة العمليات</span><h2>مرحبًا بك في لوحة Alshafra</h2><p>نظرة عملية على المحتوى والقياس وإتاحة الوحدات، من دون أرقام مصطنعة أو وعود غير قابلة للتحقق.</p></div><button type="button" id="admin-logout" class="subtle-button">تسجيل الخروج</button></div>
-      <div class="admin-console-layout"><aside class="admin-sidebar" aria-label="تنقل لوحة الإدارة"><div class="admin-sidebar-label">مساحة العمل</div><button type="button" class="admin-nav-button" data-admin-nav="overview" aria-current="page"><span aria-hidden="true">◈</span> الملخص</button><button type="button" class="admin-nav-button" data-admin-nav="content"><span aria-hidden="true">✎</span> المحتوى</button><button type="button" class="admin-nav-button" data-admin-nav="analytics"><span aria-hidden="true">⌁</span> القياس</button><button type="button" class="admin-nav-button" data-admin-nav="community"><span aria-hidden="true">◌</span> المجتمع</button><button type="button" class="admin-nav-button" data-admin-nav="distribution"><span aria-hidden="true">↗</span> التوزيع</button><button type="button" class="admin-nav-button" data-admin-nav="settings" id="admin-settings-nav"><span aria-hidden="true">⚙</span> الإعدادات</button><button type="button" class="admin-nav-button" data-admin-nav="sections" id="admin-sections-nav"><span aria-hidden="true">▣</span> الأقسام</button><div class="admin-sidebar-note"><strong>سير العمل</strong><span>مسودة ← مراجعة ← اعتماد ← نشر</span></div></aside><div class="admin-console-content">
+      <aside class="admin-sidebar" aria-label="تنقل لوحة الإدارة"><div class="admin-sidebar-brand"><span class="brand-mark" aria-hidden="true">ش</span><strong>غرفة العمليات</strong></div><div class="admin-sidebar-label">مساحة العمل</div><button type="button" class="admin-nav-button" data-admin-nav="overview" aria-current="page"><span aria-hidden="true">◈</span> الملخص</button><button type="button" class="admin-nav-button" data-admin-nav="content"><span aria-hidden="true">✎</span> المحتوى</button><button type="button" class="admin-nav-button" data-admin-nav="analytics"><span aria-hidden="true">⌁</span> القياس</button><button type="button" class="admin-nav-button" data-admin-nav="community"><span aria-hidden="true">◌</span> المجتمع</button><button type="button" class="admin-nav-button" data-admin-nav="distribution"><span aria-hidden="true">↗</span> التوزيع</button><button type="button" class="admin-nav-button" data-admin-nav="settings" id="admin-settings-nav"><span aria-hidden="true">⚙</span> الإعدادات</button><button type="button" class="admin-nav-button" data-admin-nav="sections" id="admin-sections-nav"><span aria-hidden="true">▣</span> الأقسام</button><div class="admin-sidebar-note"><strong>سير العمل</strong><span>مسودة ← مراجعة ← اعتماد ← نشر</span></div><button type="button" id="admin-logout" class="admin-logout">تسجيل الخروج</button></aside><div class="admin-workspace"><div class="admin-console-content">
       <section class="admin-overview" id="admin-overview" data-admin-view="overview"><div class="admin-view-heading"><div><span class="eyebrow">الملخص</span><h3>ابدأ من خطوة واضحة</h3><p>تعرض هذه الصفحة ما يتوفر فعلًا في المنصة، وتوجّهك إلى الإجراء التالي بدل ملئها بمؤشرات افتراضية.</p></div><button type="button" id="open-draft-composer">مادة جديدة</button></div><div class="admin-overview-metrics"><article><span>مسودات قابلة للعمل</span><strong id="overview-drafts">—</strong><small>من قائمة المحتوى الحالية</small></article><article><span>مواد منشورة</span><strong id="overview-published">—</strong><small>تظهر فقط بعد النشر المعتمد</small></article><article><span>زيارات مجهّلة</span><strong id="overview-visits">—</strong><small>ضمن الفترة المختارة للقياس</small></article></div><div class="admin-next-actions"><article><span class="eyebrow">الإجراء التالي</span><h4 id="overview-next-step">أنشئ مسودة موثقة لتبدأ دورة التحرير.</h4><p>أضف النص والمصدر والصورة الرئيسية ثم مرّر المادة عبر المراجعة قبل النشر.</p><button type="button" class="subtle-button" id="open-content-queue">فتح طابور المحتوى</button></article><article><span class="eyebrow">حالة الإتاحة</span><h4>الوحدات الجديدة تبقى متوقفة</h4><p>يمكن للمدير فقط تفعيل وحدة بعد اكتمال واجهتها واختبارها؛ لا تظهر الوظائف غير الجاهزة للزائر.</p><button type="button" class="subtle-button" id="open-settings-workspace">عرض الإعدادات</button></article></div></section>
       <div class="admin-toolbar" data-admin-view="content" hidden><div><span class="eyebrow">المحتوى</span><h2>طابور التحرير</h2><p>أنشئ المواد، راجعها، ثم انشرها فقط بعد اكتمال معايير الجودة.</p></div><div class="admin-toolbar-actions"><button type="button" id="refresh-content" class="subtle-button">تحديث القائمة</button><button type="button" id="open-draft-from-toolbar">مسودة جديدة</button></div></div>
       <section class="analytics-panel" data-admin-view="analytics" hidden><div class="admin-toolbar"><div><span class="eyebrow">تحليلات خصوصية</span><h2>أداء المحتوى</h2><p>تعتمد هذه الأرقام على الزوار الذين اختاروا القياس المجهّل. لا تُعرض أي بيانات شخصية أو سجلات متخيلة.</p></div><label class="analytics-range" for="analytics-range">الفترة<select id="analytics-range"><option value="day">آخر 24 ساعة</option><option value="week">آخر 7 أيام</option><option value="month" selected>آخر 30 يومًا</option><option value="year">آخر 12 شهرًا</option></select></label></div><div class="analytics-totals" id="analytics-totals"><p>يجري تحميل التقرير…</p></div><div class="analytics-table-wrap"><table><thead><tr><th>الصفحة أو المادة</th><th>مشاهدات</th><th>زيارات مجهّلة</th><th>بلغ 50%</th><th>إكمال القراءة</th><th>متوسط القراءة</th></tr></thead><tbody id="analytics-rows"><tr><td colspan="6">لا توجد بيانات معروضة بعد.</td></tr></tbody></table></div></section>
@@ -58,40 +57,56 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <div class="editor-main"><label for="edit-title">العنوان</label><input id="edit-title" minlength="15" maxlength="160" required /><label for="edit-excerpt">الوصف المختصر</label><textarea id="edit-excerpt" maxlength="320"></textarea><label for="rich-editor-surface">نص المادة</label>
             <div class="rich-editor" id="rich-editor-shell">
               <div class="rich-editor-toolbar" id="rich-editor-toolbar">
-                <button type="button" data-editor-command="undo" title="تراجع">تراجع</button>
-                <button type="button" data-editor-command="redo" title="إعادة">إعادة</button>
+                <button type="button" data-editor-command="undo" title="التراجع عن آخر تعديل">تراجع</button>
+                <button type="button" data-editor-command="redo" title="إعادة التعديل الملغى">إعادة</button>
                 <span class="rich-editor-sep" aria-hidden="true"></span>
-                <button type="button" data-editor-command="formatBlock" data-editor-value="p">فقرة</button>
-                <button type="button" data-editor-command="formatBlock" data-editor-value="h2">عنوان 2</button>
-                <button type="button" data-editor-command="formatBlock" data-editor-value="h3">عنوان 3</button>
-                <button type="button" data-editor-command="formatBlock" data-editor-value="h4">عنوان 4</button>
+                <label class="rich-editor-style">
+                  <span class="sr-only">شكل الفقرة المحددة</span>
+                  <select id="editor-block-style" title="غيّر شكل النص المحدد داخل الخبر">
+                    <option value="p" data-editor-value="p">نص عادي</option>
+                    <option value="h2" data-editor-value="h2">عنوان رئيسي داخل الخبر</option>
+                    <option value="h3" data-editor-value="h3">عنوان فرعي</option>
+                    <option value="h4" data-editor-value="h4">عنوان صغير</option>
+                  </select>
+                </label>
                 <span class="rich-editor-sep" aria-hidden="true"></span>
-                <button type="button" data-editor-command="bold"><strong>عريض</strong></button>
-                <button type="button" data-editor-command="italic"><em>مائل</em></button>
-                <button type="button" data-editor-command="underline"><u>تسطير</u></button>
-                <button type="button" data-editor-command="strikeThrough"><s>شطب</s></button>
-                <button type="button" data-editor-command="subscript">منخفض</button>
-                <button type="button" data-editor-command="superscript">مرتفع</button>
-                <label class="rich-editor-color">لون النص<input type="color" id="editor-forecolor" value="#10262a" /></label>
-                <label class="rich-editor-color">تظليل<input type="color" id="editor-backcolor" value="#e8f7f1" /></label>
+                <button type="button" data-editor-command="bold" title="عريض: يجعل النص المحدد أثقل"><strong>عريض</strong></button>
+                <button type="button" data-editor-command="italic" title="مائل: يميل النص المحدد"><em>مائل</em></button>
+                <button type="button" data-editor-command="underline" title="تسطير: يضع خطًا تحت النص"><u>تسطير</u></button>
+                <button type="button" data-editor-command="strikeThrough" title="شطب: يضع خطًا على النص"><s>شطب</s></button>
+                <button type="button" data-editor-command="subscript" title="منخفض: يصغّر النص ويخفضه مثل الأرقام السفلية">منخفض</button>
+                <button type="button" data-editor-command="superscript" title="مرتفع: يصغّر النص ويرفعه مثل الأسس">مرتفع</button>
+                <label class="rich-editor-color" title="لون النص المحدد">لون النص<input type="color" id="editor-forecolor" value="#10262a" /></label>
+                <label class="rich-editor-color" title="تظليل خلفية النص المحدد">تظليل<input type="color" id="editor-backcolor" value="#e8f7f1" /></label>
                 <span class="rich-editor-sep" aria-hidden="true"></span>
-                <button type="button" data-editor-command="justifyRight">يمين</button>
-                <button type="button" data-editor-command="justifyCenter">وسط</button>
-                <button type="button" data-editor-command="justifyLeft">يسار</button>
-                <button type="button" data-editor-command="insertUnorderedList">قائمة</button>
-                <button type="button" data-editor-command="insertOrderedList">ترقيم</button>
-                <button type="button" data-editor-command="formatBlock" data-editor-value="blockquote">اقتباس</button>
-                <button type="button" data-editor-command="formatBlock" data-editor-value="pre">شفرة</button>
-                <button type="button" data-editor-command="createLink">رابط</button>
-                <button type="button" data-editor-command="unlink">إزالة الرابط</button>
-                <button type="button" data-editor-command="insertHorizontalRule">خط</button>
-                <button type="button" data-editor-command="insertTable">جدول</button>
-                <button type="button" data-editor-command="removeFormat">مسح التنسيق</button>
+                <button type="button" data-editor-command="justifyRight" title="محاذاة الفقرة إلى اليمين">يمين</button>
+                <button type="button" data-editor-command="justifyCenter" title="توسيط الفقرة">وسط</button>
+                <button type="button" data-editor-command="justifyLeft" title="محاذاة الفقرة إلى اليسار">يسار</button>
+                <button type="button" data-editor-command="insertUnorderedList" title="قائمة نقطية">قائمة</button>
+                <button type="button" data-editor-command="insertOrderedList" title="قائمة مرقّمة">ترقيم</button>
+                <button type="button" data-editor-command="formatBlock" data-editor-value="blockquote" title="اقتباس: يميز فقرة مقتبسة">اقتباس</button>
+                <button type="button" data-editor-command="formatBlock" data-editor-value="pre" title="شفرة: يعرض النص بخط ثابت">شفرة</button>
+                <button type="button" data-editor-command="createLink" title="رابط: يربط النص المحدد بعنوان صفحة">رابط</button>
+                <button type="button" data-editor-command="unlink" title="يزيل الرابط من النص المحدد">إزالة الرابط</button>
+                <button type="button" data-editor-command="insertHorizontalRule" title="يدرج خطًا فاصلًا">خط فاصل</button>
+                <button type="button" data-editor-command="insertTable" title="يدرج جدولًا بعمودين">جدول</button>
+                <button type="button" id="open-inline-image" title="ضع المؤشر حيث تريد الصورة ثم اختر الملف">إدراج صورة</button>
+                <button type="button" data-editor-command="removeFormat" title="يمسح التنسيق عن النص المحدد">مسح التنسيق</button>
               </div>
               <div class="rich-editor-surface" id="rich-editor-surface"></div>
               <p class="rich-editor-meta"><span id="rich-editor-count">0</span> حرفًا ظاهرًا في النص</p>
             </div>
-            <textarea id="edit-body" class="content-textarea" maxlength="200000" hidden></textarea><fieldset class="media-fieldset"><legend>صورة داخل النص</legend><label for="inline-image">ملف الصورة</label><input id="inline-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="inline-image-alt">وصف بديل للصورة</label><input id="inline-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><button type="button" class="inline-media-button" id="insert-inline-image">رفع وإدراج عند موضع المؤشر</button><p class="field-note" id="inline-image-status" aria-live="polite">احفظ المسودة بعد الإدراج لتربط الصورة بالمادة.</p></fieldset><fieldset class="media-fieldset"><legend>استبدال الصورة الرئيسية</legend><label for="edit-primary-image">ملف الصورة</label><input id="edit-primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="edit-primary-image-alt">وصف بديل للصورة الجديدة</label><input id="edit-primary-image-alt" minlength="5" maxlength="180" placeholder="اكتب هذا الوصف فقط عند اختيار ملف جديد" /></fieldset></div>
+            <textarea id="edit-body" class="content-textarea" maxlength="200000" hidden></textarea>
+            <div class="editor-image-panel media-fieldset" id="inline-image-panel">
+              <p class="editor-image-steps"><strong>كيف تضع صورة داخل الخبر:</strong> 1) انقر داخل النص في المكان المطلوب. 2) اختر ملف الصورة. 3) اكتب وصفًا قصيرًا لما يظهر في الصورة. 4) اضغط «إدراج الصورة في النص».</p>
+              <label for="inline-image">ملف الصورة</label>
+              <input id="inline-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" />
+              <label for="inline-image-alt">وصف الصورة (يظهر إن تعذر عرضها)</label>
+              <input id="inline-image-alt" minlength="5" maxlength="180" placeholder="مثال: واجهة التقويم الهجري على الهاتف" />
+              <button type="button" class="inline-media-button" id="insert-inline-image">إدراج الصورة في النص</button>
+              <p class="field-note" id="inline-image-status" aria-live="polite">الصورة تُدرج عند موضع المؤشر. احفظ المسودة بعد الإدراج لتثبيتها.</p>
+            </div>
+            <fieldset class="media-fieldset"><legend>صورة الغلاف (أعلى الخبر)</legend><label for="edit-primary-image">ملف الصورة</label><input id="edit-primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="edit-primary-image-alt">وصف صورة الغلاف</label><input id="edit-primary-image-alt" minlength="5" maxlength="180" placeholder="اكتب هذا الوصف فقط عند اختيار ملف جديد" /></fieldset></div>
           <aside class="editor-side"><h3>إعدادات الظهور</h3>
             <label for="edit-hub">القسم الرئيسي</label><select id="edit-hub"></select>
             <label for="edit-section">القسم الفرعي</label><select id="edit-section"></select>
@@ -105,7 +120,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 	      </div></div>
     </section>
   </section>
-</BaseLayout>
+</AdminLayout>
 
 <script>
   import { createClient } from "@supabase/supabase-js";
@@ -265,6 +280,15 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     });
     document.querySelector<HTMLInputElement>("#editor-forecolor")!.addEventListener("input", (event) => applyEditorCommand("foreColor", (event.currentTarget as HTMLInputElement).value));
     document.querySelector<HTMLInputElement>("#editor-backcolor")!.addEventListener("input", (event) => applyEditorCommand("hiliteColor", (event.currentTarget as HTMLInputElement).value));
+    document.querySelector<HTMLSelectElement>("#editor-block-style")!.addEventListener("change", (event) => {
+      applyEditorCommand("formatBlock", (event.currentTarget as HTMLSelectElement).value);
+      richEditor?.focus();
+    });
+    document.querySelector<HTMLButtonElement>("#open-inline-image")!.addEventListener("click", () => {
+      document.querySelector<HTMLElement>("#inline-image-panel")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      field<HTMLInputElement>("#inline-image").focus();
+      field<HTMLInputElement>("#inline-image").click();
+    });
     return richEditor;
   }
 
