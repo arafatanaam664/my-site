@@ -141,6 +141,15 @@ a:hover { opacity: .82; }
 .content-card h2 { margin: .55rem 0 .65rem; font-size: 1.17rem; line-height: 1.6; }
 .content-card h2 a { color: var(--ink); text-decoration: none; }
 .content-card p { margin: 0; color: var(--muted); font-size: .81rem; line-height: 1.75; }
+.content-card time { color: var(--muted); font-size: .7rem; }
+.content-card-hero { min-height: 100%; }
+.home-hubs { display: grid; gap: 0; }
+.home-hub { padding-top: clamp(2.4rem, 5vw, 4rem); padding-bottom: clamp(2.4rem, 5vw, 4rem); }
+.home-hub:nth-child(even) { background: #f3f8f6; }
+.home-subsection { margin-top: 1.8rem; }
+.home-news-grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr); }
+.home-news-grid .content-card-hero { grid-column: 1 / 2; }
+@media (max-width: 850px) { .home-news-grid { grid-template-columns: 1fr; } }
 .card-link { margin-top: auto; padding-top: 1.2rem; color: var(--teal); text-decoration: none; font-size: .77rem; font-weight: 800; }
 .card-link b { font-size: 1rem; }
 .content-empty { padding: 2rem; border: 1px dashed #b8cac4; border-radius: 14px; background: #f7fbf9; }

@@ -13,12 +13,16 @@ interface Props {
   description: string;
   canonical?: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   pageType?: "website" | "article";
+  publishedTime?: string;
+  modifiedTime?: string;
   noindex?: boolean;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-const { title, description, canonical = "https://alshafra.com/", image, pageType = "website", noindex = false, jsonLd } = Astro.props;
+const { title, description, canonical = "https://alshafra.com/", image, imageWidth, imageHeight, pageType = "website", publishedTime, modifiedTime, noindex = false, jsonLd } = Astro.props;
 const pageSchemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 const schemas = [organizationJsonLd, websiteJsonLd, ...pageSchemas];
 const safeJsonLd = JSON.stringify(schemas).replace(/</g, "\\u003c");
@@ -41,7 +45,11 @@ const navigation = await publicNavigationTree(features);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     {image && <meta property="og:image" content={image} />}
-    <meta name="twitter:card" content="summary_large_image" />
+    {image && imageWidth && <meta property="og:image:width" content={String(imageWidth)} />}
+    {image && imageHeight && <meta property="og:image:height" content={String(imageHeight)} />}
+    {pageType === "article" && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {pageType === "article" && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    <meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
     {image && <meta name="twitter:image" content={image} />}
     <script is:inline type="application/ld+json" set:html={safeJsonLd} />
     <title>{title}</title>

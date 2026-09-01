@@ -1,0 +1,62 @@
+---
+import { builtInToolCatalog } from "../lib/tool-catalog";
+import { mediaForId, mediaSrc, type PublicContentCard } from "../lib/server/public-content";
+import { contentPath } from "../lib/site-sections";
+
+interface Props {
+  items: PublicContentCard[];
+  kicker: string;
+  hubSlug?: string | null;
+  childSlug?: string | null;
+  kind?: string | null;
+  includeBuiltInTools?: boolean;
+  emptyTitle: string;
+  emptyBody: string;
+}
+
+const { items, kicker, hubSlug = null, childSlug = null, kind = null, includeBuiltInTools = false, emptyTitle, emptyBody } = Astro.props;
+const tools = includeBuiltInTools ? builtInToolCatalog.slice(0, 4) : [];
+const hasEditorial = items.length > 0;
+---
+
+{tools.length > 0 && (
+  <div class="tool-catalog-grid">
+    {tools.map((tool) => (
+      <a class="tool-catalog-card" href={tool.href}>
+        <span>{tool.category}</span>
+        <h2>{tool.title}</h2>
+        <p>{tool.description}</p>
+        <small>{tool.mode === "client" ? "يعمل داخل متصفحك" : "يعتمد على خدمة خادمية"}</small>
+        <b aria-hidden="true">←</b>
+      </a>
+    ))}
+  </div>
+)}
+
+{hasEditorial ? (
+  <div class:list={["content-card-grid", kind === "news" && "home-news-grid"]}>
+    {items.map((item, index) => {
+      const media = item.primary_media_id ? mediaForId(item, item.primary_media_id) : null;
+      const href = contentPath(item.kind, item.slug, hubSlug, childSlug);
+      const featured = item.kind === "news" && Boolean(media) && index === 0;
+      const date = new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle: "medium" }).format(new Date(item.published_at));
+      return (
+        <article class:list={["content-card", featured && "content-card-hero"]}>
+          {media && <img src={mediaSrc(media.id, featured ? "hero" : "standard")} alt={media.alt_text} width={media.width} height={media.height} loading={featured ? "eager" : "lazy"} />}
+          <div>
+            <span>{kicker}</span>
+            <h2><a href={href}>{item.title}</a></h2>
+            <p>{item.excerpt || item.seo_description || "مادة عملية من Alshafra."}</p>
+            <time datetime={item.published_at}>{date}</time>
+            <a class="card-link" href={href}>قراءة المادة <b aria-hidden="true">←</b></a>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+) : tools.length === 0 ? (
+  <div class="content-empty">
+    <h3>{emptyTitle}</h3>
+    <p>{emptyBody}</p>
+  </div>
+) : null}

@@ -33,4 +33,23 @@ describe("البيانات المنظمة حسب نوع المحتوى", () => {
     expect(schemaTypeForKind("faq")).toBe("FAQPage");
     expect(schemaTypeForKind("article")).toBe("Article");
   });
+
+  it("يضع صورة الخبر ككائن ImageObject مع شعار الناشر", async () => {
+    const { contentKindJsonLd } = await import("../src/lib/content-schema");
+    const data = contentKindJsonLd({
+      kind: "news",
+      title: "خبر",
+      description: "وصف",
+      url: "https://alshafra.com/calendar/news/example",
+      datePublished: "2026-09-01T00:00:00Z",
+      dateModified: "2026-09-01T00:00:00Z",
+      image: "https://alshafra.com/media/11111111-1111-1111-1111-111111111111?preset=hero",
+      imageWidth: 1200,
+      imageHeight: 675,
+    });
+    const news = data as Record<string, unknown> & { image?: Record<string, unknown>; publisher?: Record<string, unknown> };
+    expect(news["@type"]).toBe("NewsArticle");
+    expect(news.image).toMatchObject({ "@type": "ImageObject", width: 1200, height: 675 });
+    expect(news.publisher).toMatchObject({ logo: { "@type": "ImageObject" } });
+  });
 });

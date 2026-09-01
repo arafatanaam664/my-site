@@ -1,0 +1,55 @@
+---
+import type { SiteSectionNode } from "../lib/site-sections";
+import type { PublicContentCard } from "../lib/server/public-content";
+import ContentPreviewGrid from "./ContentPreviewGrid.astro";
+
+interface Props {
+  hubs: SiteSectionNode[];
+  previews: Record<string, PublicContentCard[]>;
+  toolsEnabled: boolean;
+}
+
+const { hubs, previews, toolsEnabled } = Astro.props;
+---
+
+<div class="home-hubs">
+  {hubs.map((hub) => (
+    <section class="home-hub section" id={`hub-${hub.slug}`}>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">قسم رئيسي</p>
+          <h2><a href={hub.href}>{hub.title}</a></h2>
+          <p>{hub.description}</p>
+        </div>
+        <a href={hub.href}>عرض القسم ←</a>
+      </div>
+      {hub.children.length ? hub.children.map((child) => (
+        <div class="home-subsection">
+          <div class="hub-subsection-heading">
+            <div>
+              <p class="eyebrow">قسم فرعي</p>
+              <h3><a href={child.href}>{child.title}</a></h3>
+              <p>{child.description}</p>
+            </div>
+            <a class="card-link" href={child.href}>كل {child.title} <b aria-hidden="true">←</b></a>
+          </div>
+          <ContentPreviewGrid
+            items={previews[child.id] ?? []}
+            kicker={child.title}
+            hubSlug={hub.slug}
+            childSlug={child.slug}
+            kind={child.contentKind}
+            includeBuiltInTools={toolsEnabled && child.contentKind === "tool"}
+            emptyTitle="لا توجد مواد منشورة هنا بعد"
+            emptyBody="عند إضافة محتوى من لوحة التحكم وربطه بهذا القسم الفرعي ثم نشره، يظهر هنا تلقائيًا."
+          />
+        </div>
+      )) : (
+        <div class="content-empty">
+          <h3>لا توجد أقسام فرعية بعد</h3>
+          <p>أضف أقسامًا فرعية من لوحة التحكم لعرض الأخبار والمقالات والأدوات داخل هذا القسم.</p>
+        </div>
+      )}
+    </section>
+  ))}
+</div>

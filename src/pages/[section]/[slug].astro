@@ -7,7 +7,8 @@ import { breadcrumbListLd } from "../../lib/site-schema";
 import { featureForPublicSection } from "../../lib/platform-foundation";
 import { publicFeatureState } from "../../lib/server/feature-gates";
 import { loadSiteSections, visibleSectionTree } from "../../lib/server/site-sections";
-import { mediaForId, publishedContent, publishedContentList } from "../../lib/server/public-content";
+import { publishedContent, publishedContentForSection } from "../../lib/server/public-content";
+import ContentPreviewGrid from "../../components/ContentPreviewGrid.astro";
 import { builtInToolCatalog } from "../../lib/tool-catalog";
 import { contentPath, subsectionFeature } from "../../lib/site-sections";
 import type { PublicSection } from "../../lib/content-taxonomy";
@@ -25,7 +26,7 @@ const kindEnabled = mapping ? features[featureForPublicSection(section) ?? "cont
 const content = mapping && kindEnabled && slug ? await publishedContent(mapping.kind, slug) : null;
 const childFeature = child ? subsectionFeature(child.contentKind, child.systemKey) : null;
 const childEnabled = Boolean(child && (!childFeature || features[childFeature]));
-const childItems = childEnabled && child?.contentKind && child.contentKind !== "tool" ? await publishedContentList(child.contentKind) : [];
+const childItems = childEnabled && child ? await publishedContentForSection(child.id, 24) : [];
 if (!childEnabled && !content) Astro.response.status = 404;
 const subsectionCanonical = child ? `https://alshafra.com${child.href}` : "";
 ---
@@ -35,13 +36,7 @@ const subsectionCanonical = child ? `https://alshafra.com${child.href}` : "";
     <section class="content-index">
       <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><a href={hub.href}>{hub.title}</a><span aria-hidden="true">/</span><span>{child.title}</span></nav>
       <header class="content-index-header"><p class="eyebrow">{hub.title}</p><h1>{child.title}</h1><p>{child.description}</p></header>
-      {child.contentKind === "tool" ? (
-        <div class="tool-catalog-grid">{builtInToolCatalog.map((tool) => <a class="tool-catalog-card" href={tool.href}><span>{tool.category}</span><h2>{tool.title}</h2><p>{tool.description}</p><small>{tool.mode === "client" ? "يعمل داخل متصفحك" : "يعتمد على خدمة خادمية"}</small><b aria-hidden="true">←</b></a>)}</div>
-      ) : childItems.length ? (
-        <div class="content-card-grid">{childItems.map((item) => { const media = item.primary_media_id ? mediaForId(item, item.primary_media_id) : null; const href = contentPath(item.kind, item.slug, hub.slug, child.slug); return <article class="content-card">{media && <img src={`/media/${media.id}?preset=compact`} alt={media.alt_text} width={media.width} height={media.height} loading="lazy" />}<div><span>{child.title}</span><h2><a href={href}>{item.title}</a></h2><p>{item.excerpt || item.seo_description || "مادة عملية من Alshafra."}</p><a class="card-link" href={href}>قراءة المادة <b aria-hidden="true">←</b></a></div></article>; })}</div>
-      ) : (
-        <div class="content-empty"><h2>لا توجد مواد منشورة في هذا القسم بعد</h2><p>اربط المادة من لوحة التحكم بهذا القسم الفرعي ثم انشرها بعد المراجعة.</p><a class="button button-primary" href={hub.href}>العودة إلى {hub.title}</a></div>
-      )}
+      <ContentPreviewGrid items={childItems} kicker={child.title} hubSlug={hub.slug} childSlug={child.slug} kind={child.contentKind} includeBuiltInTools={features.tools_core && child.contentKind === "tool"} emptyTitle="لا توجد مواد منشورة في هذا القسم بعد" emptyBody="اربط المادة من لوحة التحكم بهذا القسم الفرعي ثم انشرها بعد المراجعة." />
     </section>
   </BaseLayout>
 ) : content && mapping && isPublicSection(section) ? (

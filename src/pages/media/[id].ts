@@ -25,9 +25,14 @@ export const GET: APIRoute = async ({ params, request }) => {
       const sourceUrl = new URL(request.url);
       sourceUrl.search = "source=1";
       const transformation = transformForPreset(preset, request.headers.get("accept"));
-      return fetch(new Request(sourceUrl, { headers: request.headers }), {
-        cf: { image: transformation },
-      } as RequestInit);
+      try {
+        const transformed = await fetch(new Request(sourceUrl, { headers: request.headers }), {
+          cf: { image: transformation },
+        } as RequestInit);
+        if (transformed.ok && (transformed.headers.get("content-type") ?? "").startsWith("image/")) return transformed;
+      } catch {
+        // Image Resizing may be unavailable on workers.dev; fall through to the stored WebP/original.
+      }
     }
 
     const secrets = runtimeSecrets();

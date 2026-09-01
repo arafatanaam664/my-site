@@ -5,7 +5,7 @@ import { breadcrumbListLd } from "../../lib/site-schema";
 import { collectionPageJsonLd } from "../../lib/content-schema";
 import { publicFeatureState } from "../../lib/server/feature-gates";
 import { publicNavigationTree } from "../../lib/server/site-sections";
-import { publishedContentList, type PublicContentCard } from "../../lib/server/public-content";
+import { publishedContentForSection, type PublicContentCard } from "../../lib/server/public-content";
 
 export const prerender = false;
 const features = await publicFeatureState();
@@ -15,7 +15,7 @@ const canonical = "https://alshafra.com/calendar";
 const previews: Record<string, PublicContentCard[]> = {};
 if (hub) {
   await Promise.all(hub.children.map(async (child) => {
-    if (child.contentKind && child.contentKind !== "tool") previews[child.id] = await publishedContentList(child.contentKind, 3);
+    previews[child.id] = await publishedContentForSection(child.id, 4);
   }));
 }
 const jsonLd = [
@@ -26,7 +26,7 @@ const jsonLd = [
 
 <BaseLayout title="التقويم والمواعيد" description="تاريخ اليوم وفق أم القرى، وتحويل التاريخ، وأدوات زمنية عملية مع مصادر وحدود معلنة." canonical={canonical} jsonLd={jsonLd}>
   {hub ? (
-    <HubLanding hub={hub} previews={previews}>
+    <HubLanding hub={hub} previews={previews} toolsEnabled={features.tools_core}>
       <div class="tool-catalog-grid hub-highlights">
         <a class="tool-catalog-card" href="/calendar/umm-al-qura"><span>مصدر خادمي</span><h2>تاريخ اليوم وفق أم القرى</h2><p>عرض مستقل للتاريخ الهجري والميلادي مع المصدر ووقت التحديث.</p><small>لا يعتمد على ساعة المتصفح وحدها</small><b aria-hidden="true">←</b></a>
         {features.tools_core && <a class="tool-catalog-card" href="/tools/hijri-converter"><span>تحويل</span><h2>تحويل التاريخ الهجري والميلادي</h2><p>تحويل حسابي جدولي فوري، مع التنبيه أنه قد يختلف عن أم القرى.</p><small>يعمل داخل المتصفح</small><b aria-hidden="true">←</b></a>}

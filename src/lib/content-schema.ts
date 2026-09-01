@@ -9,11 +9,30 @@ export type ContentSchemaInput = {
   datePublished: string;
   dateModified: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   body?: string | null;
   sectionTitle?: string;
 };
 
-const organization = { "@type": "Organization", name: "Alshafra", url: "https://alshafra.com/" };
+const organization = {
+  "@type": "Organization",
+  name: "Alshafra",
+  url: "https://alshafra.com/",
+  logo: { "@type": "ImageObject", url: "https://alshafra.com/logo.png", width: 512, height: 512 },
+};
+
+function imageObject(input: ContentSchemaInput) {
+  if (!input.image) return {};
+  return {
+    image: {
+      "@type": "ImageObject",
+      url: input.image,
+      width: input.imageWidth || 1200,
+      height: input.imageHeight || 675,
+    },
+  };
+}
 
 export function schemaTypeForKind(kind: string) {
   if (kind === "news") return "NewsArticle";
@@ -50,7 +69,7 @@ export function contentKindJsonLd(input: ContentSchemaInput) {
     dateModified: input.dateModified,
     isAccessibleForFree: true,
     mainEntityOfPage: { "@type": "WebPage", "@id": input.url },
-    ...(input.image ? { image: input.image } : {}),
+    ...imageObject(input),
     ...(input.sectionTitle ? { articleSection: input.sectionTitle } : {}),
   };
   if (type === "WebApplication") {

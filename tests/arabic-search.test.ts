@@ -8,15 +8,15 @@ describe("البحث العربي", () => {
 
   it("يرتب النتائج المنشورة مع تفضيل تطابق العنوان", () => {
     const results = searchPublicContent([
-      { id: "1", kind: "article", slug: "date", title: "تحويل التاريخ الهجري", excerpt: null, seo_description: null, primary_media_id: null, published_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z", media: [] },
-      { id: "2", kind: "guide", slug: "holiday", title: "دليل الإجازات", excerpt: "شرح تحويل التاريخ", seo_description: null, primary_media_id: null, published_at: "2026-02-01T00:00:00Z", updated_at: "2026-02-01T00:00:00Z", media: [] },
+      { id: "1", kind: "article", slug: "date", title: "تحويل التاريخ الهجري", excerpt: null, seo_description: null, primary_media_id: null, hub_id: null, section_id: null, published_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z", media: [] },
+      { id: "2", kind: "guide", slug: "holiday", title: "دليل الإجازات", excerpt: "شرح تحويل التاريخ", seo_description: null, primary_media_id: null, hub_id: null, section_id: null, published_at: "2026-02-01T00:00:00Z", updated_at: "2026-02-01T00:00:00Z", media: [] },
     ], "تحويل التاريخ");
     expect(results.map((item) => item.id)).toEqual(["1", "2"]);
   });
 
   it("يوسع المرادفات الشائعة مثل واتساب دون اختراع صفحات", () => {
     const results = searchPublicContent([
-      { id: "1", kind: "article", slug: "wa", title: "حل مشكلة واتساب", excerpt: null, seo_description: null, primary_media_id: null, published_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z", media: [] },
+      { id: "1", kind: "article", slug: "wa", title: "حل مشكلة واتساب", excerpt: null, seo_description: null, primary_media_id: null, hub_id: null, section_id: null, published_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z", media: [] },
     ], "واتس");
     expect(results.map((item) => item.id)).toEqual(["1"]);
   });

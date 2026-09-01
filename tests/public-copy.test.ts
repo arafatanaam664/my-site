@@ -20,8 +20,8 @@ describe("النسخ العامة للصفحة الرئيسية", () => {
     forbiddenPublicTerms.forEach((term) => expect(source).not.toContain(term));
     expect(source).not.toContain("قريبًا ضمن القسم");
     expect(source).not.toContain("ستتوفر مع الإطلاق");
-    expect(source).toContain("hasPublishedEditorial");
-    expect(source).toContain('publishedContentList("article", 1)');
-    expect(source).toContain('publishedContentList("guide", 1)');
+    expect(source).toContain("publicNavigationTree");
+    expect(source).toContain("publishedContentForSection");
+    expect(source).toContain("HomeSections");
   });
 });

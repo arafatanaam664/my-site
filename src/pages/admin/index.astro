@@ -47,7 +47,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
       <div class="admin-grid" data-admin-view="content" hidden>
         <form id="new-draft-form" class="admin-card"><h3>مسودة جديدة</h3><label for="draft-hub">القسم الرئيسي</label><select id="draft-hub" required><option value="">اختر قسمًا رئيسيًا</option></select>
           <label for="draft-section">القسم الفرعي</label><select id="draft-section" required><option value="">اختر قسمًا فرعيًا</option></select>
-          <label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="solution">حل</option><option value="faq">سؤال شائع</option><option value="news">خبر</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><fieldset class="media-fieldset"><legend>الصورة الرئيسية (اختياري)</legend><label for="primary-image">ملف الصورة</label><input id="primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="primary-image-alt">وصف بديل للصورة</label><input id="primary-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><p class="field-note">JPEG أو PNG أو WebP أو AVIF، حتى 10MB. لا تُستخدم الصورة إلا بعد ربطها بالمادة.</p></fieldset><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
+          <label for="draft-kind">نوع المادة</label><select id="draft-kind"><option value="article">مقال</option><option value="guide">دليل</option><option value="solution">حل</option><option value="faq">سؤال شائع</option><option value="news">خبر</option><option value="page">صفحة</option><option value="tool">أداة</option></select><label for="draft-title">العنوان</label><input id="draft-title" minlength="15" maxlength="160" required /><label for="draft-slug">الرابط المختصر (إنجليزي)</label><input id="draft-slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required placeholder="hijri-date-conversion-guide" /><label for="draft-excerpt">وصف مختصر</label><textarea id="draft-excerpt" maxlength="320"></textarea><fieldset class="media-fieldset"><legend>الصورة الرئيسية (اختياري)</legend><label for="primary-image">ملف الصورة</label><input id="primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="primary-image-alt">وصف بديل للصورة</label><input id="primary-image-alt" minlength="5" maxlength="180" placeholder="وصف موجز ودقيق لما يظهر في الصورة" /><p class="field-note">JPEG أو PNG أو WebP أو AVIF حتى 10MB. تُضغط تلقائيًا إلى WebP مع الحفاظ على الوضوح. لصورة الخبر الظاهرة في اقتراحات جوجل استخدم عرض 1200 بكسل على الأقل ونسبة قريبة من 16:9، ووصفًا يطابق ما يظهر فعلًا.</p></fieldset><button type="submit">إنشاء المسودة</button><p class="form-status" id="draft-status" aria-live="polite"></p></form>
         <div class="admin-card"><h3>آخر المواد</h3><ul id="content-list" class="content-list"><li>يجري تحميل المحتوى…</li></ul></div>
       </div>
 
@@ -107,7 +107,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
               <label for="inline-image-alt">وصف الصورة (يظهر إن تعذر عرضها)</label>
               <input id="inline-image-alt" minlength="5" maxlength="180" placeholder="مثال: واجهة التقويم الهجري على الهاتف" />
               <button type="button" class="inline-media-button" id="insert-inline-image">إدراج الصورة في النص</button>
-              <p class="field-note" id="inline-image-status" aria-live="polite">الصورة تُدرج عند موضع المؤشر. احفظ المسودة بعد الإدراج لتثبيتها.</p>
+              <p class="field-note" id="inline-image-status" aria-live="polite">تُضغط الصورة إلى WebP عند الرفع. ضع المؤشر ثم أدرجها، واحفظ المسودة. استخدم وصفًا دقيقًا لما يظهر، وصورة واضحة بعرض كافٍ.</p>
             </div>
             <fieldset class="media-fieldset"><legend>صورة الغلاف (أعلى الخبر)</legend><label for="edit-primary-image">ملف الصورة</label><input id="edit-primary-image" type="file" accept="image/avif,image/webp,image/jpeg,image/png" /><label for="edit-primary-image-alt">وصف صورة الغلاف</label><input id="edit-primary-image-alt" minlength="5" maxlength="180" placeholder="اكتب هذا الوصف فقط عند اختيار ملف جديد" /></fieldset></div>
           <aside class="editor-side"><h3>إعدادات الظهور</h3>
@@ -191,7 +191,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 
 
   const field = <T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(selector: string) => document.querySelector<T>(selector)!;
-  async function readJson<T = { error?: string; data?: unknown }>(response: Response): Promise<T> {
+  async function readJson<T = Record<string, any>>(response: Response): Promise<T> {
     const payload = await response.text();
     try {
       return (payload ? JSON.parse(payload) : {}) as T;

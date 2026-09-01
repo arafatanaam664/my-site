@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Allow: /media/
 
 Sitemap: https://alshafra.com/sitemap.xml

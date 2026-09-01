@@ -9,7 +9,8 @@ export default defineConfig({
   prefetch: true,
   server: { host: true, allowedHosts: true },
   vite: {
-    ssr: { noExternal: ["@astrojs/cloudflare"] },
-    optimizeDeps: { exclude: ["@astrojs/cloudflare"] },
+    assetsInclude: ["**/*.wasm"],
+    ssr: { noExternal: ["@astrojs/cloudflare", "@jsquash/jpeg", "@jsquash/png", "@jsquash/webp", "@jsquash/resize"] },
+    optimizeDeps: { exclude: ["@astrojs/cloudflare", "@jsquash/jpeg", "@jsquash/png", "@jsquash/webp", "@jsquash/resize"] },
   },
 });

@@ -4,6 +4,7 @@ export const organizationJsonLd = {
   name: "Alshafra",
   url: "https://alshafra.com/",
   inLanguage: "ar",
+  logo: { "@type": "ImageObject", url: "https://alshafra.com/logo.png", width: 512, height: 512 },
 };
 
 export const websiteJsonLd = {

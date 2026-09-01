@@ -6,7 +6,7 @@ import { labelForKind, sectionForKind, type PublicSection } from "../lib/content
 import { contentPageJsonLd, ogTypeForKind } from "../lib/content-schema";
 import { contentPath } from "../lib/site-sections";
 import { publicFeatureState } from "../lib/server/feature-gates";
-import { mediaForId, relatedPublishedContent, type PublicContent } from "../lib/server/public-content";
+import { mediaAbsoluteSrc, mediaForId, mediaSrc, relatedPublishedContent, type PublicContent } from "../lib/server/public-content";
 import { builtInToolCatalog } from "../lib/tool-catalog";
 import type { SiteSectionNode } from "../lib/site-sections";
 
@@ -17,7 +17,7 @@ const canonical = content.canonical_url || `https://alshafra.com${nestedPath}`;
 const title = content.seo_title || content.title;
 const description = content.seo_description || content.excerpt || "مادة عملية من Alshafra.";
 const primaryMedia = content.primary_media_id ? mediaForId(content, content.primary_media_id) : null;
-const image = primaryMedia ? `https://alshafra.com/media/${primaryMedia.id}?preset=og` : undefined;
+const image = primaryMedia ? mediaAbsoluteSrc(primaryMedia.id, primaryMedia.width >= 1200 ? "hero" : "og") : undefined;
 const publishedDate = new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle: "long" }).format(new Date(content.published_at));
 const updatedDate = new Intl.DateTimeFormat("ar-SA-u-ca-gregory", { dateStyle: "long" }).format(new Date(content.updated_at));
 const related = await relatedPublishedContent(content.kind, content.id);
@@ -37,12 +37,14 @@ const jsonLd = contentPageJsonLd({
   datePublished: content.published_at,
   dateModified: content.updated_at,
   image,
+  imageWidth: primaryMedia?.width,
+  imageHeight: primaryMedia?.height,
   body: content.body_html || content.body_markdown,
   sectionTitle: subsection?.title || labelForKind(content.kind),
 }, crumbs);
 ---
 
-<BaseLayout title={title} description={description} canonical={canonical} image={image} pageType={ogTypeForKind(content.kind)} jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} canonical={canonical} image={image} imageWidth={primaryMedia?.width} imageHeight={primaryMedia?.height} pageType={ogTypeForKind(content.kind)} publishedTime={content.published_at} modifiedTime={content.updated_at} jsonLd={jsonLd}>
   <article class="public-article" data-analytics-content-id={content.id}>
     <nav class="breadcrumbs" aria-label="مسار الصفحة">
       <a href="/">الرئيسية</a><span aria-hidden="true">/</span>
@@ -57,7 +59,7 @@ const jsonLd = contentPageJsonLd({
       <div class="article-dates"><span>نُشر في {publishedDate}</span><span>آخر تحديث {updatedDate}</span></div>
       {features.social_sharing && <ShareActions title={content.title} url={canonical} />}
     </header>
-    {primaryMedia && <figure class="article-hero"><img src={`/media/${primaryMedia.id}?preset=hero`} srcset={`/media/${primaryMedia.id}?preset=compact 480w, /media/${primaryMedia.id}?preset=standard 768w, /media/${primaryMedia.id}?preset=hero 1200w`} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 768px, 1200px" alt={primaryMedia.alt_text} width={primaryMedia.width} height={primaryMedia.height} fetchpriority="high" /><figcaption>{primaryMedia.alt_text}</figcaption></figure>}
+    {primaryMedia && <figure class="article-hero"><img src={mediaSrc(primaryMedia.id, "hero")} srcset={`${mediaSrc(primaryMedia.id, "compact")} 480w, ${mediaSrc(primaryMedia.id, "standard")} 768w, ${mediaSrc(primaryMedia.id, "hero")} 1200w`} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 768px, 1200px" alt={primaryMedia.alt_text} width={primaryMedia.width} height={primaryMedia.height} fetchpriority="high" /><figcaption>{primaryMedia.alt_text}</figcaption></figure>}
     <div class="article-layout">
       <div class="article-body">
         <RichContent content={content} />
